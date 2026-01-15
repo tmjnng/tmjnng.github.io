@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SQL测试</title>
+  <meta charset="utf-8">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    textarea {
+      width: 100%;
+      min-height: 150px;
+      margin: 10px 0;
+      padding: 10px;
+      font-family: monospace;
+    }
+    button {
+      padding: 10px 20px;
+      margin-right: 10px;
+    }
+    .result {
+      background: #f5f5f5;
+      padding: 10px;
+      border: 1px solid #ddd;
+      min-height: 100px;
+      font-family: monospace;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <h1>SQL格式化和压缩测试</h1>
+  
+  <h2>测试用例1: 简单SELECT语句</h2>
+  <textarea id="sql-input-1">select id, name, email from users where age > 18 and status = 'active' order by name;</textarea>
+  <button onclick="testSql(1)">测试</button>
+  <div id="sql-result-1" class="result"></div>
+  
+  <h2>测试用例2: 带JOIN的复杂语句</h2>
+  <textarea id="sql-input-2">select u.id, u.name, p.title, p.content from users u join posts p on u.id = p.user_id where u.status = 'active' and p.created_at > '2023-01-01' order by p.created_at desc limit 10;</textarea>
+  <button onclick="testSql(2)">测试</button>
+  <div id="sql-result-2" class="result"></div>
+  
+  <h2>测试用例3: 带子查询的语句</h2>
+  <textarea id="sql-input-3">select id, name from users where id in (select user_id from orders where total > 1000) and created_at > '2023-01-01';</textarea>
+  <button onclick="testSql(3)">测试</button>
+  <div id="sql-result-3" class="result"></div>
+
+  <script>
+    // 从index.html复制的SQL函数
+    function sqlFormatter(sql) {
+      sql = sql.trim();
+      sql = sql.replace(/\s+/g, ' ');
+      
+      const keywords = ['SELECT', 'FROM', 'WHERE', 'AND', 'OR', 'JOIN', 'LEFT JOIN', 'RIGHT JOIN', 'INNER JOIN', 'OUTER JOIN', 'GROUP BY', 'ORDER BY', 'HAVING', 'LIMIT', 'OFFSET', 'INSERT', 'UPDATE', 'DELETE', 'CREATE', 'ALTER', 'DROP', 'TABLE', 'VIEW', 'INDEX', 'TRIGGER', 'PROCEDURE', 'FUNCTION', 'BEGIN', 'END', 'IF', 'ELSE', 'CASE', 'WHEN', 'THEN', 'ELSE', 'END CASE'];
+      
+      let formatted = sql;
+      let indentLevel = 0;
+      const indentSize = 2;
+      
+      formatted = formatted.replace(/\(/g, ' (\n' + ' '.repeat(++indentLevel * indentSize));
+      formatted = formatted.replace(/\)/g, '\n' + ' '.repeat(--indentLevel * indentSize) + ')');
+      
+      for (const keyword of keywords) {
+        const regex = new RegExp('\\b' + keyword + '\\b', 'gi');
+        formatted = formatted.replace(regex, (match) => '\n' + ' '.repeat(indentLevel * indentSize) + match.toUpperCase());
+      }
+      
+      formatted = formatted.replace(/,/g, ',\n' + ' '.repeat((indentLevel + 1) * indentSize));
+      formatted = formatted.replace(/\n(\s*)(AND|OR)/gi, '\n$1  $2');
+      formatted = formatted.replace(/\n+/g, '\n');
+      
+      return formatted.trim();
+    }
+
+    function sqlMinifier(sql) {
+      sql = sql.replace(/--.*$/gm, '');
+      sql = sql.replace(/\/\*[\s\S]*?\*\//g, '');
+      sql = sql.trim();
+      sql = sql.replace(/\s+/g, ' ');
+      return sql;
+    }
+
+    function testSql(testNumber) {
+      const input = document.getElementById(`sql-input-${testNumber}`).value;
+      const resultDiv = document.getElementById(`sql-result-${testNumber}`);
+      
+      try {
+        const formatted = sqlFormatter(input);
+        const minified = sqlMinifier(input);
+        
+        resultDiv.innerHTML = `
+          <strong>格式化结果:</strong><br>
+          ${formatted}<br><br>
+          <strong>压缩结果:</strong><br>
+          ${minified}
+        `;
+      } catch (e) {
+        resultDiv.innerHTML = `<strong>错误:</strong> ${e.message}`;
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>按钮测试</title>
+  <meta charset="utf-8">
+  <style>
+    button {
+      padding: 10px 20px;
+      margin: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>按钮测试</h1>
+  
+  <button onclick="testFunction1()">测试按钮1</button>
+  <button onclick="testFunction2()">测试按钮2</button>
+  <button onclick="testFunction3()">测试按钮3</button>
+  
+  <div id="result"></div>
+  
+  <script>
+    function testFunction1() {
+      document.getElementById('result').innerHTML = '按钮1被点击了！';
+    }
+    
+    function testFunction2() {
+      document.getElementById('result').innerHTML = '按钮2被点击了！';
+    }
+    
+    function testFunction3() {
+      document.getElementById('result').innerHTML = '按钮3被点击了！';
+    }
+  </script>
+</body>
+</html>
