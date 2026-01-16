@@ -218,12 +218,50 @@
               <!-- AES加密解密工具 -->
               <div class="tool-card">
                 <h3>AES加密解密</h3>
-                <input type="text" id="aes-key" placeholder="密钥 (16/24/32位)">
-                <select id="aes-mode">
-                  <option value="cbc">CBC模式</option>
-                  <option value="ecb">ECB模式</option>
-                </select>
                 <textarea id="aes-input" placeholder="请输入要加密/解密的文本..."></textarea>
+                
+                <!-- 输入格式选项 -->
+                <div style="margin-bottom: 10px;">
+                  <label>输入格式：</label>
+                  <input type="radio" name="aes-input-format" value="utf8" checked> UTF-8
+                  <input type="radio" name="aes-input-format" value="hex"> Hex
+                  <input type="radio" name="aes-input-format" value="base64"> Base64
+                </div>
+                
+                <!-- 加密模式选项 -->
+                <select id="aes-mode" style="margin-bottom: 10px;" onchange="toggleIVInput()">
+                  <option value="cbc">CBC (密码块链接)</option>
+                  <option value="ecb">ECB (电子密码本)</option>
+                  <option value="gcm">GCM (Galois/计数器)</option>
+                </select>
+                
+                <!-- 密钥输入 -->
+                <input type="text" id="aes-key" placeholder="密钥 (16/24/32位)" style="margin-bottom: 10px;">
+                
+                <!-- IV输入 -->
+                <div id="iv-container" style="display: none;">
+                  <input type="text" id="aes-iv" placeholder="IV (16位，HEX格式，必填)" style="margin-bottom: 10px;">
+                </div>
+                
+                <!-- 填充方式选项 -->
+                <select id="aes-padding" style="margin-bottom: 10px;">
+                  <option value="pkcs7">PKCS#7 (16字节块)</option>
+                  <option value="pkcs5">PKCS#5 (8字节块)</option>
+                  <option value="zeros">Zeros (零填充)</option>
+                  <option value="none">无填充</option>
+                  <option value="iso10126">ISO10126</option>
+                  <option value="ansiX923">ANSI X.923</option>
+                  <option value="iso7816">ISO/IEC 7816-4</option>
+                </select>
+                
+                <!-- 输出格式选项 -->
+                <div style="margin-bottom: 10px;">
+                  <label>输出格式：</label>
+                  <input type="radio" name="aes-output-format" value="utf8"> UTF-8
+                  <input type="radio" name="aes-output-format" value="hex"> Hex
+                  <input type="radio" name="aes-output-format" value="base64" checked> Base64
+                </div>
+                
                 <div class="tool-buttons">
                   <button onclick="aesEncrypt()">加密</button>
                   <button onclick="aesDecrypt()">解密</button>
@@ -302,5 +340,11 @@
 
     <script src="/js/jquery-3.4.1.min.js"></script>
     <script src="/js/script.js"></script>
+    <script>
+      // 页面加载时初始化
+      window.onload = function() {
+        toggleIVInput();
+      };
+    </script>
   </body>
 </html>

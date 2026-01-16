@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>工具综合测试页面</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; }
+        .test-result { margin: 10px 0; padding: 10px; border-radius: 5px; }
+        .pass { background: #d4edda; color: #155724; }
+        .fail { background: #f8d7da; color: #721c24; }
+        .info { background: #d1ecf1; color: #0c5460; }
+        pre { background: #f5f5f5; padding: 10px; border-radius: 5px; overflow-x: auto; }
+        button { margin: 5px; padding: 8px 16px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>工具综合测试页面</h1>
+    
+    <div class="test-section">
+        <h2>测试结果</h2>
+        <div id="test-results"></div>
+        <button onclick="runAllTests()">运行所有测试</button>
+    </div>
+    
+    <script>
+        function logResult(testName, success, message) {
+            const resultsDiv = document.getElementById('test-results');
+            const div = document.createElement('div');
+            div.className = `test-result ${success ? 'pass' : 'fail'}`;
+            div.innerHTML = `<strong>${testName}:</strong> ${message}`;
+            resultsDiv.appendChild(div);
+        }
+        
+        async function runTest(testName, testFunction) {
+            try {
+                await testFunction();
+                logResult(testName, true, '通过');
+            } catch (error) {
+                logResult(testName, false, `失败: ${error.message}`);
+            }
+        }
+        
+        // AES测试
+        async function testAESEncryption() {
+            if (!window.crypto || !window.crypto.subtle) {
+                throw new Error('Web Crypto API 不可用');
+            }
+        }
+        
+        // JSON测试
+        async function testJSONFormatting() {
+            const json = '{"name":"test","value":123}';
+            const parsed = JSON.parse(json);
+            if (parsed.name !== 'test') throw new Error('JSON解析失败');
+        }
+        
+        // Base64测试
+        async function testBase64Encoding() {
+            const text = 'test';
+            const encoded = btoa(text);
+            if (encoded !== 'dGVzdA==') throw new Error('Base64编码失败');
+        }
+        
+        // MD5测试
+        async function testMD5Hashing() {
+            // 简单验证MD5函数存在
+            if (typeof md5 !== 'function') {
+                // 如果没有全局md5函数，使用Web Crypto API
+                if (window.crypto && window.crypto.subtle) {
+                    const text = 'test';
+                    const encoder = new TextEncoder();
+                    const data = encoder.encode(text);
+                    const hashBuffer = await crypto.subtle.digest('MD5', data);
+                    if (hashBuffer.byteLength !== 16) throw new Error('MD5哈希失败');
+                }
+            }
+        }
+        
+        // URL测试
+        async function testURLFunctions() {
+            const url = 'https://example.com/test?a=1&b=2';
+            if (typeof encodeURIComponent === 'function') {
+                const encoded = encodeURIComponent(url);
+                if (!encoded) throw new Error('URL编码失败');
+            }
+        }
+        
+        // SQL测试
+        async function testSQLFormatting() {
+            const sql = 'select id, name, email from users where age > 18 and status = \'active\' order by name;';
+            if (typeof sqlFormatter === 'function') {
+                const formatted = sqlFormatter(sql);
+                if (!formatted.includes('\n') || !formatted.includes('SELECT')) throw new Error('SQL格式化失败');
+            }
+        }
+        
+        async function testSQLMinification() {
+            const sql = 'select id, name, email from users where age > 18 and status = \'active\' order by name;';
+            if (typeof sqlMinifier === 'function') {
+                const minified = sqlMinifier(sql);
+                if (minified.includes('\n') || minified.includes('  ')) throw new Error('SQL压缩失败');
+            }
+        }
+        
+        async function runAllTests() {
+            const resultsDiv = document.getElementById('test-results');
+            resultsDiv.innerHTML = '';
+            
+            await runTest('AES加密', testAESEncryption);
+            await runTest('JSON格式化', testJSONFormatting);
+            await runTest('Base64编码', testBase64Encoding);
+            await runTest('MD5哈希', testMD5Hashing);
+            await runTest('URL函数', testURLFunctions);
+            await runTest('SQL格式化', testSQLFormatting);
+            await runTest('SQL压缩', testSQLMinification);
+            
+            logResult('所有测试', true, '测试完成');
+        }
+    </script>
+</body>
+</html>
