@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JLPT日语刷题系统</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>JLPT日语刷题系统</h1>
+            <div class="nav">
+                <button id="level-btn" class="btn">选择级别</button>
+                <button id="practice-btn" class="btn">练习模式</button>
+                <button id="exam-btn" class="btn active">考试模式</button>
+                <button id="stats-btn" class="btn">学习统计</button>
+            </div>
+        </header>
+
+        <main>
+            <div id="level-select" class="panel active">
+                <h2>选择JLPT级别</h2>
+                <div class="level-grid">
+                    <div class="level-card" data-level="N5">
+                        <h3>N5</h3>
+                        <p>入门级</p>
+                        <span class="question-count">100题</span>
+                    </div>
+                    <div class="level-card" data-level="N4">
+                        <h3>N4</h3>
+                        <p>初级</p>
+                        <span class="question-count">150题</span>
+                    </div>
+                    <div class="level-card" data-level="N3">
+                        <h3>N3</h3>
+                        <p>中级</p>
+                        <span class="question-count">200题</span>
+                    </div>
+                    <div class="level-card" data-level="N2">
+                        <h3>N2</h3>
+                        <p>中上级</p>
+                        <span class="question-count">250题</span>
+                    </div>
+                    <div class="level-card" data-level="N1">
+                        <h3>N1</h3>
+                        <p>高级</p>
+                        <span class="question-count">300题</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="practice-panel" class="panel">
+                <div class="question-header">
+                    <div class="question-info">
+                        <span class="question-number">第 <span id="current-question">1</span> / <span id="total-questions">10</span> 题</span>
+                        <span class="question-type">词汇</span>
+                    </div>
+                    <div class="timer">
+                        <span>时间: <span id="time">00:00</span></span>
+                    </div>
+                </div>
+
+                <div class="question-content">
+                    <div class="question-text">
+                        <p>このりんごは <strong>甘い</strong> です。</p>
+                    </div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="answer" value="A">
+                            <span class="option-text">あまい</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="answer" value="B">
+                            <span class="option-text">しおからい</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="answer" value="C">
+                            <span class="option-text">からい</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="answer" value="D">
+                            <span class="option-text">すっぱい</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question-controls">
+                    <button id="prev-btn" class="btn btn-secondary" disabled>上一题</button>
+                    <button id="next-btn" class="btn btn-primary">下一题</button>
+                    <button id="submit-btn" class="btn btn-success">提交答案</button>
+                </div>
+            </div>
+
+            <div id="exam-panel" class="panel">
+                <div class="question-header">
+                    <div class="question-info">
+                        <span class="question-number">第 <span id="exam-current-question">1</span> / <span id="exam-total-questions">10</span> 题</span>
+                        <span class="question-type">语法</span>
+                    </div>
+                    <div class="timer">
+                        <span>考试时间: <span id="exam-time">30:00</span></span>
+                    </div>
+                </div>
+
+                <div class="question-content">
+                    <div class="question-text">
+                        <p>日本に来て <strong>から</strong> もう3年になります。</p>
+                    </div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="exam-answer" value="A">
+                            <span class="option-text">で</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="exam-answer" value="B">
+                            <span class="option-text">から</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="exam-answer" value="C">
+                            <span class="option-text">に</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="exam-answer" value="D">
+                            <span class="option-text">を</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question-controls">
+                    <button id="exam-prev-btn" class="btn btn-secondary" disabled>上一题</button>
+                    <button id="exam-next-btn" class="btn btn-primary">下一题</button>
+                    <button id="exam-submit-btn" class="btn btn-success">交卷</button>
+                </div>
+            </div>
+
+            <div id="stats-panel" class="panel">
+                <h2>学习统计</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>总练习题数</h3>
+                        <p id="total-practiced">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>正确率</h3>
+                        <p id="correct-rate">0%</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>今日练习</h3>
+                        <p id="today-practiced">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>最佳成绩</h3>
+                        <p id="best-score">0</p>
+                    </div>
+                </div>
+                <div class="progress-chart">
+                    <h3>级别进度</h3>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/database.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
