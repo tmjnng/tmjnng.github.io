@@ -6,7 +6,6 @@
     <title>AES修复验证</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; }
-        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; }
         .result { font-family: monospace; white-space: pre; background: #f5f5f5; padding: 10px; margin: 10px 0; }
         .success { background: #d4edda; color: #155724; }
         .error { background: #f8d7da; color: #721c24; }
@@ -15,104 +14,101 @@
 </head>
 <body>
     <h1>AES修复验证</h1>
-    
-    <div class="test-section">
-        <h2>测试参数</h2>
-        <div class="result">
-输入文本: #Test12345
-密钥: G9w53d6p0Px2u47S
-模式: ECB
-填充: PKCS#7
-期望结果: MKm5uxfA2jWSD07Nql82YA==
-        </div>
-    </div>
-    
-    <div class="test-section">
-        <h2>验证结果</h2>
-        <div id="verify-result" class="result"></div>
-        <button onclick="verifyFix()">验证修复</button>
-    </div>
+    <div id="result" class="result"></div>
+    <button onclick="verifyFix()">验证修复</button>
 
     <script>
-        // 填充方式实现
-        function pkcs7Pad(data, blockSize = 16) {
-            const paddingLength = blockSize - (data.length % blockSize);
-            const padded = new Uint8Array(data.length + paddingLength);
-            padded.set(data);
-            for (let i = data.length; i < padded.length; i++) {
-                padded[i] = paddingLength;
-            }
-            return padded;
-        }
-
-        // 辅助函数
-        function bytesToBase64(bytes) {
-            const binaryString = String.fromCharCode(...bytes);
-            return window.btoa(binaryString);
-        }
-
-        // 修复后的密钥处理
-        async function importKey(key, mode) {
-            let keyData = new TextEncoder().encode(key);
-            
-            // 对于非标准长度，优先截断到16字节（AES-128）
-            if (keyData.length !== 16 && keyData.length !== 24 && keyData.length !== 32) {
-                keyData = keyData.slice(0, 16);
-            }
-            
-            const algorithm = mode === 'gcm' ? 'AES-GCM' : 'AES-CBC';
-            
-            return await crypto.subtle.importKey(
-                'raw',
-                keyData,
-                algorithm,
-                false,
-                ['encrypt', 'decrypt']
-            );
-        }
-
         async function verifyFix() {
-            const resultDiv = document.getElementById('verify-result');
+            const resultDiv = document.getElementById('result');
             
             try {
                 const input = '#Test12345';
                 const key = 'G9w53d6p0Px2u47S';
-                const mode = 'ecb';
+                
+                resultDiv.textContent = '正在验证...\n';
+                
+                // 使用修复后的逻辑（截断为16字节）
+                const encoder = new TextEncoder();
+                let keyData = encoder.encode(key);
+                
+                if (keyData.length !== 16 && keyData.length !== 24 && keyData.length !== 32) {
+                    keyData = keyData.slice(0, 16);
+                }
                 
                 // 处理输入
-                const inputBytes = new TextEncoder().encode(input);
-                const paddedInput = pkcs7Pad(inputBytes);
+                let data = encoder.encode(input);
                 
-                // 处理密钥（修复后的方式）
-                const keyData = await importKey(key, mode);
+                // PKCS#7填充
+                const blockSize = 16;
+                const paddingLength = blockSize - (data.length % blockSize);
+                const padded = new Uint8Array(data.length + paddingLength);
+                padded.set(data);
+                for (let i = data.length; i < padded.length; i++) {
+                    padded[i] = paddingLength;
+                }
+                data = padded;
+                
+                // 导入密钥
+                const importedKey = await crypto.subtle.importKey(
+                    'raw',
+                    keyData,
+                    'AES-CBC',
+                    false,
+                    ['encrypt']
+                );
                 
                 // 加密
                 const zeroIV = new Uint8Array(16);
                 const encrypted = await crypto.subtle.encrypt(
-                    { name: 'AES-CBC', iv: zeroIV },
-                    keyData,
-                    paddedInput
+                    {
+                        name: 'AES-CBC',
+                        iv: zeroIV
+                    },
+                    importedKey,
+                    data
                 );
                 
                 // 转换结果
                 const encryptedBytes = new Uint8Array(encrypted);
-                const result = bytesToBase64(encryptedBytes);
-                const expected = 'MKm5uxfA2jWSD07Nql82YA==';
-                const isSuccess = result === expected;
+                const binaryString = String.fromCharCode(...encryptedBytes);
+                const base64Result = window.btoa(binaryString);
                 
-                let output = `加密结果: ${result}\n`;
-                output += `期望结果: ${expected}\n`;
-                output += `是否匹配: ${isSuccess ? '是' : '否'}\n\n`;
-                output += `密钥长度: ${new TextEncoder().encode(key).length} 字节\n`;
-                output += `截断后密钥长度: 16 字节\n`;
-                output += `输入长度: ${inputBytes.length} 字节\n`;
-                output += `填充后长度: ${paddedInput.length} 字节\n`;
+                let output = `=== 修复验证 ===\n`;
+                output += `输入文本: ${input}\n`;
+                output += `密钥: ${key}\n`;
+                output += `密钥长度: ${encoder.encode(key).length} 字符\n`;
+                output += `密钥字节数: ${keyData.length} 字节\n`;
+                output += `输入长度: ${encoder.encode(input).length} 字节\n`;
+                output += `填充后长度: ${data.length} 字节\n`;
+                output += `加密字节长度: ${encryptedBytes.length} 字节\n`;
+                output += `加密结果: ${base64Result}\n`;
+                output += `结果长度: ${base64Result.length} 字符\n\n`;
+                
+                output += `=== 期望结果 ===\n`;
+                output += `16字节密钥: MKm5uxfA2jWSD07Nql82YA== (24字符)\n`;
+                output += `32字节密钥: MKm5uxfA2jWSD07Nql82YBU5FvhGVLWBo55vOc0Cy/Q= (44字符)\n\n`;
+                
+                const is16Match = base64Result === 'MKm5uxfA2jWSD07Nql82YA==';
+                const is32Match = base64Result === 'MKm5uxfA2jWSD07Nql82YBU5FvhGVLWBo55vOc0Cy/Q=';
+                
+                output += `=== 匹配结果 ===\n`;
+                output += `匹配16字节: ${is16Match ? '✅' : '❌'}\n`;
+                output += `匹配32字节: ${is32Match ? '✅' : '❌'}\n\n`;
+                
+                output += `=== 结论 ===\n`;
+                if (is16Match) {
+                    output += `✅ 修复正确！使用16字节密钥\n`;
+                } else if (is32Match) {
+                    output += `❌ 仍然使用32字节密钥\n`;
+                } else {
+                    output += `❌ 结果不匹配任何期望值\n`;
+                }
                 
                 resultDiv.innerHTML = output;
-                resultDiv.className = `result ${isSuccess ? 'success' : 'error'}`;
+                resultDiv.className = `result ${is16Match ? 'success' : 'error'}`;
                 
             } catch (error) {
-                resultDiv.innerHTML = `错误: ${error.message}`;
+                resultDiv.innerHTML = `错误: ${error.message}\n${error.stack}`;
                 resultDiv.className = 'result error';
             }
         }

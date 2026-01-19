@@ -18,9 +18,33 @@ function toggleIVInput() {
   }
 }
 
-// 填充方式实现
+// Helper to get CryptoJS padding object from string
+function getCryptoJSPadding(padding) {
+  switch (padding) {
+    case 'pkcs7':
+    case 'pkcs5': // Treat PKCS5 as PKCS7 for AES
+      return CryptoJS.pad.Pkcs7;
+    case 'zeros':
+      return CryptoJS.pad.ZeroPadding;
+    case 'none':
+      return CryptoJS.pad.NoPadding;
+    case 'iso10126':
+      return CryptoJS.pad.Iso10126;
+    case 'ansiX923':
+      return CryptoJS.pad.AnsiX923;
+    case 'iso7816':
+      // CryptoJS doesn't have a direct equivalent for ISO/IEC 7816-4 padding.
+      // It's similar to ZeroPadding with a mandatory 0x80 byte.
+      // We will fall back to Pkcs7 for ECB mode as a safe default.
+      return CryptoJS.pad.Pkcs7;
+    default:
+      return CryptoJS.pad.Pkcs7;
+  }
+}
+
+
+// --- Custom Padding for Web Crypto API ---
 function pkcs5Pad(data, blockSize = 8) {
-  // PKCS#5 固定使用8字节块大小
   const paddingLength = 8 - (data.length % 8);
   const padded = new Uint8Array(data.length + paddingLength);
   padded.set(data);
@@ -39,7 +63,6 @@ function pkcs5Unpad(data) {
 }
 
 function pkcs7Pad(data, blockSize = 16) {
-  // PKCS#7 支持任意块大小（1-255字节）
   const paddingLength = blockSize - (data.length % blockSize);
   const padded = new Uint8Array(data.length + paddingLength);
   padded.set(data);
@@ -127,6 +150,8 @@ function iso7816Unpad(data) {
   }
   throw new Error('Invalid ISO/IEC 7816-4 padding');
 }
+// --- End Custom Padding ---
+
 
 async function aesEncrypt() {
   const input = document.getElementById('aes-input').value;
@@ -136,114 +161,88 @@ async function aesEncrypt() {
   const result = document.getElementById('aes-result');
   
   try {
-    // 验证输入
-    if (!input) {
-      throw new Error('请输入要加密的文本');
-    }
-    if (!key) {
-      throw new Error('请输入密钥');
-    }
-    if (mode !== 'ecb' && !iv) {
-      throw new Error('请输入IV');
-    }
-    
-    // 获取输入格式
+    // --- Input Validation ---
+    if (!input) throw new Error('请输入要加密的文本');
+    if (!key) throw new Error('请输入密钥');
+    if (mode !== 'ecb' && !iv) throw new Error('请输入IV');
+
     const inputFormat = document.querySelector('input[name="aes-input-format"]:checked').value;
-    // 获取输出格式
     const outputFormat = document.querySelector('input[name="aes-output-format"]:checked').value;
-    // 获取填充方式
-    const padding = document.getElementById('aes-padding') ? document.getElementById('aes-padding').value : 'pkcs7';
-    
-    // 处理输入数据
-    let data = input;
+    const padding = document.getElementById('aes-padding').value;
+
+    // --- ECB Mode using CryptoJS ---
+    if (mode === 'ecb') {
+      const keyParsed = CryptoJS.enc.Utf8.parse(key);
+      
+      let data;
+      if (inputFormat === 'hex') {
+        data = CryptoJS.enc.Hex.parse(input);
+      } else if (inputFormat === 'base64') {
+        data = CryptoJS.enc.Base64.parse(input);
+      } else { // utf8
+        data = CryptoJS.enc.Utf8.parse(input);
+      }
+
+      const encrypted = CryptoJS.AES.encrypt(data, keyParsed, {
+        mode: CryptoJS.mode.ECB,
+        padding: getCryptoJSPadding(padding)
+      });
+
+      let output;
+      if (outputFormat === 'hex') {
+        output = encrypted.ciphertext.toString(CryptoJS.enc.Hex);
+      } else { // base64
+        output = encrypted.toString();
+      }
+      
+      result.textContent = output;
+      result.style.color = '#333';
+      return; // Done with ECB path
+    }
+
+    // --- CBC / GCM Mode using Web Crypto API ---
+    let data;
     if (inputFormat === 'base64') {
       data = base64ToBytes(input);
     } else if (inputFormat === 'hex') {
       data = hexToBytes(input);
-    } else {
-      // UTF-8
+    } else { // utf8
       data = new TextEncoder().encode(input);
     }
     
-    // 处理密钥
     const keyBytes = await importKey(key, mode);
     
-    // 处理IV
-    let ivBytes = null;
-    if (mode !== 'ecb') {
-      ivBytes = hexToBytes(iv);
-      if (ivBytes.length !== 16) {
-        throw new Error('IV must be 16 bytes');
-      }
+    const ivBytes = hexToBytes(iv);
+    if (ivBytes.length !== 16) {
+      throw new Error('IV must be 16 bytes');
     }
     
-    // 应用填充
+    // Apply custom padding for Web Crypto
     if (padding !== 'none') {
       switch (padding) {
-        case 'pkcs5':
-          data = pkcs5Pad(data);
-          break;
-        case 'pkcs7':
-          data = pkcs7Pad(data);
-          break;
-        case 'zeros':
-          data = zerosPad(data);
-          break;
-        case 'iso10126':
-          data = iso10126Pad(data);
-          break;
-        case 'ansiX923':
-          data = ansiX923Pad(data);
-          break;
-        case 'iso7816':
-          data = iso7816Pad(data);
-          break;
+        case 'pkcs5': data = pkcs5Pad(data); break;
+        case 'pkcs7': data = pkcs7Pad(data); break;
+        case 'zeros': data = zerosPad(data); break;
+        case 'iso10126': data = iso10126Pad(data); break;
+        case 'ansiX923': data = ansiX923Pad(data); break;
+        case 'iso7816': data = iso7816Pad(data); break;
       }
     }
     
-    // 加密
     let encrypted;
-    if (mode === 'ecb') {
-      // 使用CBC模式模拟ECB，IV为全零
-      const zeroIV = new Uint8Array(16);
-      encrypted = await crypto.subtle.encrypt(
-        {
-          name: 'AES-CBC',
-          iv: zeroIV
-        },
-        keyBytes,
-        data
-      );
-    } else if (mode === 'cbc') {
-      encrypted = await crypto.subtle.encrypt(
-        {
-          name: 'AES-CBC',
-          iv: ivBytes
-        },
-        keyBytes,
-        data
-      );
-    } else {
-      encrypted = await crypto.subtle.encrypt(
-        {
-          name: 'AES-GCM',
-          iv: ivBytes,
-          tagLength: 128
-        },
-        keyBytes,
-        data
-      );
+    if (mode === 'cbc') {
+      encrypted = await crypto.subtle.encrypt({ name: 'AES-CBC', iv: ivBytes }, keyBytes, data);
+    } else { // gcm
+      encrypted = await crypto.subtle.encrypt({ name: 'AES-GCM', iv: ivBytes, tagLength: 128 }, keyBytes, data);
     }
     
-    // 转换输出格式
     const encryptedBytes = new Uint8Array(encrypted);
     let output;
     if (outputFormat === 'base64') {
       output = bytesToBase64(encryptedBytes);
     } else if (outputFormat === 'hex') {
       output = bytesToHex(encryptedBytes);
-    } else {
-      // UTF-8 (可能会有乱码，因为加密结果是二进制数据)
+    } else { // utf8
       output = new TextDecoder().decode(encryptedBytes);
     }
     
@@ -263,105 +262,85 @@ async function aesDecrypt() {
   const result = document.getElementById('aes-result');
   
   try {
-    // 验证输入
-    if (!input) {
-      throw new Error('请输入要解密的文本');
-    }
-    if (!key) {
-      throw new Error('请输入密钥');
-    }
-    if (mode !== 'ecb' && !iv) {
-      throw new Error('请输入IV');
-    }
-    
-    // 获取输入格式
-    const inputFormat = document.querySelector('input[name="aes-input-format"]:checked').value;
-    // 获取输出格式
+    // --- Input Validation ---
+    if (!input) throw new Error('请输入要解密的文本');
+    if (!key) throw new Error('请输入密钥');
+    if (mode !== 'ecb' && !iv) throw new Error('请输入IV');
+
     const outputFormat = document.querySelector('input[name="aes-output-format"]:checked').value;
-    // 获取填充方式
-    const padding = document.getElementById('aes-padding') ? document.getElementById('aes-padding').value : 'pkcs7';
-    
-    // 处理输入数据
-    let data = input;
+    const padding = document.getElementById('aes-padding').value;
+
+    // --- ECB Mode using CryptoJS ---
+    if (mode === 'ecb') {
+      const keyParsed = CryptoJS.enc.Utf8.parse(key);
+      
+      // Input for decryption is a CipherParams object or a base64 string.
+      // CryptoJS auto-handles Base64. For Hex, we need to create a CipherParams object.
+      let ciphertext = input;
+      const inputFormat = document.querySelector('input[name="aes-input-format"]:checked').value;
+      if (inputFormat === 'hex') {
+          ciphertext = { ciphertext: CryptoJS.enc.Hex.parse(input) };
+      }
+
+      const decrypted = CryptoJS.AES.decrypt(ciphertext, keyParsed, {
+        mode: CryptoJS.mode.ECB,
+        padding: getCryptoJSPadding(padding)
+      });
+
+      let output;
+      if (outputFormat === 'hex') {
+        output = decrypted.toString(CryptoJS.enc.Hex);
+      } else if (outputFormat === 'base64') {
+        output = decrypted.toString(CryptoJS.enc.Base64);
+      } else { // utf8
+        output = decrypted.toString(CryptoJS.enc.Utf8);
+      }
+
+      if (!output) {
+        throw new Error("解密失败，请检查密钥、填充方式或密文是否正确。");
+      }
+      
+      result.textContent = output;
+      result.style.color = '#333';
+      return; // Done with ECB path
+    }
+
+    // --- CBC / GCM Mode using Web Crypto API ---
+    const inputFormat = document.querySelector('input[name="aes-input-format"]:checked').value;
+    let data;
     if (inputFormat === 'base64') {
       data = base64ToBytes(input);
     } else if (inputFormat === 'hex') {
       data = hexToBytes(input);
-    } else {
-      // UTF-8
+    } else { // utf8
       data = new TextEncoder().encode(input);
     }
     
-    // 处理密钥
     const keyBytes = await importKey(key, mode);
     
-    // 处理IV
-    let ivBytes = null;
-    if (mode !== 'ecb') {
-      ivBytes = hexToBytes(iv);
-      if (ivBytes.length !== 16) {
-        throw new Error('IV must be 16 bytes');
-      }
+    const ivBytes = hexToBytes(iv);
+    if (ivBytes.length !== 16) {
+      throw new Error('IV must be 16 bytes');
     }
     
-    // 解密
     let decrypted;
-    if (mode === 'ecb') {
-      // 使用CBC模式模拟ECB，IV为全零
-      const zeroIV = new Uint8Array(16);
-      decrypted = await crypto.subtle.decrypt(
-        {
-          name: 'AES-CBC',
-          iv: zeroIV
-        },
-        keyBytes,
-        data
-      );
-    } else if (mode === 'cbc') {
-      decrypted = await crypto.subtle.decrypt(
-        {
-          name: 'AES-CBC',
-          iv: ivBytes
-        },
-        keyBytes,
-        data
-      );
-    } else {
-      decrypted = await crypto.subtle.decrypt(
-        {
-          name: 'AES-GCM',
-          iv: ivBytes,
-          tagLength: 128
-        },
-        keyBytes,
-        data
-      );
+    if (mode === 'cbc') {
+      decrypted = await crypto.subtle.decrypt({ name: 'AES-CBC', iv: ivBytes }, keyBytes, data);
+    } else { // gcm
+      decrypted = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: ivBytes, tagLength: 128 }, keyBytes, data);
     }
     
-    // 转换输出格式
-    const decryptedBytes = new Uint8Array(decrypted);
+    let decryptedBytes = new Uint8Array(decrypted);
     
-    // 应用去填充
+    // Apply custom un-padding for Web Crypto
     if (padding !== 'none') {
       switch (padding) {
-        case 'pkcs5':
-          decryptedBytes = pkcs5Unpad(decryptedBytes);
-          break;
-        case 'pkcs7':
-          decryptedBytes = pkcs7Unpad(decryptedBytes);
-          break;
-        case 'zeros':
-          decryptedBytes = zerosUnpad(decryptedBytes);
-          break;
-        case 'iso10126':
-          decryptedBytes = iso10126Unpad(decryptedBytes);
-          break;
-        case 'ansiX923':
-          decryptedBytes = ansiX923Unpad(decryptedBytes);
-          break;
-        case 'iso7816':
-          decryptedBytes = iso7816Unpad(decryptedBytes);
-          break;
+        case 'pkcs5': decryptedBytes = pkcs5Unpad(decryptedBytes); break;
+        case 'pkcs7': decryptedBytes = pkcs7Unpad(decryptedBytes); break;
+        case 'zeros': decryptedBytes = zerosUnpad(decryptedBytes); break;
+        case 'iso10126': decryptedBytes = iso10126Unpad(decryptedBytes); break;
+        case 'ansiX923': decryptedBytes = ansiX923Unpad(decryptedBytes); break;
+        case 'iso7816': decryptedBytes = iso7816Unpad(decryptedBytes); break;
       }
     }
     
@@ -370,8 +349,7 @@ async function aesDecrypt() {
       output = bytesToBase64(decryptedBytes);
     } else if (outputFormat === 'hex') {
       output = bytesToHex(decryptedBytes);
-    } else {
-      // UTF-8
+    } else { // utf8
       output = new TextDecoder().decode(decryptedBytes);
     }
     
@@ -384,19 +362,11 @@ async function aesDecrypt() {
 }
 
 async function importKey(key, mode) {
-  // 处理密钥长度
   let keyData = new TextEncoder().encode(key);
-  
-  // 确保密钥长度符合AES要求
-  // AES支持16字节(AES-128)、24字节(AES-192)或32字节(AES-256)
   if (keyData.length !== 16 && keyData.length !== 24 && keyData.length !== 32) {
-    // 对于非标准长度，优先截断到16字节（AES-128）
-    // 这与大多数在线AES工具的行为一致
     keyData = keyData.slice(0, 16);
   }
   
-  // Web Crypto API不支持AES-ECB，所有模式都使用AES-CBC
-  // ECB模式将在加密/解密时使用全零IV模拟
   const algorithm = mode === 'gcm' ? 'AES-GCM' : 'AES-CBC';
   
   return await crypto.subtle.importKey(
@@ -408,7 +378,7 @@ async function importKey(key, mode) {
   );
 }
 
-// 辅助函数：Base64转字节
+// --- Helper Functions for Web Crypto API ---
 function base64ToBytes(base64) {
   const binaryString = window.atob(base64);
   const length = binaryString.length;
@@ -419,13 +389,11 @@ function base64ToBytes(base64) {
   return bytes;
 }
 
-// 辅助函数：字节转Base64
 function bytesToBase64(bytes) {
   const binaryString = String.fromCharCode(...bytes);
   return window.btoa(binaryString);
 }
 
-// 辅助函数：Hex转字节
 function hexToBytes(hex) {
   hex = hex.replace(/\s/g, '');
   const length = hex.length / 2;
@@ -436,7 +404,6 @@ function hexToBytes(hex) {
   return bytes;
 }
 
-// 辅助函数：字节转Hex
 function bytesToHex(bytes) {
   return Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
 }
