@@ -8,6 +8,13 @@ class JLPTExamApp {
         this.timer = null;
         this.remainingTime = 1800; // 30分钟，用于考试模式
         this.isExamMode = true;
+        this.isDatabaseReady = false;
+
+        // 等待数据库初始化完成
+        db.onInitialized(() => {
+            this.isDatabaseReady = true;
+            console.log('数据库初始化完成，可以开始使用');
+        });
 
         this.initEventListeners();
         this.loadStatistics();
@@ -92,22 +99,61 @@ class JLPTExamApp {
 
     // 选择级别
     selectLevel(level) {
+        console.log('选择级别:', level);
+        
+        if (!this.isDatabaseReady) {
+            alert('数据库正在初始化中，请稍候再试');
+            console.error('尝试在数据库未准备好时选择级别');
+            return;
+        }
+
         this.currentLevel = level;
         this.currentQuestionIndex = 0;
         this.userAnswers = {};
 
         // 获取该级别的问题
         db.getQuestionsByLevel(level, (questions) => {
-            this.currentQuestions = questions;
-            this.displayCurrentQuestion();
-
-            // 根据当前模式显示对应的面板
-            if (this.isExamMode) {
-                this.showPanel('exam-panel');
-            } else {
-                this.showPanel('practice-panel');
+            console.log('获取到问题数量:', questions.length);
+            
+            if (questions.length === 0) {
+                alert('无法加载该级别的题目，正在尝试重新加载数据...');
+                console.error('获取题目失败，返回空数组，尝试重新加载');
+                
+                // 尝试重新加载问题
+                db.reloadQuestions();
+                
+                // 等待一段时间后重新尝试
+                setTimeout(() => {
+                    db.getQuestionsByLevel(level, (retryQuestions) => {
+                        if (retryQuestions.length === 0) {
+                            alert('仍然无法加载题目，请刷新页面重试或检查网络连接');
+                            return;
+                        }
+                        this._loadQuestionsAndStart(retryQuestions);
+                    });
+                }, 2000);
+                return;
             }
+            
+            this._loadQuestionsAndStart(questions);
         });
+    }
+
+    // 加载问题并开始练习/考试的内部方法
+    _loadQuestionsAndStart(questions) {
+        this.currentQuestions = questions;
+        this.displayCurrentQuestion();
+
+        // 根据当前模式显示对应的面板
+        if (this.isExamMode) {
+            this.startExamTimer();
+            this.showPanel('exam-panel');
+        } else {
+            // 练习模式不需要计时器，初始化时间为0
+            this.remainingTime = 0;
+            this.updateExamTimer();
+            this.showPanel('practice-panel');
+        }
     }
 
     // 显示当前问题

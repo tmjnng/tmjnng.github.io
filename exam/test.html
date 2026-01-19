@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据库测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            margin: 5px;
+            padding: 10px 15px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        #results {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            font-family: monospace;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>JLPT数据库测试</h1>
+    
+    <div class="test-section">
+        <h2>数据库状态检查</h2>
+        <button onclick="checkDatabaseStatus()">检查数据库状态</button>
+        <button onclick="checkQuestionsCount()">检查问题数量</button>
+    </div>
+
+    <div class="test-section">
+        <h2>问题加载测试</h2>
+        <button onclick="testLoadN5()">测试加载N5问题</button>
+        <button onclick="testLoadN4()">测试加载N4问题</button>
+        <button onclick="testLoadN3()">测试加载N3问题</button>
+        <button onclick="reloadQuestions()">重新加载问题</button>
+    </div>
+
+    <div class="test-section">
+        <h2>测试结果</h2>
+        <div id="results">点击按钮开始测试...</div>
+    </div>
+
+    <script src="js/database.js"></script>
+    <script>
+        const resultsDiv = document.getElementById('results');
+        
+        function log(message) {
+            console.log(message);
+            resultsDiv.textContent += new Date().toLocaleTimeString() + ': ' + message + '\n';
+        }
+
+        function checkDatabaseStatus() {
+            log('=== 检查数据库状态 ===');
+            if (typeof db !== 'undefined') {
+                log('数据库对象存在');
+                log('初始化状态: ' + db.isInitialized);
+                log('数据库连接: ' + (db.db ? '存在' : '不存在'));
+                if (db.db) {
+                    log('数据库状态: ' + db.db.readyState);
+                }
+            } else {
+                log('错误: 数据库对象不存在');
+            }
+        }
+
+        function checkQuestionsCount() {
+            log('=== 检查问题数量 ===');
+            if (typeof db !== 'undefined' && db.isInitialized) {
+                db.checkQuestionsExist((hasQuestions) => {
+                    log('数据库中有问题: ' + hasQuestions);
+                    
+                    // 获取所有问题数量
+                    const transaction = db.db.transaction(['questions'], 'readonly');
+                    const store = transaction.objectStore('questions');
+                    const countRequest = store.count();
+                    
+                    countRequest.onsuccess = () => {
+                        log('总问题数量: ' + countRequest.result);
+                    };
+                    
+                    countRequest.onerror = () => {
+                        log('获取问题数量失败');
+                    };
+                });
+            } else {
+                log('数据库未初始化');
+            }
+        }
+
+        function testLoadN5() {
+            log('=== 测试加载N5问题 ===');
+            if (typeof db !== 'undefined') {
+                db.getQuestionsByLevel('N5', (questions) => {
+                    log('获取到N5问题数量: ' + questions.length);
+                    if (questions.length > 0) {
+                        log('第一个N5问题: ' + JSON.stringify(questions[0], null, 2));
+                    }
+                });
+            } else {
+                log('数据库对象不存在');
+            }
+        }
+
+        function testLoadN4() {
+            log('=== 测试加载N4问题 ===');
+            if (typeof db !== 'undefined') {
+                db.getQuestionsByLevel('N4', (questions) => {
+                    log('获取到N4问题数量: ' + questions.length);
+                    if (questions.length > 0) {
+                        log('第一个N4问题: ' + JSON.stringify(questions[0], null, 2));
+                    }
+                });
+            } else {
+                log('数据库对象不存在');
+            }
+        }
+
+        function testLoadN3() {
+            log('=== 测试加载N3问题 ===');
+            if (typeof db !== 'undefined') {
+                db.getQuestionsByLevel('N3', (questions) => {
+                    log('获取到N3问题数量: ' + questions.length);
+                    if (questions.length > 0) {
+                        log('第一个N3问题: ' + JSON.stringify(questions[0], null, 2));
+                    }
+                });
+            } else {
+                log('数据库对象不存在');
+            }
+        }
+
+        // 等待数据库初始化完成
+        setTimeout(() => {
+            log('数据库初始化等待完成');
+            checkDatabaseStatus();
+        }, 2000);
+    </script>
+</body>
+</html>
