@@ -21,10 +21,18 @@ class JLPTDatabase {
             this.db = event.target.result;
             this.isInitialized = true;
             
-            // 在数据库连接成功后，检查是否需要加载数据
-            // 由于升级事件中已经清除了数据，所以这里直接加载新数据
-            console.log('开始加载问题数据...');
-            this.loadQuestionsFromJSON();
+            // 检查是否需要加载数据
+            this.checkQuestionsExist((hasQuestions) => {
+                if (!hasQuestions) {
+                    console.log('数据库中没有问题，开始加载...');
+                    this.loadQuestionsFromJSON();
+                } else {
+                    console.log('数据库中已有问题，跳过加载');
+                    // 通知题目加载完成（使用已有数据）
+                    this.questionsLoadedCallbacks.forEach(callback => callback());
+                    this.questionsLoadedCallbacks = [];
+                }
+            });
             
             // 调用所有初始化完成的回调
             console.log('数据库初始化完成，调用回调函数');
@@ -422,15 +430,18 @@ class JLPTDatabase {
     // 注册题目加载完成的回调
     onQuestionsLoaded(callback) {
         if (this.db && this.isInitialized) {
-            // 检查是否已经有题目
+            // 数据库已初始化，检查是否已经有题目
             this.checkQuestionsExist((hasQuestions) => {
                 if (hasQuestions) {
+                    // 已有题目，立即执行回调
                     callback();
                 } else {
+                    // 没有题目，等待加载完成
                     this.questionsLoadedCallbacks.push(callback);
                 }
             });
         } else {
+            // 数据库未初始化，等待初始化和加载完成
             this.questionsLoadedCallbacks.push(callback);
         }
     }
@@ -460,10 +471,11 @@ class JLPTDatabase {
 
     // 重新加载问题（用于调试或更新数据）
     reloadQuestions() {
+        console.log('清除并重新加载问题...');
         this.clearQuestions();
         setTimeout(() => {
             this.loadQuestionsFromJSON();
-        }, 100);
+        }, 500); // 增加延迟确保清除完成
     }
 
     // 获取每个级别的题目数量
@@ -534,4 +546,10 @@ window.checkDBStatus = () => {
     db.checkQuestionsExist((hasQuestions) => {
         console.log('数据库中有问题:', hasQuestions);
     });
+};
+
+// 为了调试，添加一个全局函数来清除并重新加载数据库
+window.resetDatabase = () => {
+    console.log('清除并重新加载数据库...');
+    db.reloadQuestions();
 };

@@ -7,7 +7,7 @@ class JLPTExamApp {
         this.userAnswers = {};
         this.timer = null;
         this.remainingTime = 1800; // 30分钟，用于考试模式
-        this.isExamMode = true;
+        this.isExamMode = false; // 默认不是考试模式
         this.isDatabaseReady = false;
 
         // 等待数据库初始化完成
