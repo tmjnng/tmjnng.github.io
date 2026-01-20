@@ -223,11 +223,6 @@ class JLPTDatabase {
     // 获取指定级别的问题
     getQuestionsByLevel(level, callback) {
         console.log('尝试获取级别', level, '的问题');
-        console.log('数据库状态:', {
-            db: !!this.db,
-            isInitialized: this.isInitialized,
-            readyState: this.db ? this.db.readyState : 'no db'
-        });
 
         if (!this.db || !this.isInitialized) {
             console.error('数据库连接未初始化，等待初始化完成...');
@@ -236,12 +231,6 @@ class JLPTDatabase {
                 console.log('数据库初始化完成，重新获取问题');
                 this.getQuestionsByLevel(level, callback);
             });
-            return;
-        }
-
-        if (this.db.readyState !== 'open') {
-            console.error('数据库连接已关闭');
-            callback([]);
             return;
         }
 
