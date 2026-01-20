@@ -249,6 +249,11 @@ class JLPTExamApp {
 
         // 更新导航按钮状态
         this.updateNavigationButtons();
+
+        // 重置提交按钮（练习模式）
+        if (!this.isExamMode) {
+            this.resetSubmitButton();
+        }
     }
 
     // 更新导航按钮状态
@@ -314,12 +319,37 @@ class JLPTExamApp {
         // 显示答案反馈
         this.showAnswerFeedback(isCorrect, question.correct_answer);
 
-        // 如果是最后一题，显示结果
+        // 在练习模式下，改变按钮行为：提交后变为"下一题"
+        if (!this.isExamMode) {
+            const submitBtn = document.getElementById('submit-btn');
+            submitBtn.textContent = '下一题';
+            submitBtn.onclick = () => {
+                // 如果是最后一题，显示结果
+                if (this.currentQuestionIndex === this.currentQuestions.length - 1) {
+                    this.showResults();
+                } else {
+                    // 恢复按钮状态并进入下一题
+                    this.currentQuestionIndex++;
+                    this.displayCurrentQuestion();
+                    this.resetSubmitButton();
+                }
+            };
+            return;
+        }
+
+        // 考试模式保持原来的自动跳转逻辑
         if (this.currentQuestionIndex === this.currentQuestions.length - 1) {
             setTimeout(() => this.showResults(), 2000);
         } else {
             setTimeout(() => this.nextQuestion(), 1000);
         }
+    }
+
+    // 重置提交按钮
+    resetSubmitButton() {
+        const submitBtn = document.getElementById('submit-btn');
+        submitBtn.textContent = '提交答案';
+        submitBtn.onclick = () => this.submitAnswer();
     }
 
     // 显示答案反馈
