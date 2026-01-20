@@ -16,6 +16,12 @@ class JLPTExamApp {
             console.log('数据库初始化完成，可以开始使用');
         });
 
+        // 等待题目加载完成
+        db.onQuestionsLoaded(() => {
+            console.log('题目加载完成，更新题目数量显示');
+            this.updateQuestionCounts();
+        });
+
         this.initEventListeners();
         this.loadStatistics();
     }
@@ -429,6 +435,21 @@ class JLPTExamApp {
             // 更新进度条
             const progress = document.querySelector('.progress');
             progress.style.width = stats.correct_rate + '%';
+        });
+    }
+
+    // 更新各级别的题目数量显示
+    updateQuestionCounts() {
+        db.getQuestionCountsByLevel(counts => {
+            Object.keys(counts).forEach(level => {
+                const levelCard = document.querySelector(`.level-card[data-level="${level}"]`);
+                if (levelCard) {
+                    const countElement = levelCard.querySelector('.question-count');
+                    if (countElement) {
+                        countElement.textContent = `${counts[level]}题`;
+                    }
+                }
+            });
         });
     }
 }

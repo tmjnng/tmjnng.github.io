@@ -4,6 +4,7 @@ class JLPTDatabase {
         this.db = null;
         this.isInitialized = false;
         this.initCallbacks = [];
+        this.questionsLoadedCallbacks = [];
         this.initDatabase();
     }
 
@@ -157,6 +158,9 @@ class JLPTDatabase {
 
         transaction.oncomplete = () => {
             console.log(`问题插入完成 - 成功: ${successCount}, 失败: ${errorCount}`);
+            // 通知题目加载完成
+            this.questionsLoadedCallbacks.forEach(callback => callback());
+            this.questionsLoadedCallbacks = [];
         };
 
         transaction.onerror = (event) => {
@@ -415,6 +419,22 @@ class JLPTDatabase {
         }
     }
 
+    // 注册题目加载完成的回调
+    onQuestionsLoaded(callback) {
+        if (this.db && this.isInitialized) {
+            // 检查是否已经有题目
+            this.checkQuestionsExist((hasQuestions) => {
+                if (hasQuestions) {
+                    callback();
+                } else {
+                    this.questionsLoadedCallbacks.push(callback);
+                }
+            });
+        } else {
+            this.questionsLoadedCallbacks.push(callback);
+        }
+    }
+
     // 检查数据库中是否有问题
     checkQuestionsExist(callback) {
         if (!this.db || !this.isInitialized) {
@@ -444,6 +464,53 @@ class JLPTDatabase {
         setTimeout(() => {
             this.loadQuestionsFromJSON();
         }, 100);
+    }
+
+    // 获取每个级别的题目数量
+    getQuestionCountsByLevel(callback) {
+        if (!this.db || !this.isInitialized) {
+            callback({});
+            return;
+        }
+
+        const counts = {
+            N5: 0,
+            N4: 0,
+            N3: 0,
+            N2: 0,
+            N1: 0
+        };
+
+        const transaction = this.db.transaction(['questions'], 'readonly');
+        const store = transaction.objectStore('questions');
+        const index = store.index('level');
+
+        let completedLevels = 0;
+        const totalLevels = Object.keys(counts).length;
+
+        Object.keys(counts).forEach(level => {
+            const range = IDBKeyRange.only(level);
+            const countRequest = index.count(range);
+
+            countRequest.onsuccess = (event) => {
+                counts[level] = event.target.result;
+                completedLevels++;
+
+                if (completedLevels === totalLevels) {
+                    console.log('各级别题目数量:', counts);
+                    callback(counts);
+                }
+            };
+
+            countRequest.onerror = (event) => {
+                console.error(`获取级别 ${level} 的题目数量失败:`, event.target.error);
+                completedLevels++;
+
+                if (completedLevels === totalLevels) {
+                    callback(counts);
+                }
+            };
+        });
     }
 }
 
