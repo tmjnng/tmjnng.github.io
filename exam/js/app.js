@@ -257,8 +257,8 @@ class JLPTExamApp {
             existingFeedback.remove();
         }
 
-        // 重置提交按钮（练习模式）
-        if (!this.isExamMode) {
+        // 重置提交按钮（考试模式）
+        if (this.isExamMode) {
             this.resetSubmitButton();
         }
     }
