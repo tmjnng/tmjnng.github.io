@@ -305,6 +305,270 @@ class JLPTDatabase {
         }
     }
 
+    // 获取指定级别和题型的问题
+    getQuestionsByLevelAndType(level, type, options = {}, callback) {
+        console.log('尝试获取级别', level, '类型', type, '的问题');
+
+        if (!this.db || !this.isInitialized) {
+            this.onInitialized(() => {
+                this.getQuestionsByLevelAndType(level, type, options, callback);
+            });
+            return;
+        }
+
+        const transaction = this.db.transaction(['questions'], 'readonly');
+        const store = transaction.objectStore('questions');
+        const index = store.index('level');
+        const range = IDBKeyRange.only(level);
+        const request = index.openCursor(range);
+
+        const questions = [];
+
+        request.onsuccess = (event) => {
+            const cursor = event.target.result;
+            if (cursor) {
+                const question = cursor.value;
+                // 按题型筛选
+                if (!type || type === 'all' || question.type === type) {
+                    questions.push(question);
+                }
+                cursor.continue();
+            } else {
+                console.log('获取到', questions.length, '个问题');
+                
+                // 过滤已做过的题目
+                if (options.skipCompleted) {
+                    this._filterCompletedQuestions(questions, (filteredQuestions) => {
+                        this._shuffleAndCallback(filteredQuestions, callback);
+                    });
+                } else {
+                    this._shuffleAndCallback(questions, callback);
+                }
+            }
+        };
+
+        request.onerror = (event) => {
+            console.error('获取问题失败:', event.target.error);
+            callback([]);
+        };
+    }
+
+    // 过滤已完成的题目
+    _filterCompletedQuestions(questions, callback) {
+        if (!this.db) {
+            callback(questions);
+            return;
+        }
+
+        const transaction = this.db.transaction(['answer_records'], 'readonly');
+        const store = transaction.objectStore('answer_records');
+        const index = store.index('question_id');
+        const request = index.getAll();
+
+        request.onsuccess = () => {
+            const records = request.result;
+            const completedIds = new Set(records.map(r => r.question_id));
+            const filtered = questions.filter(q => !completedIds.has(q.id));
+            callback(filtered);
+        };
+
+        request.onerror = () => {
+            callback(questions);
+        };
+    }
+
+    // 随机排序并回调
+    _shuffleAndCallback(questions, callback) {
+        for (let i = questions.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [questions[i], questions[j]] = [questions[j], questions[i]];
+        }
+        callback(questions);
+    }
+
+    // 获取错题集
+    getWrongQuestions(level, type, callback) {
+        if (!this.db || !this.isInitialized) {
+            callback([]);
+            return;
+        }
+
+        // 先获取所有答题记录
+        const recordsTransaction = this.db.transaction(['answer_records'], 'readonly');
+        const recordsStore = recordsTransaction.objectStore('answer_records');
+        const recordsRequest = recordsStore.getAll();
+
+        recordsRequest.onsuccess = () => {
+            const allRecords = recordsRequest.result;
+            
+            // 找出错题记录
+            const wrongRecords = allRecords.filter(r => r.is_correct === 0 || r.is_correct === false);
+            const wrongQuestionIds = [...new Set(wrongRecords.map(r => r.question_id))];
+
+            if (wrongQuestionIds.length === 0) {
+                callback([]);
+                return;
+            }
+
+            // 获取对应的题目
+            const questionsTransaction = this.db.transaction(['questions'], 'readonly');
+            const questionsStore = questionsTransaction.objectStore('questions');
+            const questionsRequest = questionsStore.getAll();
+
+            questionsRequest.onsuccess = () => {
+                const allQuestions = questionsRequest.result;
+                
+                // 过滤：指定级别和题型
+                let filtered = allQuestions.filter(q => wrongQuestionIds.includes(q.id));
+                
+                if (level && level !== 'all') {
+                    filtered = filtered.filter(q => q.level === level);
+                }
+                
+                if (type && type !== 'all') {
+                    filtered = filtered.filter(q => q.type === type);
+                }
+
+                // 随机排序
+                for (let i = filtered.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [filtered[i], filtered[j]] = [filtered[j], filtered[i]];
+                }
+
+                callback(filtered);
+            };
+
+            questionsRequest.onerror = () => {
+                callback([]);
+            };
+        };
+
+        recordsRequest.onerror = () => {
+            callback([]);
+        };
+    }
+
+    // 获取指定级别的错题数量
+    getWrongQuestionCount(level, callback) {
+        if (!this.db || !this.isInitialized) {
+            callback(0);
+            return;
+        }
+
+        const recordsTransaction = this.db.transaction(['answer_records'], 'readonly');
+        const recordsStore = recordsTransaction.objectStore('answer_records');
+        const recordsRequest = recordsStore.getAll();
+
+        recordsRequest.onsuccess = () => {
+            const allRecords = recordsRequest.result;
+            const wrongRecords = allRecords.filter(r => r.is_correct === 0 || r.is_correct === false);
+            const wrongQuestionIds = [...new Set(wrongRecords.map(r => r.question_id))];
+
+            if (wrongQuestionIds.length === 0) {
+                callback(0);
+                return;
+            }
+
+            const questionsTransaction = this.db.transaction(['questions'], 'readonly');
+            const questionsStore = questionsTransaction.objectStore('questions');
+            const questionsRequest = questionsStore.getAll();
+
+            questionsRequest.onsuccess = () => {
+                const allQuestions = questionsRequest.result;
+                const wrongQuestions = allQuestions.filter(q => 
+                    wrongQuestionIds.includes(q.id) && q.level === level
+                );
+                callback(wrongQuestions.length);
+            };
+
+            questionsRequest.onerror = () => {
+                callback(0);
+            };
+        };
+
+        recordsRequest.onerror = () => {
+            callback(0);
+        };
+    }
+
+    // 检查题目是否已做过
+    isQuestionCompleted(questionId, callback) {
+        if (!this.db || !this.isInitialized) {
+            callback(false);
+            return;
+        }
+
+        const transaction = this.db.transaction(['answer_records'], 'readonly');
+        const store = transaction.objectStore('answer_records');
+        const index = store.index('question_id');
+        const range = IDBKeyRange.only(questionId);
+        const request = index.count(range);
+
+        request.onsuccess = () => {
+            callback(request.result > 0);
+        };
+
+        request.onerror = () => {
+            callback(false);
+        };
+    }
+
+    // 获取已完成的题目ID列表
+    getCompletedQuestionIds(callback) {
+        if (!this.db || !this.isInitialized) {
+            callback([]);
+            return;
+        }
+
+        const transaction = this.db.transaction(['answer_records'], 'readonly');
+        const store = transaction.objectStore('answer_records');
+        const request = store.getAll();
+
+        request.onsuccess = () => {
+            const records = request.result;
+            const ids = [...new Set(records.map(r => r.question_id))];
+            callback(ids);
+        };
+
+        request.onerror = () => {
+            callback([]);
+        };
+    }
+
+    // 重置指定级别的学习进度（保留题目数据）
+    resetLevelProgress(level, callback) {
+        if (!this.db) {
+            if (callback) callback();
+            return;
+        }
+
+        // 删除该级别的答题记录
+        const recordsTransaction = this.db.transaction(['answer_records', 'user_progress'], 'readwrite');
+        const recordsStore = recordsTransaction.objectStore('answer_records');
+        const recordsRequest = recordsStore.clear();
+
+        recordsRequest.onsuccess = () => {
+            const progressStore = recordsTransaction.objectStore('user_progress');
+            const progressIndex = progressStore.index('level');
+            const progressRange = IDBKeyRange.only(level);
+            const progressRequest = progressIndex.openCursor();
+
+            progressRequest.onsuccess = () => {
+                const cursor = progressRequest.result;
+                if (cursor) {
+                    cursor.delete();
+                    cursor.continue();
+                }
+            };
+
+            if (callback) callback();
+        };
+
+        recordsRequest.onerror = () => {
+            if (callback) callback();
+        };
+    }
+
     // 记录答题情况
     recordAnswer(questionId, userAnswer, isCorrect) {
         if (!this.db) return;

@@ -21,32 +21,68 @@
         <main>
             <div id="level-select" class="panel active">
                 <h2>选择JLPT级别</h2>
+                
+                <!-- 新增：模式选择标签页 -->
+                <div class="mode-tabs">
+                    <button class="mode-tab active" data-mode="normal">普通练习</button>
+                    <button class="mode-tab" data-mode="wrong">错题集</button>
+                </div>
+
+                <!-- 题型选择（仅普通练习模式显示） -->
+                <div id="type-selector" class="type-selector">
+                    <label>选择题型：</label>
+                    <select id="question-type">
+                        <option value="all">全部题型</option>
+                        <option value="vocab">词汇题</option>
+                        <option value="grammar">语法题</option>
+                    </select>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="skip-completed" checked>
+                        跳过已做过的题
+                    </label>
+                </div>
+
+                <!-- 错题集说明（仅错题集模式显示） -->
+                <div id="wrong-mode-info" class="wrong-mode-info" style="display: none;">
+                    <p>错题集模式：只练习之前做错的题目，帮助巩固薄弱知识点。</p>
+                </div>
+
                 <div class="level-grid">
                     <div class="level-card" data-level="N5">
                         <h3>N5</h3>
                         <p>入门级</p>
                         <span class="question-count">加载中...</span>
+                        <span class="wrong-count" data-level="N5">错题: 0</span>
                     </div>
                     <div class="level-card" data-level="N4">
                         <h3>N4</h3>
                         <p>初级</p>
                         <span class="question-count">加载中...</span>
+                        <span class="wrong-count" data-level="N4">错题: 0</span>
                     </div>
                     <div class="level-card" data-level="N3">
                         <h3>N3</h3>
                         <p>中级</p>
                         <span class="question-count">加载中...</span>
+                        <span class="wrong-count" data-level="N3">错题: 0</span>
                     </div>
                     <div class="level-card" data-level="N2">
                         <h3>N2</h3>
                         <p>中上级</p>
                         <span class="question-count">加载中...</span>
+                        <span class="wrong-count" data-level="N2">错题: 0</span>
                     </div>
                     <div class="level-card" data-level="N1">
                         <h3>N1</h3>
                         <p>高级</p>
                         <span class="question-count">加载中...</span>
+                        <span class="wrong-count" data-level="N1">错题: 0</span>
                     </div>
+                </div>
+
+                <!-- 重置进度按钮 -->
+                <div class="reset-progress">
+                    <button id="reset-btn" class="btn btn-warning">重置学习进度</button>
                 </div>
             </div>
 
