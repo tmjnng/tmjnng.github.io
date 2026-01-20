@@ -47,7 +47,7 @@
     {
       "level": "N5",
       "type": "vocab",
-      "question": "ありがとう <strong>ございます</strong>。",
+      "question": "ありがとう <strong>　　　</strong>。",
       "option_a": "こんにちは",
       "option_b": "おはようございます",
       "option_c": "ございます",
@@ -91,7 +91,7 @@
     {
       "level": "N5",
       "type": "vocab",
-      "question": "このレストランの料理は <strong>おいしい</strong> です。",
+      "question": "このレストランの料理は <strong>　　　</strong> です。",
       "option_a": "あつい",
       "option_b": "おいしい",
       "option_c": "さむい",
