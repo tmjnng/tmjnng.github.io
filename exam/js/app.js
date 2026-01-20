@@ -250,6 +250,13 @@ class JLPTExamApp {
         // 更新导航按钮状态
         this.updateNavigationButtons();
 
+        // 清除之前的反馈信息
+        const panel = this.isExamMode ? 'exam-panel' : 'practice-panel';
+        const existingFeedback = document.querySelector(`#${panel} .feedback`);
+        if (existingFeedback) {
+            existingFeedback.remove();
+        }
+
         // 重置提交按钮（练习模式）
         if (!this.isExamMode) {
             this.resetSubmitButton();
@@ -356,7 +363,9 @@ class JLPTExamApp {
     showAnswerFeedback(isCorrect, correctAnswer) {
         const panel = this.isExamMode ? 'exam-panel' : 'practice-panel';
         const options = document.querySelectorAll(`#${panel} .options .option`);
-
+        const feedbackElement = document.querySelector(`#${panel} .feedback`);
+        
+        // 添加正确/错误样式
         options.forEach(option => {
             const input = option.querySelector('input');
             if (input.value === correctAnswer) {
@@ -365,6 +374,21 @@ class JLPTExamApp {
                 option.classList.add('incorrect');
             }
         });
+
+        // 添加提示信息
+        if (feedbackElement) {
+            feedbackElement.remove();
+        }
+
+        const newFeedback = document.createElement('div');
+        newFeedback.className = `feedback ${isCorrect ? 'feedback-correct' : 'feedback-incorrect'}`;
+        newFeedback.style.cssText = 'text-align: center; padding: 15px; margin: 20px 0; border-radius: 8px; font-size: 1.2rem; font-weight: bold;';
+        newFeedback.innerHTML = isCorrect ? '✅ 回答正确！' : `❌ 回答错误！正确答案：${correctAnswer}`;
+        
+        const questionContent = document.querySelector(`#${panel} .question-content`);
+        if (questionContent) {
+            questionContent.insertBefore(newFeedback, questionContent.querySelector('.options'));
+        }
     }
 
     // 提交考试
