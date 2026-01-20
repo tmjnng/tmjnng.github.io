@@ -251,7 +251,6 @@ class JLPTExamApp {
         this.updateNavigationButtons();
 
         // 清除之前的反馈信息
-        const panel = this.isExamMode ? 'exam-panel' : 'practice-panel';
         const existingFeedback = document.querySelector(`#${panel} .feedback`);
         if (existingFeedback) {
             existingFeedback.remove();
