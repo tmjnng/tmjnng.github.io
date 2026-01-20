@@ -742,8 +742,8 @@ class JLPTDatabase {
         }, 500); // 增加延迟确保清除完成
     }
 
-    // 获取每个级别的题目数量
-    getQuestionCountsByLevel(callback) {
+    // 获取每个级别的题目数量（按题型筛选）
+    getQuestionCountsByLevelAndType(type, callback) {
         if (!this.db || !this.isInitialized) {
             callback({});
             return;
@@ -759,34 +759,32 @@ class JLPTDatabase {
 
         const transaction = this.db.transaction(['questions'], 'readonly');
         const store = transaction.objectStore('questions');
-        const index = store.index('level');
+        const request = store.getAll();
 
-        let completedLevels = 0;
-        const totalLevels = Object.keys(counts).length;
-
-        Object.keys(counts).forEach(level => {
-            const range = IDBKeyRange.only(level);
-            const countRequest = index.count(range);
-
-            countRequest.onsuccess = (event) => {
-                counts[level] = event.target.result;
-                completedLevels++;
-
-                if (completedLevels === totalLevels) {
-                    console.log('各级别题目数量:', counts);
-                    callback(counts);
+        request.onsuccess = () => {
+            const allQuestions = request.result;
+            
+            Object.keys(counts).forEach(level => {
+                let filtered = allQuestions.filter(q => q.level === level);
+                if (type && type !== 'all') {
+                    filtered = filtered.filter(q => q.type === type);
                 }
-            };
+                counts[level] = filtered.length;
+            });
 
-            countRequest.onerror = (event) => {
-                console.error(`获取级别 ${level} 的题目数量失败:`, event.target.error);
-                completedLevels++;
+            console.log('各级别题目数量（类型:' + type + '）:', counts);
+            callback(counts);
+        };
 
-                if (completedLevels === totalLevels) {
-                    callback(counts);
-                }
-            };
-        });
+        request.onerror = (event) => {
+            console.error('获取题目数量失败:', event.target.error);
+            callback(counts);
+        };
+    }
+
+    // 获取每个级别的题目数量
+    getQuestionCountsByLevel(callback) {
+        this.getQuestionCountsByLevelAndType('all', callback);
     }
 }
 

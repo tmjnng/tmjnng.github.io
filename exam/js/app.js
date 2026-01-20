@@ -68,6 +68,7 @@ class JLPTExamApp {
         // 题型选择
         document.getElementById('question-type').addEventListener('change', (e) => {
             this.selectedType = e.target.value;
+            this.updateQuestionCounts();
         });
 
         // 跳过已做题
@@ -501,7 +502,7 @@ class JLPTExamApp {
 
     // 更新各级别的题目数量显示
     updateQuestionCounts() {
-        db.getQuestionCountsByLevel(counts => {
+        db.getQuestionCountsByLevelAndType(this.selectedType, counts => {
             Object.keys(counts).forEach(level => {
                 const levelCard = document.querySelector(`.level-card[data-level="${level}"]`);
                 if (levelCard) {
