@@ -2522,7 +2522,7 @@
     {
       "level": "N5",
       "type": "vocab",
-      "question": "これは<strong>______</strong>です。",
+      "question": "これは<strong>私</strong>です。",
       "option_a": "かのじょ",
       "option_b": "わたし",
       "option_c": "かれ",
@@ -2533,18 +2533,18 @@
     {
       "level": "N5",
       "type": "vocab",
-      "question": "あの人りは<strong>______</strong>です。",
+      "question": "あの人は<strong>彼方</strong>です。",
       "option_a": "わたし",
       "option_b": "あなた",
       "option_c": "かのじょ",
       "option_d": "かれ",
       "correct_answer": "B",
-      "explanation": "「あなた」的平假名是「あなた」，意思是你。"
+      "explanation": "「彼方」的平假名是「あなた」，意思是你。"
     },
     {
       "level": "N5",
       "type": "vocab",
-      "question": "あの人は<strong>______</strong>です。",
+      "question": "あの人は<strong>高い</strong>です。",
       "option_a": "やすい",
       "option_b": "おおきい",
       "option_c": "ひくい",
@@ -2566,7 +2566,7 @@
     {
       "level": "N5",
       "type": "vocab",
-      "question": "この新しいは<strong>______</strong>です。",
+      "question": "この新しいの読み方は<strong>______</strong>です。",
       "option_a": "おおきい",
       "option_b": "ちいさい",
       "option_c": "あたらしい",
@@ -2588,7 +2588,7 @@
     {
       "level": "N5",
       "type": "vocab",
-      "question": "私は<strong>______</strong>です。",
+      "question": "私は<strong>学生</strong>です。",
       "option_a": "せんせい",
       "option_b": "しゃいん",
       "option_c": "かいしゃいん",
