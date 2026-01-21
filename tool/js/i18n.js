@@ -15,6 +15,8 @@ const i18n = {
     md5Encryptor: "MD5 Encryptor",
     aesEncryptor: "AES Encrypt/Decrypt",
     base64Tool: "Base64 Encode/Decode",
+    bcryptTool: "BCrypt Encrypt",
+    hmacSha256Tool: "HMAC-SHA256",
     urlTool: "URL Encode/Decode",
     timestampTool: "Timestamp Converter",
     colorTool: "Color Converter",
@@ -39,6 +41,9 @@ const i18n = {
     decrypt: "Decrypt",
     encode: "Encode",
     decode: "Decode",
+    verify: "Verify",
+    generateHash: "Generate Hash",
+    verifyHash: "Verify Hash",
     timestampToDate: "Timestamp → Date",
     dateToTimestamp: "Date → Timestamp",
     hexToRgb: "HEX → RGB",
@@ -84,6 +89,8 @@ const i18n = {
     md5Encryptor: "MD5加密",
     aesEncryptor: "AES加密解密",
     base64Tool: "Base64编码解码",
+    bcryptTool: "BCrypt加密",
+    hmacSha256Tool: "HMAC-SHA256",
     urlTool: "URL编码解码",
     timestampTool: "时间戳转换",
     colorTool: "颜色转换",
@@ -108,6 +115,9 @@ const i18n = {
     decrypt: "解密",
     encode: "编码",
     decode: "解码",
+    verify: "验证",
+    generateHash: "生成哈希",
+    verifyHash: "验证哈希",
     timestampToDate: "时间戳→日期",
     dateToTimestamp: "日期→时间戳",
     hexToRgb: "HEX→RGB",
@@ -153,6 +163,8 @@ const i18n = {
     md5Encryptor: "MD5暗号化ツール",
     aesEncryptor: "AES暗号化/復号",
     base64Tool: "Base64エンコード/デコード",
+    bcryptTool: "BCrypt暗号化",
+    hmacSha256Tool: "HMAC-SHA256",
     urlTool: "URLエンコード/デコード",
     timestampTool: "タイムスタンプコンバーター",
     colorTool: "カラーコンバーター",
@@ -177,6 +189,9 @@ const i18n = {
     decrypt: "復号",
     encode: "エンコード",
     decode: "デコード",
+    verify: "検証",
+    generateHash: "ハッシュ生成",
+    verifyHash: "ハッシュ検証",
     timestampToDate: "タイムスタンプ→日付",
     dateToTimestamp: "日付→タイムスタンプ",
     hexToRgb: "HEX→RGB",
@@ -241,6 +256,8 @@ function updateLanguage(lang) {
     langData.md5Encryptor,
     langData.aesEncryptor,
     langData.base64Tool,
+    langData.bcryptTool,
+    langData.hmacSha256Tool,
     langData.urlTool,
     langData.timestampTool,
     langData.colorTool
@@ -289,17 +306,27 @@ function updateLanguage(lang) {
   document.querySelectorAll('.tool-card')[5].querySelectorAll('button')[1].textContent = langData.decode;
   document.querySelectorAll('.tool-card')[5].querySelectorAll('button')[2].textContent = langData.copyResult;
   
-  document.querySelectorAll('.tool-card')[6].querySelectorAll('button')[0].textContent = langData.encode;
-  document.querySelectorAll('.tool-card')[6].querySelectorAll('button')[1].textContent = langData.decode;
+  // BCrypt加密工具按钮
+  document.querySelectorAll('.tool-card')[6].querySelectorAll('button')[0].textContent = langData.encrypt;
+  document.querySelectorAll('.tool-card')[6].querySelectorAll('button')[1].textContent = langData.verify;
   document.querySelectorAll('.tool-card')[6].querySelectorAll('button')[2].textContent = langData.copyResult;
   
-  document.querySelectorAll('.tool-card')[7].querySelectorAll('button')[0].textContent = langData.timestampToDate;
-  document.querySelectorAll('.tool-card')[7].querySelectorAll('button')[1].textContent = langData.dateToTimestamp;
+  // HMAC-SHA256工具按钮
+  document.querySelectorAll('.tool-card')[7].querySelectorAll('button')[0].textContent = langData.generateHash;
+  document.querySelectorAll('.tool-card')[7].querySelectorAll('button')[1].textContent = langData.verifyHash;
   document.querySelectorAll('.tool-card')[7].querySelectorAll('button')[2].textContent = langData.copyResult;
   
-  document.querySelectorAll('.tool-card')[8].querySelectorAll('button')[0].textContent = langData.hexToRgb;
-  document.querySelectorAll('.tool-card')[8].querySelectorAll('button')[1].textContent = langData.rgbToHex;
+  document.querySelectorAll('.tool-card')[8].querySelectorAll('button')[0].textContent = langData.encode;
+  document.querySelectorAll('.tool-card')[8].querySelectorAll('button')[1].textContent = langData.decode;
   document.querySelectorAll('.tool-card')[8].querySelectorAll('button')[2].textContent = langData.copyResult;
+  
+  document.querySelectorAll('.tool-card')[9].querySelectorAll('button')[0].textContent = langData.timestampToDate;
+  document.querySelectorAll('.tool-card')[9].querySelectorAll('button')[1].textContent = langData.dateToTimestamp;
+  document.querySelectorAll('.tool-card')[9].querySelectorAll('button')[2].textContent = langData.copyResult;
+  
+  document.querySelectorAll('.tool-card')[10].querySelectorAll('button')[0].textContent = langData.hexToRgb;
+  document.querySelectorAll('.tool-card')[10].querySelectorAll('button')[1].textContent = langData.rgbToHex;
+  document.querySelectorAll('.tool-card')[10].querySelectorAll('button')[2].textContent = langData.copyResult;
   
   // 更新AES模式选项
   document.querySelectorAll('#aes-mode option')[0].textContent = langData.cbcMode;
