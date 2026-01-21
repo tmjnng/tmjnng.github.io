@@ -262,6 +262,10 @@ class JLPTExamApp {
         // 重置提交按钮（考试模式）
         if (this.isExamMode) {
             this.resetSubmitButton();
+        } else {
+            // 练习模式：重置提交按钮并显示蓝色的"下一题"按钮
+            this.resetSubmitButton();
+            document.getElementById('next-btn').style.display = 'inline-block';
         }
     }
 
@@ -318,7 +322,6 @@ class JLPTExamApp {
             } else {
                 this.currentQuestionIndex++;
                 this.displayCurrentQuestion();
-                this.resetSubmitButton();
             }
         } else {
             // 未提交状态，提交答案
@@ -350,6 +353,8 @@ class JLPTExamApp {
             this.isAnswerSubmitted = true;
             const submitBtn = document.getElementById('submit-btn');
             submitBtn.textContent = '下一题';
+            // 隐藏蓝色的下一题按钮，避免重复
+            document.getElementById('next-btn').style.display = 'none';
             return;
         }
 
