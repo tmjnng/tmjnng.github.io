@@ -7,12 +7,15 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
   <link rel="stylesheet" href="/css/style.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bcryptjs@2.4.3/dist/bcrypt.min.js"></script>
   <script src="js/i18n.js"></script>
   <script src="js/json-tools.js"></script>
   <script src="js/xml-tools.js"></script>
   <script src="js/sql-tools.js"></script>
   <script src="js/md5-tools.js"></script>
   <script src="js/aes-tools.js"></script>
+  <script src="js/bcrypt-tools.js"></script>
+  <script src="js/hmac-sha256-tools.js"></script>
   <script src="js/base64-tools.js"></script>
   <script src="js/url-tools.js"></script>
   <script src="js/timestamp-tools.js"></script>
@@ -165,7 +168,7 @@
           <div class="tool-container">
             <div class="tool-header">
               <h1>开发工具集</h1>
-              <p>提供JSON格式化、XML格式化、MD5加密、AES加密解密等开发常用工具</p>
+              <p>提供JSON格式化、XML格式化、MD5加密、AES加密解密、BCrypt、HMAC-SHA256等开发常用工具</p>
             </div>
 
             <div class="tool-grid">
@@ -281,6 +284,34 @@
                 </div>
                 <button class="copy-btn" onclick="copyResult('base64-result')">复制结果</button>
                 <div id="base64-result" class="tool-result"></div>
+              </div>
+
+              <!-- BCrypt加密工具 -->
+              <div class="tool-card">
+                <h3>BCrypt加密</h3>
+                <input type="text" id="bcrypt-input" placeholder="请输入要加密的密码...">
+                <input type="number" id="bcrypt-rounds" value="10" min="4" max="15" placeholder="盐轮数 (默认10)">
+                <div class="tool-buttons">
+                  <button onclick="bcryptEncrypt()">加密</button>
+                  <button onclick="bcryptVerify()">验证</button>
+                </div>
+                <input type="text" id="bcrypt-verify-hash" placeholder="要验证的哈希值..." style="margin-top: 10px;">
+                <button class="copy-btn" onclick="copyResult('bcrypt-result')">复制结果</button>
+                <div id="bcrypt-result" class="tool-result"></div>
+              </div>
+
+              <!-- HMAC-SHA256工具 -->
+              <div class="tool-card">
+                <h3>HMAC-SHA256</h3>
+                <textarea id="hmac-sha256-input" placeholder="请输入要加密的文本..."></textarea>
+                <input type="text" id="hmac-sha256-key" placeholder="请输入密钥...">
+                <div class="tool-buttons">
+                  <button onclick="hmacSha256Encrypt()">生成哈希</button>
+                  <button onclick="hmacSha256Verify()">验证哈希</button>
+                </div>
+                <input type="text" id="hmac-sha256-verify-hash" placeholder="要验证的哈希值..." style="margin-top: 10px;">
+                <button class="copy-btn" onclick="copyResult('hmac-sha256-result')">复制结果</button>
+                <div id="hmac-sha256-result" class="tool-result"></div>
               </div>
 
               <!-- URL编码解码工具 -->
