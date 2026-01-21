@@ -6,14 +6,17 @@ class JLPTExamApp {
         this.currentQuestionIndex = 0;
         this.userAnswers = {};
         this.timer = null;
-        this.remainingTime = 1800; // 30分钟，用于考试模式
-        this.isExamMode = false; // 默认不是考试模式
+        this.remainingTime = 1800;
+        this.isExamMode = false;
         this.isDatabaseReady = false;
         
-        // 新增：练习模式设置
-        this.practiceMode = 'normal'; // 'normal' 或 'wrong'
+        // 练习模式设置
+        this.practiceMode = 'normal';
         this.selectedType = 'all';
         this.skipCompleted = true;
+        
+        // 新增：按钮状态标志
+        this.isAnswerSubmitted = false;
 
         // 等待数据库初始化完成
         db.onInitialized(() => {
@@ -81,10 +84,10 @@ class JLPTExamApp {
             this.resetProgress();
         });
 
-        // 问题导航事件
+        // 问题导航事件 - 统一使用 handleSubmitButton 函数
         document.getElementById('prev-btn').addEventListener('click', () => this.prevQuestion());
         document.getElementById('next-btn').addEventListener('click', () => this.nextQuestion());
-        document.getElementById('submit-btn').addEventListener('click', () => this.submitAnswer());
+        document.getElementById('submit-btn').addEventListener('click', () => this.handleSubmitButton());
 
         document.getElementById('exam-prev-btn').addEventListener('click', () => this.prevQuestion());
         document.getElementById('exam-next-btn').addEventListener('click', () => this.nextQuestion());
@@ -306,6 +309,23 @@ class JLPTExamApp {
         }
     }
 
+    // 练习模式：处理提交/下一题按钮
+    handleSubmitButton() {
+        if (this.isAnswerSubmitted) {
+            // 已经是"下一题"状态，点击进入下一题
+            if (this.currentQuestionIndex === this.currentQuestions.length - 1) {
+                this.showResults();
+            } else {
+                this.currentQuestionIndex++;
+                this.displayCurrentQuestion();
+                this.resetSubmitButton();
+            }
+        } else {
+            // 未提交状态，提交答案
+            this.submitAnswer();
+        }
+    }
+
     // 提交答案
     submitAnswer() {
         const question = this.currentQuestions[this.currentQuestionIndex];
@@ -327,19 +347,9 @@ class JLPTExamApp {
 
         // 在练习模式下，改变按钮行为：提交后变为"下一题"
         if (!this.isExamMode) {
+            this.isAnswerSubmitted = true;
             const submitBtn = document.getElementById('submit-btn');
             submitBtn.textContent = '下一题';
-            submitBtn.onclick = () => {
-                // 如果是最后一题，显示结果
-                if (this.currentQuestionIndex === this.currentQuestions.length - 1) {
-                    this.showResults();
-                } else {
-                    // 恢复按钮状态并进入下一题
-                    this.currentQuestionIndex++;
-                    this.displayCurrentQuestion();
-                    this.resetSubmitButton();
-                }
-            };
             return;
         }
 
@@ -353,9 +363,9 @@ class JLPTExamApp {
 
     // 重置提交按钮
     resetSubmitButton() {
+        this.isAnswerSubmitted = false;
         const submitBtn = document.getElementById('submit-btn');
         submitBtn.textContent = '提交答案';
-        submitBtn.onclick = () => this.submitAnswer();
     }
 
     // 显示答案反馈
