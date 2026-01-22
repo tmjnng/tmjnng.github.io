@@ -24,6 +24,7 @@
   <script src="js/color-tools.js"></script>
   <script src="js/common.js"></script>
   <script src="js/unicode-tools.js"></script>
+  <script src="js/web-tools.js"></script>
   <style>
     .tool-container {
       margin: 50px 0;
@@ -171,7 +172,7 @@
           <div class="tool-container">
             <div class="tool-header">
               <h1>开发工具集</h1>
-              <p>提供JSON格式化、XML格式化、MD5加密、AES加密解密、BCrypt、HMAC-SHA256、Unicode编码转换等开发常用工具</p>
+              <p>提供JSON格式化、XML格式化、MD5加密、AES加密解密、BCrypt、HMAC-SHA256、Unicode编码转换、HTML/CSS/JS 工具等开发常用工具</p>
             </div>
 
             <div class="tool-grid">
@@ -374,6 +375,27 @@
                 </div>
                 <button class="copy-btn" onclick="copyResult('unicode-result')">复制结果</button>
                 <div id="unicode-result" class="tool-result"></div>
+              </div>
+
+              <!-- HTML/CSS/JS 在线工具 -->
+              <div class="tool-card">
+                <h3>HTML/CSS/JS 工具</h3>
+                <select id="web-mode" style="margin-bottom: 10px;">
+                  <option value="html">HTML</option>
+                  <option value="css">CSS</option>
+                  <option value="js">JavaScript</option>
+                </select>
+                <select id="web-action" style="margin-bottom: 10px;">
+                  <option value="format">格式化</option>
+                  <option value="minify">压缩</option>
+                  <option value="obfuscate">混淆</option>
+                </select>
+                <textarea id="web-input" placeholder="请输入要处理的代码..."></textarea>
+                <div class="tool-buttons">
+                  <button onclick="webTool()">处理</button>
+                </div>
+                <button class="copy-btn" onclick="copyResult('web-result')">复制结果</button>
+                <div id="web-result" class="tool-result"></div>
               </div>
             </div>
           </div>

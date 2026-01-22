@@ -22,6 +22,7 @@ const i18n = {
     colorTool: "Color Converter",
     sqlFormatter: "SQL Formatter",
     unicodeTool: "Unicode Converter",
+    webTool: "HTML/CSS/JS Tools",
 
     // 输入框占位符
     jsonPlaceholder: "Please enter JSON string...",
@@ -35,6 +36,7 @@ const i18n = {
     colorPlaceholder: "Please enter color value (#RRGGBB)...",
     sqlPlaceholder: "Please enter SQL query...",
     unicodePlaceholder: "Please enter text to convert...",
+    webPlaceholder: "Please enter code to process...",
 
     // 按钮文本
     format: "Format",
@@ -52,6 +54,7 @@ const i18n = {
     rgbToHex: "RGB → HEX",
     copyResult: "Copy Result",
     convert: "Convert",
+    process: "Process",
 
     // Unicode模式选项
     unicodeEscape: "Unicode Escape",
@@ -64,6 +67,14 @@ const i18n = {
     utf8HexDecode: "UTF-8 Hex Decode",
     urlEncode: "URL Encode",
     urlDecode: "URL Decode",
+
+    // Web工具选项
+    htmlMode: "HTML",
+    cssMode: "CSS",
+    jsMode: "JavaScript",
+    obfuscate: "Obfuscate",
+    webFormat: "Format",
+    webMinify: "Minify",
 
     // 错误信息
     jsonError: "JSON format error: ",
@@ -111,6 +122,7 @@ const i18n = {
     colorTool: "颜色转换",
     sqlFormatter: "SQL格式化",
     unicodeTool: "Unicode编码转换",
+    webTool: "HTML/CSS/JS 工具",
 
     // 输入框占位符
     jsonPlaceholder: "请输入JSON字符串...",
@@ -124,6 +136,7 @@ const i18n = {
     colorPlaceholder: "请输入颜色值 (#RRGGBB)...",
     sqlPlaceholder: "请输入SQL查询语句...",
     unicodePlaceholder: "请输入要转换的文本...",
+    webPlaceholder: "请输入要处理的代码...",
 
     // 按钮文本
     format: "格式化",
@@ -141,6 +154,7 @@ const i18n = {
     rgbToHex: "RGB→HEX",
     copyResult: "复制结果",
     convert: "转换",
+    process: "处理",
 
     // Unicode模式选项
     unicodeEscape: "Unicode转义序列",
@@ -153,6 +167,14 @@ const i18n = {
     utf8HexDecode: "UTF-8十六进制解码",
     urlEncode: "URL编码",
     urlDecode: "URL解码",
+
+    // Web工具选项
+    htmlMode: "HTML",
+    cssMode: "CSS",
+    jsMode: "JavaScript",
+    obfuscate: "混淆",
+    webFormat: "格式化",
+    webMinify: "压缩",
 
     // 错误信息
     jsonError: "JSON格式错误: ",
@@ -200,6 +222,7 @@ const i18n = {
     colorTool: "カラーコンバーター",
     sqlFormatter: "SQLフォーマッター",
     unicodeTool: "Unicodeコンバーター",
+    webTool: "HTML/CSS/JS ツール",
 
     // 输入框占位符
     jsonPlaceholder: "JSON文字列を入力してください...",
@@ -213,6 +236,7 @@ const i18n = {
     colorPlaceholder: "カラー値を入力してください (#RRGGBB)...",
     sqlPlaceholder: "SQLクエリを入力してください...",
     unicodePlaceholder: "変換するテキストを入力してください...",
+    webPlaceholder: "処理するコードを入力してください...",
 
     // 按钮文本
     format: "フォーマット",
@@ -230,6 +254,7 @@ const i18n = {
     rgbToHex: "RGB→HEX",
     copyResult: "結果をコピー",
     convert: "変換",
+    process: "処理",
 
     // Unicode模式选项
     unicodeEscape: "Unicodeエスケープ",
@@ -242,6 +267,14 @@ const i18n = {
     utf8HexDecode: "UTF-8 HEX解除",
     urlEncode: "URLエンコード",
     urlDecode: "URLデコード",
+
+    // Web工具选项
+    htmlMode: "HTML",
+    cssMode: "CSS",
+    jsMode: "JavaScript",
+    obfuscate: "難読化",
+    webFormat: "フォーマット",
+    webMinify: "ミニファイ",
 
     // 错误信息
     jsonError: "JSONフォーマットエラー: ",
@@ -306,7 +339,8 @@ function updateLanguage(lang) {
     langData.urlTool,
     langData.timestampTool,
     langData.colorTool,
-    langData.unicodeTool
+    langData.unicodeTool,
+    langData.webTool
   ];
   
   toolCards.forEach((card, index) => {
@@ -327,6 +361,7 @@ function updateLanguage(lang) {
   document.getElementById('timestamp-input').placeholder = langData.timestampPlaceholder;
   document.getElementById('color-input').placeholder = langData.colorPlaceholder;
   document.getElementById('unicode-input').placeholder = langData.unicodePlaceholder;
+  document.getElementById('web-input').placeholder = langData.webPlaceholder;
   
   // 更新按钮文本
   document.querySelectorAll('.tool-card')[0].querySelectorAll('button')[0].textContent = langData.format;
@@ -379,6 +414,10 @@ function updateLanguage(lang) {
   document.querySelectorAll('.tool-card')[11].querySelectorAll('button')[0].textContent = langData.convert;
   document.querySelectorAll('.tool-card')[11].querySelectorAll('button')[1].textContent = langData.copyResult;
   
+  // Web工具按钮
+  document.querySelectorAll('.tool-card')[12].querySelectorAll('button')[0].textContent = langData.process;
+  document.querySelectorAll('.tool-card')[12].querySelectorAll('button')[1].textContent = langData.copyResult;
+  
   // 更新Unicode模式选项
   const unicodeModeSelect = document.getElementById('unicode-mode');
   if (unicodeModeSelect) {
@@ -393,6 +432,21 @@ function updateLanguage(lang) {
     options[7].text = langData.utf8HexDecode;
     options[8].text = langData.urlEncode;
     options[9].text = langData.urlDecode;
+  }
+  
+  // 更新Web工具选项
+  const webModeSelect = document.getElementById('web-mode');
+  if (webModeSelect) {
+    webModeSelect.options[0].text = langData.htmlMode;
+    webModeSelect.options[1].text = langData.cssMode;
+    webModeSelect.options[2].text = langData.jsMode;
+  }
+  
+  const webActionSelect = document.getElementById('web-action');
+  if (webActionSelect) {
+    webActionSelect.options[0].text = langData.webFormat;
+    webActionSelect.options[1].text = langData.webMinify;
+    webActionSelect.options[2].text = langData.obfuscate;
   }
   
   // 更新AES模式选项
