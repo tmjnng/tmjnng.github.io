@@ -21,6 +21,7 @@
   <script src="js/timestamp-tools.js"></script>
   <script src="js/color-tools.js"></script>
   <script src="js/common.js"></script>
+  <script src="js/unicode-tools.js"></script>
   <style>
     .tool-container {
       margin: 50px 0;
@@ -168,7 +169,7 @@
           <div class="tool-container">
             <div class="tool-header">
               <h1>开发工具集</h1>
-              <p>提供JSON格式化、XML格式化、MD5加密、AES加密解密、BCrypt、HMAC-SHA256等开发常用工具</p>
+              <p>提供JSON格式化、XML格式化、MD5加密、AES加密解密、BCrypt、HMAC-SHA256、Unicode编码转换等开发常用工具</p>
             </div>
 
             <div class="tool-grid">
@@ -348,6 +349,29 @@
                 </div>
                 <button class="copy-btn" onclick="copyResult('color-result')">复制结果</button>
                 <div id="color-result" class="tool-result"></div>
+              </div>
+
+              <!-- Unicode编码转换工具 -->
+              <div class="tool-card">
+                <h3>Unicode编码转换</h3>
+                <textarea id="unicode-input" placeholder="请输入要转换的文本..."></textarea>
+                <select id="unicode-mode" style="margin-bottom: 10px;">
+                  <option value="unicode-escape">Unicode转义序列</option>
+                  <option value="unescape">Unicode转义解码</option>
+                  <option value="html-entity">HTML实体编码</option>
+                  <option value="html-entity-decode">HTML实体解码</option>
+                  <option value="unicode-hex">Unicode十六进制</option>
+                  <option value="unicode-hex-decode">Unicode十六进制解码</option>
+                  <option value="utf8-hex">UTF-8十六进制</option>
+                  <option value="utf8-hex-decode">UTF-8十六进制解码</option>
+                  <option value="url-encode">URL编码</option>
+                  <option value="url-decode">URL解码</option>
+                </select>
+                <div class="tool-buttons">
+                  <button onclick="unicodeConvert()">转换</button>
+                </div>
+                <button class="copy-btn" onclick="copyResult('unicode-result')">复制结果</button>
+                <div id="unicode-result" class="tool-result"></div>
               </div>
             </div>
           </div>
