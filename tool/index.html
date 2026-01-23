@@ -402,27 +402,27 @@
 
               <!-- 随机字符串生成工具 -->
               <div class="tool-card">
-                <h3>随机字符串生成</h3>
+                <h3 data-i18n="randomTool">随机字符串生成</h3>
                 <div style="margin-bottom: 10px;">
-                  <label>长度：</label>
+                  <label><span data-i18n="randomLengthPlaceholder">长度</span>: </label>
                   <input type="number" id="random-length" value="16" min="1" max="1024" style="width: 80px;">
                 </div>
                 <div style="margin-bottom: 10px;">
-                  <label><input type="checkbox" id="random-uppercase" checked> 大写字母 (A-Z)</label>
+                  <label><input type="checkbox" id="random-uppercase" checked> <span data-i18n="randomUppercase">大写字母 (A-Z)</span></label>
                 </div>
                 <div style="margin-bottom: 10px;">
-                  <label><input type="checkbox" id="random-lowercase" checked> 小写字母 (a-z)</label>
+                  <label><input type="checkbox" id="random-lowercase" checked> <span data-i18n="randomLowercase">小写字母 (a-z)</span></label>
                 </div>
                 <div style="margin-bottom: 10px;">
-                  <label><input type="checkbox" id="random-numbers" checked> 数字 (0-9)</label>
+                  <label><input type="checkbox" id="random-numbers" checked> <span data-i18n="randomNumbers">数字 (0-9)</span></label>
                 </div>
                 <div style="margin-bottom: 10px;">
-                  <label><input type="checkbox" id="random-symbols"> 特殊符号 (!@#$...)</label>
+                  <label><input type="checkbox" id="random-symbols"> <span data-i18n="randomSymbols">特殊符号 (!@#$...)</span></label>
                 </div>
                 <div class="tool-buttons">
-                  <button onclick="generateRandomString()">生成</button>
+                  <button onclick="generateRandomString()"><span data-i18n="generate">生成</span></button>
                 </div>
-                <button class="copy-btn" onclick="copyRandomResult()">复制结果</button>
+                <button class="copy-btn" onclick="copyRandomResult()"><span data-i18n="copyResult">复制结果</span></button>
                 <div id="random-result" class="tool-result"></div>
               </div>
             </div>

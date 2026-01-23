@@ -23,6 +23,7 @@ const i18n = {
     sqlFormatter: "SQL Formatter",
     unicodeTool: "Unicode Converter",
     webTool: "HTML/CSS/JS Tools",
+    randomTool: "Random String Generator",
 
     // 输入框占位符
     jsonPlaceholder: "Please enter JSON string...",
@@ -37,6 +38,11 @@ const i18n = {
     sqlPlaceholder: "Please enter SQL query...",
     unicodePlaceholder: "Please enter text to convert...",
     webPlaceholder: "Please enter code to process...",
+    randomLengthPlaceholder: "Length",
+    randomUppercase: "Uppercase (A-Z)",
+    randomLowercase: "Lowercase (a-z)",
+    randomNumbers: "Numbers (0-9)",
+    randomSymbols: "Symbols (!@#$...)",
 
     // 按钮文本
     format: "Format",
@@ -55,6 +61,7 @@ const i18n = {
     copyResult: "Copy Result",
     convert: "Convert",
     process: "Process",
+    generate: "Generate",
 
     // Unicode模式选项
     unicodeEscape: "Unicode Escape",
@@ -123,6 +130,7 @@ const i18n = {
     sqlFormatter: "SQL格式化",
     unicodeTool: "Unicode编码转换",
     webTool: "HTML/CSS/JS 工具",
+    randomTool: "随机字符串生成",
 
     // 输入框占位符
     jsonPlaceholder: "请输入JSON字符串...",
@@ -137,6 +145,11 @@ const i18n = {
     sqlPlaceholder: "请输入SQL查询语句...",
     unicodePlaceholder: "请输入要转换的文本...",
     webPlaceholder: "请输入要处理的代码...",
+    randomLengthPlaceholder: "长度",
+    randomUppercase: "大写字母 (A-Z)",
+    randomLowercase: "小写字母 (a-z)",
+    randomNumbers: "数字 (0-9)",
+    randomSymbols: "特殊符号 (!@#$...)",
 
     // 按钮文本
     format: "格式化",
@@ -155,6 +168,7 @@ const i18n = {
     copyResult: "复制结果",
     convert: "转换",
     process: "处理",
+    generate: "生成",
 
     // Unicode模式选项
     unicodeEscape: "Unicode转义序列",
@@ -223,6 +237,7 @@ const i18n = {
     sqlFormatter: "SQLフォーマッター",
     unicodeTool: "Unicodeコンバーター",
     webTool: "HTML/CSS/JS ツール",
+    randomTool: "ランダム文字列生成",
 
     // 输入框占位符
     jsonPlaceholder: "JSON文字列を入力してください...",
@@ -237,6 +252,11 @@ const i18n = {
     sqlPlaceholder: "SQLクエリを入力してください...",
     unicodePlaceholder: "変換するテキストを入力してください...",
     webPlaceholder: "処理するコードを入力してください...",
+    randomLengthPlaceholder: "長さ",
+    randomUppercase: "大文字 (A-Z)",
+    randomLowercase: "小文字 (a-z)",
+    randomNumbers: "数字 (0-9)",
+    randomSymbols: "記号 (!@#$...)",
 
     // 按钮文本
     format: "フォーマット",
@@ -255,6 +275,7 @@ const i18n = {
     copyResult: "結果をコピー",
     convert: "変換",
     process: "処理",
+    generate: "生成",
 
     // Unicode模式选项
     unicodeEscape: "Unicodeエスケープ",
@@ -340,7 +361,8 @@ function updateLanguage(lang) {
     langData.timestampTool,
     langData.colorTool,
     langData.unicodeTool,
-    langData.webTool
+    langData.webTool,
+    langData.randomTool
   ];
   
   toolCards.forEach((card, index) => {
@@ -418,40 +440,17 @@ function updateLanguage(lang) {
   document.querySelectorAll('.tool-card')[12].querySelectorAll('button')[0].textContent = langData.process;
   document.querySelectorAll('.tool-card')[12].querySelectorAll('button')[1].textContent = langData.copyResult;
   
-  // 更新Unicode模式选项
-  const unicodeModeSelect = document.getElementById('unicode-mode');
-  if (unicodeModeSelect) {
-    const options = unicodeModeSelect.options;
-    options[0].text = langData.unicodeEscape;
-    options[1].text = langData.unicodeUnescape;
-    options[2].text = langData.htmlEntity;
-    options[3].text = langData.htmlEntityDecode;
-    options[4].text = langData.unicodeHex;
-    options[5].text = langData.unicodeHexDecode;
-    options[6].text = langData.utf8Hex;
-    options[7].text = langData.utf8HexDecode;
-    options[8].text = langData.urlEncode;
-    options[9].text = langData.urlDecode;
-  }
+  // 随机字符串生成工具按钮
+  document.querySelectorAll('.tool-card')[13].querySelectorAll('button')[0].textContent = langData.generate;
+  document.querySelectorAll('.tool-card')[13].querySelectorAll('button')[1].textContent = langData.copyResult;
   
-  // 更新Web工具选项
-  const webModeSelect = document.getElementById('web-mode');
-  if (webModeSelect) {
-    webModeSelect.options[0].text = langData.htmlMode;
-    webModeSelect.options[1].text = langData.cssMode;
-    webModeSelect.options[2].text = langData.jsMode;
-  }
-  
-  const webActionSelect = document.getElementById('web-action');
-  if (webActionSelect) {
-    webActionSelect.options[0].text = langData.webFormat;
-    webActionSelect.options[1].text = langData.webMinify;
-    webActionSelect.options[2].text = langData.obfuscate;
-  }
-  
-  // 更新AES模式选项
-  document.querySelectorAll('#aes-mode option')[0].textContent = langData.cbcMode;
-  document.querySelectorAll('#aes-mode option')[1].textContent = langData.ecbMode;
+  // 更新data-i18n属性的元素
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (langData[key]) {
+      el.textContent = langData[key];
+    }
+  });
   
   // 更新页脚
   document.querySelector('#footer-info').innerHTML = `${langData.footerCopyright}<br>Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>`;
