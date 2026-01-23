@@ -26,6 +26,7 @@
   <script src="js/common.js"></script>
   <script src="js/unicode-tools.js"></script>
   <script src="js/web-tools.js"></script>
+  <script src="js/random-tools.js"></script>
   <style>
     .tool-container {
       margin: 50px 0;
@@ -395,8 +396,34 @@
                 <div class="tool-buttons">
                   <button onclick="webTool()">处理</button>
                 </div>
-                <button class="copy-btn" onclick="copyResult('web-result')">复制结果</button>
+<button class="copy-btn" onclick="copyResult('web-result')">复制结果</button>
                 <div id="web-result" class="tool-result"></div>
+              </div>
+
+              <!-- 随机字符串生成工具 -->
+              <div class="tool-card">
+                <h3>随机字符串生成</h3>
+                <div style="margin-bottom: 10px;">
+                  <label>长度：</label>
+                  <input type="number" id="random-length" value="16" min="1" max="1024" style="width: 80px;">
+                </div>
+                <div style="margin-bottom: 10px;">
+                  <label><input type="checkbox" id="random-uppercase" checked> 大写字母 (A-Z)</label>
+                </div>
+                <div style="margin-bottom: 10px;">
+                  <label><input type="checkbox" id="random-lowercase" checked> 小写字母 (a-z)</label>
+                </div>
+                <div style="margin-bottom: 10px;">
+                  <label><input type="checkbox" id="random-numbers" checked> 数字 (0-9)</label>
+                </div>
+                <div style="margin-bottom: 10px;">
+                  <label><input type="checkbox" id="random-symbols"> 特殊符号 (!@#$...)</label>
+                </div>
+                <div class="tool-buttons">
+                  <button onclick="generateRandomString()">生成</button>
+                </div>
+                <button class="copy-btn" onclick="copyRandomResult()">复制结果</button>
+                <div id="random-result" class="tool-result"></div>
               </div>
             </div>
           </div>
