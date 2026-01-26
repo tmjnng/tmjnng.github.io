@@ -5,14 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>抽奖系统</title>
     <link rel="stylesheet" href="css/style.css">
+    <script src="js/i18n.js"></script>
 </head>
 <body>
     <div class="container">
         <header class="header">
             <h1>抽奖系统</h1>
             <div class="header-actions">
-                <button id="btn-reset" class="btn btn-danger">重置所有数据</button>
-                <button id="btn-sample" class="btn btn-success" onclick="drawSystem.importAllSamples()">一键导入示例</button>
+                <select id="language-selector" style="margin-right: 15px; padding: 5px; border: 1px solid #ddd; border-radius: 3px;">
+                    <option value="en">English</option>
+                    <option value="zh">中文</option>
+                    <option value="ja">日本語</option>
+                </select>
+                <button id="btn-reset" class="btn btn-danger" data-i18n="header.resetAll">重置所有数据</button>
+                <button id="btn-sample" class="btn btn-success" onclick="drawSystem.importAllSamples()" data-i18n="header.importSample">一键导入示例</button>
             </div>
         </header>
 
@@ -20,19 +26,19 @@
             <div class="left-panel">
                 <section class="panel">
                     <div class="panel-header">
-                        <h2>名单管理</h2>
+                        <h2 data-i18n="panels.participantManagement">名单管理</h2>
                         <div class="panel-actions">
                             <input type="file" id="participant-file" accept=".json,.csv,.txt" style="display: none;">
-                            <button class="btn btn-sm" onclick="document.getElementById('participant-file').click()">导入名单</button>
-                            <button class="btn btn-sm" onclick="drawSystem.exportSampleParticipant()">示例</button>
-                            <button class="btn btn-sm btn-success" onclick="drawSystem.addParticipant()">添加名单</button>
+                            <button class="btn btn-sm" onclick="document.getElementById('participant-file').click()" data-i18n="participant.import">导入名单</button>
+                            <button class="btn btn-sm" onclick="drawSystem.exportSampleParticipant()" data-i18n="participant.exportSample">示例</button>
+                            <button class="btn btn-sm btn-success" onclick="drawSystem.addParticipant()" data-i18n="participant.add">添加名单</button>
                         </div>
                     </div>
                     <div class="panel-body">
                         <div class="stats">
-                            <span>总人数: <strong id="participant-count">0</strong></span>
-                            <span>已中奖: <strong id="winner-count">0</strong></span>
-                            <span>剩余: <strong id="remaining-count">0</strong></span>
+                            <span data-i18n="participant.total">总人数: <strong id="participant-count">0</strong></span>
+                            <span data-i18n="participant.won">已中奖: <strong id="winner-count">0</strong></span>
+                            <span data-i18n="participant.remaining">剩余: <strong id="remaining-count">0</strong></span>
                         </div>
                         <div id="participant-list" class="list-container"></div>
                     </div>
@@ -40,12 +46,12 @@
 
                 <section class="panel">
                     <div class="panel-header">
-                        <h2>奖品级别</h2>
+                        <h2 data-i18n="panels.prizeLevelManagement">奖品级别</h2>
                         <div class="panel-actions">
                             <input type="file" id="prize-level-file" accept=".json" style="display: none;">
-                            <button class="btn btn-sm" onclick="document.getElementById('prize-level-file').click()">导入级别</button>
-                            <button class="btn btn-sm" onclick="drawSystem.exportSamplePrizeLevel()">示例</button>
-                            <button class="btn btn-sm btn-success" onclick="drawSystem.addPrizeLevel()">添加级别</button>
+                            <button class="btn btn-sm" onclick="document.getElementById('prize-level-file').click()" data-i18n="prizeLevel.import">导入级别</button>
+                            <button class="btn btn-sm" onclick="drawSystem.exportSamplePrizeLevel()" data-i18n="prizeLevel.exportSample">示例</button>
+                            <button class="btn btn-sm btn-success" onclick="drawSystem.addPrizeLevel()" data-i18n="prizeLevel.add">添加级别</button>
                         </div>
                     </div>
                     <div class="panel-body">
@@ -55,18 +61,18 @@
 
                 <section class="panel">
                     <div class="panel-header">
-                        <h2>奖品管理</h2>
+                        <h2 data-i18n="panels.prizeManagement">奖品管理</h2>
                         <div class="panel-actions">
                             <input type="file" id="prize-file" accept=".json,.csv,.txt" style="display: none;">
-                            <button class="btn btn-sm" onclick="document.getElementById('prize-file').click()">导入奖品</button>
-                            <button class="btn btn-sm" onclick="drawSystem.exportSamplePrize()">示例</button>
-                            <button class="btn btn-sm btn-success" onclick="drawSystem.addPrize()">添加奖品</button>
+                            <button class="btn btn-sm" onclick="document.getElementById('prize-file').click()" data-i18n="prize.import">导入奖品</button>
+                            <button class="btn btn-sm" onclick="drawSystem.exportSamplePrize()" data-i18n="prize.exportSample">示例</button>
+                            <button class="btn btn-sm btn-success" onclick="drawSystem.addPrize()" data-i18n="prize.add">添加奖品</button>
                         </div>
                     </div>
                     <div class="panel-body">
                         <div class="stats">
-                            <span>总奖品: <strong id="prize-count">0</strong></span>
-                            <span>已送出: <strong id="prize-given-count">0</strong></span>
+                            <span data-i18n="prize.total">总奖品: <strong id="prize-count">0</strong></span>
+                            <span data-i18n="prize.given">已送出: <strong id="prize-given-count">0</strong></span>
                         </div>
                         <div id="prize-list" class="list-container"></div>
                     </div>
@@ -76,29 +82,29 @@
             <div class="center-panel">
                 <section class="panel draw-panel">
                     <div class="panel-header">
-                        <h2>抽奖区域</h2>
+                        <h2 data-i18n="panels.drawArea">抽奖区域</h2>
                     </div>
                     <div class="panel-body">
                         <div class="draw-controls">
                             <div class="form-group">
-                                <label for="draw-level">选择奖品级别</label>
+                                <label for="draw-level" data-i18n="draw.selectLevel">选择奖品级别</label>
                                 <select id="draw-level"></select>
                             </div>
                             <div class="form-group">
-                                <label for="draw-count">抽取人数</label>
+                                <label for="draw-count" data-i18n="draw.count">抽取人数</label>
                                 <input type="number" id="draw-count" value="1" min="1" max="100">
                             </div>
-                            <button id="btn-draw" class="btn btn-primary btn-lg">开始抽奖</button>
+                            <button id="btn-draw" class="btn btn-primary btn-lg" data-i18n="draw.start">开始抽奖</button>
                         </div>
                         <div id="draw-display" class="draw-display">
-                            <div class="draw-placeholder">点击"开始抽奖"开始</div>
+                            <div class="draw-placeholder" data-i18n="draw.placeholder">点击"开始抽奖"开始</div>
                         </div>
                     </div>
                 </section>
 
                 <section class="panel">
                     <div class="panel-header">
-                        <h2>中奖记录</h2>
+                        <h2 data-i18n="panels.drawResult">中奖记录</h2>
                         <div class="panel-actions">
                             <button class="btn btn-sm" onclick="drawSystem.exportResults()">导出结果</button>
                         </div>

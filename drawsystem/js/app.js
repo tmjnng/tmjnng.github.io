@@ -5,14 +5,23 @@ class DrawSystem {
         this.prizeLevels = [];
         this.winners = [];
         this.isDrawing = false;
+        this.currentLang = 'zh';
 
         this.init();
+    }
+
+    t(key) {
+        if (typeof i18n !== 'undefined' && i18n[this.currentLang]) {
+            return i18n[this.currentLang][key] || key;
+        }
+        return key;
     }
 
     init() {
         this.loadData();
         this.bindEvents();
         this.renderAll();
+        this.initLanguageSelector();
     }
 
     loadData() {
@@ -85,9 +94,9 @@ class DrawSystem {
                     this.importData(data, type);
                 }
                 this.renderAll();
-                alert('导入成功');
+                alert(this.t('messages.importSuccess'));
             } catch (error) {
-                alert('导入失败：' + error.message);
+                alert(this.t('messages.importFailed') + ': ' + error.message);
             }
         };
         reader.readAsText(file);
@@ -179,7 +188,7 @@ class DrawSystem {
         const count = parseInt(document.getElementById('draw-count').value);
 
         if (!levelId) {
-            alert('请选择奖品级别');
+            alert(this.t('messages.selectPrizeLevel'));
             return;
         }
 
@@ -188,7 +197,7 @@ class DrawSystem {
         const availableCount = availablePrizes.reduce((sum, p) => sum + (p.count - p.given), 0);
 
         if (availableCount === 0) {
-            alert('该级别奖品已全部送出');
+            alert(this.t('messages.prizesAllGiven'));
             return;
         }
 
@@ -197,7 +206,7 @@ class DrawSystem {
         );
 
         if (eligibleParticipants.length === 0) {
-            alert('没有可抽奖的参与者');
+            alert(this.t('messages.noParticipants'));
             return;
         }
 
@@ -580,7 +589,7 @@ class DrawSystem {
         this.saveData();
         this.renderAll();
 
-        alert('示例数据导入成功！\n\n奖品级别：5个\n名单人数：8人\n奖品数量：5种');
+        alert(this.t('messages.sampleImported'));
     }
 
     renderAll() {
@@ -726,6 +735,16 @@ class DrawSystem {
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;
+    }
+
+    initLanguageSelector() {
+        const selector = document.getElementById('language-selector');
+        if (selector) {
+            selector.addEventListener('change', (e) => {
+                this.currentLang = e.target.value;
+                updateLanguage(e.target.value);
+            });
+        }
     }
 }
 

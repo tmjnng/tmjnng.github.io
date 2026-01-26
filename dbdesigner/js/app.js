@@ -5,8 +5,16 @@ class DatabaseDesigner {
         this.selectedElement = null;
         this.isDragging = false;
         this.dragOffset = { x: 0, y: 0 };
+        this.currentLang = 'zh';
         
         this.initApp();
+    }
+
+    t(key) {
+        if (typeof i18n !== 'undefined' && i18n[this.currentLang]) {
+            return i18n[this.currentLang][key] || key;
+        }
+        return key;
     }
 
     initApp() {
@@ -103,7 +111,7 @@ class DatabaseDesigner {
         };
         
         localStorage.setItem('databaseDesign', JSON.stringify(design));
-        alert('设计已保存到本地存储');
+        alert(this.t('messages.saved'));
     }
 
     showExportModal() {
@@ -156,7 +164,7 @@ class DatabaseDesigner {
         const file = fileInput.files[0];
         
         if (!file) {
-            alert('请选择文件');
+            alert(this.t('messages.selectFile'));
             return;
         }
 
@@ -172,9 +180,9 @@ class DatabaseDesigner {
                 this.updateTableList();
                 this.updatePropertyPanel();
                 document.getElementById('import-modal').style.display = 'none';
-                alert('设计已成功导入');
+                alert(this.t('messages.imported'));
             } catch (error) {
-                alert('导入失败：无效的JSON文件');
+                alert(this.t('messages.importFailed'));
             }
         };
         reader.readAsText(file);
@@ -186,7 +194,7 @@ class DatabaseDesigner {
         const file = fileInput.files[0];
         
         if (!file) {
-            alert('请选择文件');
+            alert(this.t('messages.selectFile'));
             return;
         }
 
@@ -196,9 +204,9 @@ class DatabaseDesigner {
                 const sql = event.target.result;
                 this.parseSQL(sql, sqlType);
                 document.getElementById('import-modal').style.display = 'none';
-                alert('设计已成功导入');
+                alert(this.t('messages.imported'));
             } catch (error) {
-                alert('导入失败：无效的SQL文件');
+                alert(this.t('messages.importFailed'));
             }
         };
         reader.readAsText(file);
@@ -409,7 +417,7 @@ class DatabaseDesigner {
         addFieldBtn.style.cursor = 'pointer';
         addFieldBtn.style.borderTop = '1px solid #f0f0f0';
         addFieldBtn.style.marginTop = '4px';
-        addFieldBtn.textContent = '+ 添加字段';
+        addFieldBtn.textContent = '+ ' + this.t('tables.addField');
         addFieldBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             this.addField(table);
@@ -533,7 +541,7 @@ class DatabaseDesigner {
 
     addFieldToSelected() {
         if (!this.selectedElement || !this.selectedElement.fields) {
-            alert('请先选择一个表');
+            alert(this.t('messages.selectTable'));
             return;
         }
         this.addField(this.selectedElement);
@@ -541,7 +549,7 @@ class DatabaseDesigner {
 
     addRelation() {
         if (this.tables.length < 2) {
-            alert('至少需要两个表才能创建关系');
+            alert(this.t('messages.atLeastTwoTables'));
             return;
         }
 
@@ -559,7 +567,7 @@ class DatabaseDesigner {
 
         this.relations.push(newRelation);
         this.renderRelations();
-        alert('关系已添加，可以在属性面板中编辑');
+        alert(this.t('messages.relationAdded'));
     }
 
     updateTableList() {

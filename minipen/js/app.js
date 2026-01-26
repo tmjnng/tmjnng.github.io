@@ -5,9 +5,17 @@ class MiniPen {
         this.jsEditor = document.getElementById('js-editor');
         this.preview = document.getElementById('preview');
         this.consoleOutput = document.getElementById('console-output');
+        this.currentLang = 'zh';
         
         this.debounceTimer = null;
         this.initApp();
+    }
+
+    t(key) {
+        if (typeof i18n !== 'undefined' && i18n[this.currentLang]) {
+            return i18n[this.currentLang][key] || key;
+        }
+        return key;
     }
 
     initApp() {
@@ -62,101 +70,9 @@ class MiniPen {
     }
 
     loadDefaultCode() {
-        this.htmlEditor.value = `<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的页面</title>
-</head>
-<body>
-    <div class="container">
-        <h1>欢迎使用 MiniPen</h1>
-        <p>这是一个在线代码编辑器，支持HTML、CSS和JavaScript。</p>
-        <button id="myButton">点击我</button>
-        <div id="result"></div>
-    </div>
-</body>
-</html>`;
-
-        this.cssEditor.value = `* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.container {
-    background: white;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    text-align: center;
-    max-width: 500px;
-}
-
-h1 {
-    color: #333;
-    margin-bottom: 20px;
-}
-
-p {
-    color: #666;
-    margin-bottom: 20px;
-    line-height: 1.6;
-}
-
-button {
-    padding: 12px 30px;
-    background: #667eea;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background 0.3s ease;
-}
-
-button:hover {
-    background: #764ba2;
-}
-
-#result {
-    margin-top: 20px;
-    padding: 15px;
-    background: #f0f0f0;
-    border-radius: 5px;
-    min-height: 40px;
-}`;
-
-        this.jsEditor.value = `document.addEventListener('DOMContentLoaded', function() {
-    const button = document.getElementById('myButton');
-    const result = document.getElementById('result');
-    
-    button.addEventListener('click', function() {
-        const messages = [
-            '你好！',
-            '欢迎来到MiniPen！',
-            '这是一个很棒的工具！',
-            '继续探索吧！'
-        ];
-        const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-        result.textContent = randomMessage;
-        
-        console.log('按钮被点击了！');
-        console.log('随机消息:', randomMessage);
-    });
-    
-    console.log('页面加载完成！');
-});`;
+        this.htmlEditor.value = i18n[this.currentLang].defaultCode.html;
+        this.cssEditor.value = i18n[this.currentLang].defaultCode.css;
+        this.jsEditor.value = i18n[this.currentLang].defaultCode.js;
     }
 
     debounceUpdate() {
@@ -259,7 +175,7 @@ button:hover {
     }
 
     clearEditors() {
-        if (confirm('确定要清空所有编辑器吗？')) {
+        if (confirm(this.t('messages.confirmClear'))) {
             this.htmlEditor.value = '';
             this.cssEditor.value = '';
             this.jsEditor.value = '';
@@ -269,7 +185,7 @@ button:hover {
     }
 
     newProject() {
-        if (confirm('确定要新建项目吗？当前未保存的更改将丢失。')) {
+        if (confirm(this.t('messages.confirmNew'))) {
             this.clearEditors();
             this.loadDefaultCode();
             this.updatePreview();
@@ -285,7 +201,7 @@ button:hover {
         };
         
         localStorage.setItem('minipenProject', JSON.stringify(project));
-        this.addConsoleMessage('项目已保存到本地存储', 'info');
+        this.addConsoleMessage(this.t('messages.saved'), 'info');
     }
 
     exportProject() {
@@ -327,9 +243,9 @@ button:hover {
                             this.jsEditor.value = project.js;
                         }
                         this.updatePreview();
-                        this.addConsoleMessage('项目已成功导入', 'info');
+                        this.addConsoleMessage(this.t('messages.imported'), 'info');
                     } catch (error) {
-                        this.addConsoleMessage('导入失败：无效的JSON文件', 'error');
+                        this.addConsoleMessage(this.t('messages.importFailed'), 'error');
                     }
                 };
                 reader.readAsText(file);
@@ -357,9 +273,9 @@ button:hover {
         
         const toggleBtn = document.querySelector(`[data-panel="${panel}"]`);
         if (panelElement.classList.contains('collapsed')) {
-            toggleBtn.textContent = '展开';
+            toggleBtn.textContent = this.t('buttons.expand');
         } else {
-            toggleBtn.textContent = '折叠';
+            toggleBtn.textContent = this.t('buttons.collapse');
         }
     }
 

@@ -52,7 +52,17 @@ const i18n = {
       winner: "Winner",
       prize: "Prize",
       level: "Level",
-      noWinner: "No winner yet. Click 'Start Draw' to start."
+      noWinner: "No winner yet. Click 'Start Draw' to start.",
+      selectLevel: "Select Prize Level",
+      count: "Draw Count",
+      placeholder: "Click 'Start Draw' to begin"
+    },
+    panels: {
+      participantManagement: "Participant Management",
+      prizeManagement: "Prize Management",
+      prizeLevelManagement: "Prize Level Management",
+      drawResult: "Draw Result",
+      drawArea: "Draw Area"
     },
     messages: {
       confirmReset: "Are you sure you want to reset all data? This action cannot be undone.",
@@ -66,7 +76,10 @@ const i18n = {
       noParticipants: "Please add participants first!",
       noPrizes: "Please add prizes first!",
       noPrizeLevels: "Please add prize levels first!",
-      fileFormatError: "File format error. Please use JSON, CSV, or TXT format."
+      fileFormatError: "File format error. Please use JSON, CSV, or TXT format.",
+      selectPrizeLevel: "Please select a prize level",
+      prizesAllGiven: "All prizes in this level have been given out",
+      sampleImported: "Sample data imported successfully!\n\nPrize levels: 5\nParticipants: 8\nPrizes: 5 types"
     },
     buttons: {
       confirm: "Confirm",
@@ -130,7 +143,56 @@ const i18n = {
       winner: "中奖者",
       prize: "奖品",
       level: "级别",
-      noWinner: "暂无中奖者，点击'开始抽奖'开始。"
+      noWinner: "暂无中奖者，点击'开始抽奖'开始。",
+      selectLevel: "选择奖品级别",
+      count: "抽取人数",
+      placeholder: "点击'开始抽奖'开始"
+    },
+    panels: {
+      participantManagement: "名单管理",
+      prizeManagement: "奖品管理",
+      prizeLevelManagement: "奖品级别",
+      drawResult: "中奖记录",
+      drawArea: "抽奖区域"
+    },
+    participant: {
+      import: "导入名单",
+      exportSample: "示例",
+      add: "添加名单",
+      name: "姓名",
+      phone: "电话",
+      email: "邮箱",
+      department: "部门",
+      actions: "操作",
+      delete: "删除",
+      empty: "暂无名单，点击'添加名单'添加一个。",
+      total: "总人数: ",
+      won: "已中奖: ",
+      remaining: "剩余: "
+    },
+    prize: {
+      import: "导入奖品",
+      exportSample: "示例",
+      add: "添加奖品",
+      name: "奖品名称",
+      quantity: "数量",
+      level: "奖品级别",
+      actions: "操作",
+      delete: "删除",
+      empty: "暂无奖品，点击'添加奖品'添加一个。",
+      total: "总奖品: ",
+      given: "已送出: "
+    },
+    prizeLevel: {
+      import: "导入奖品级别",
+      exportSample: "示例",
+      add: "添加奖品级别",
+      name: "级别名称",
+      probability: "概率 (%)",
+      color: "颜色",
+      actions: "操作",
+      delete: "删除",
+      empty: "暂无奖品级别，点击'添加奖品级别'添加一个。"
     },
     messages: {
       confirmReset: "确定要重置所有数据吗？此操作无法撤销。",
@@ -144,7 +206,10 @@ const i18n = {
       noParticipants: "请先添加名单！",
       noPrizes: "请先添加奖品！",
       noPrizeLevels: "请先添加奖品级别！",
-      fileFormatError: "文件格式错误。请使用JSON、CSV或TXT格式。"
+      fileFormatError: "文件格式错误。请使用JSON、CSV或TXT格式。",
+      selectPrizeLevel: "请选择奖品级别",
+      prizesAllGiven: "该级别奖品已全部送出",
+      sampleImported: "示例数据导入成功！\n\n奖品级别：5个\n名单人数：8人\n奖品数量：5种"
     },
     buttons: {
       confirm: "确定",
@@ -166,7 +231,8 @@ const i18n = {
       participantManagement: "参加者管理",
       prizeManagement: "景品管理",
       prizeLevelManagement: "景品レベル管理",
-      drawResult: "抽選結果"
+      drawResult: "抽選結果",
+      drawArea: "抽選エリア"
     },
     participant: {
       import: "参加者をインポート",
@@ -178,7 +244,10 @@ const i18n = {
       department: "部門",
       actions: "操作",
       delete: "削除",
-      empty: "参加者がいません。「参加者を追加」をクリックして追加してください。"
+      empty: "参加者がいません。「参加者を追加」をクリックして追加してください。",
+      total: "総人数: ",
+      won: "当選済み: ",
+      remaining: "残り: "
     },
     prize: {
       import: "景品をインポート",
@@ -189,7 +258,9 @@ const i18n = {
       level: "景品レベル",
       actions: "操作",
       delete: "削除",
-      empty: "景品がありません。「景品を追加」をクリックして追加してください。"
+      empty: "景品がありません。「景品を追加」をクリックして追加してください。",
+      total: "総景品: ",
+      given: "配布済み: "
     },
     prizeLevel: {
       import: "景品レベルをインポート",
@@ -208,7 +279,10 @@ const i18n = {
       winner: "当選者",
       prize: "景品",
       level: "レベル",
-      noWinner: "当選者がいません。「抽選開始」をクリックして開始してください。"
+      noWinner: "当選者がいません。「抽選開始」をクリックして開始してください。",
+      selectLevel: "景品レベルを選択",
+      count: "抽選人数",
+      placeholder: "「抽選開始」をクリックして開始"
     },
     messages: {
       confirmReset: "すべてのデータをリセットしますか？この操作は取り消せません。",
@@ -222,7 +296,10 @@ const i18n = {
       noParticipants: "まず参加者を追加してください！",
       noPrizes: "まず景品を追加してください！",
       noPrizeLevels: "まず景品レベルを追加してください！",
-      fileFormatError: "ファイルフォーマットエラー。JSON、CSV、またはTXT形式を使用してください。"
+      fileFormatError: "ファイルフォーマットエラー。JSON、CSV、またはTXT形式を使用してください。",
+      selectPrizeLevel: "景品レベルを選択してください",
+      prizesAllGiven: "このレベルの景品はすべて配布されました",
+      sampleImported: "サンプルデータが正常にインポートされました！\n\n景品レベル：5\n参加者：8\n景品：5種類"
     },
     buttons: {
       confirm: "確定",
@@ -248,8 +325,23 @@ function updateLanguage(lang) {
   
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
-    if (langData[key]) {
-      el.textContent = langData[key];
+    const keys = key.split('.');
+    let value = langData;
+    for (const k of keys) {
+      if (value && value[k]) {
+        value = value[k];
+      } else {
+        value = null;
+        break;
+      }
+    }
+    if (value) {
+      const childNodes = Array.from(el.childNodes);
+      childNodes.forEach(node => {
+        if (node.nodeType === Node.TEXT_NODE) {
+          node.textContent = value;
+        }
+      });
     }
   });
 }

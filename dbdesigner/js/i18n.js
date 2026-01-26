@@ -53,7 +53,10 @@ const i18n = {
       importFailed: "Import failed: Invalid JSON file",
       exportFormat: "Please select export format:\n1. JSON\n2. SQL",
       exportSuccess: "Design exported successfully",
-      atLeastTwoTables: "At least two tables are required to create a relation"
+      atLeastTwoTables: "At least two tables are required to create a relation",
+      selectFile: "Please select a file",
+      selectTable: "Please select a table first",
+      relationAdded: "Relation added, you can edit it in the property panel"
     },
     dataTypes: {
       INT: "INT",
@@ -120,7 +123,10 @@ const i18n = {
       importFailed: "导入失败：无效的JSON文件",
       exportFormat: "请选择导出格式：\n1. JSON\n2. SQL",
       exportSuccess: "设计导出成功",
-      atLeastTwoTables: "至少需要两个表才能创建关系"
+      atLeastTwoTables: "至少需要两个表才能创建关系",
+      selectFile: "请选择文件",
+      selectTable: "请先选择一个表",
+      relationAdded: "关系已添加，可以在属性面板中编辑"
     },
     dataTypes: {
       INT: "INT",
@@ -187,7 +193,10 @@ const i18n = {
       importFailed: "インポート失敗：無効なJSONファイル",
       exportFormat: "エクスポート形式を選択してください：\n1. JSON\n2. SQL",
       exportSuccess: "設計が正常にエクスポートされました",
-      atLeastTwoTables: "リレーションを作成するには少なくとも2つのテーブルが必要です"
+      atLeastTwoTables: "リレーションを作成するには少なくとも2つのテーブルが必要です",
+      selectFile: "ファイルを選択してください",
+      selectTable: "まずテーブルを選択してください",
+      relationAdded: "リレーションが追加されました。プロパティパネルで編集できます"
     },
     dataTypes: {
       INT: "INT",
