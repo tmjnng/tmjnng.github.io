@@ -14,6 +14,7 @@ class DatabaseDesigner {
         this.initCanvas();
         this.updateTableList();
         this.initTimeDisplay();
+        this.initLanguageSelector();
     }
 
     bindEvents() {
@@ -958,6 +959,15 @@ class DatabaseDesigner {
         } catch (error) {
             console.error('获取外网IP失败:', error);
             ipDisplay.textContent = 'IP: 获取失败';
+        }
+    }
+
+    initLanguageSelector() {
+        const selector = document.getElementById('language-selector');
+        if (selector) {
+            selector.addEventListener('change', function() {
+                updateLanguage(this.value);
+            });
         }
     }
 }

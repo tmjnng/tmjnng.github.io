@@ -5,6 +5,10 @@ const i18n = {
     navHome: "Home",
     navArchives: "Archives",
     navTools: "Tools",
+    navDbDesigner: "Database Designer",
+    navDrawSystem: "Lottery System",
+    navExam: "JLPT Practice",
+    navMiniPen: "Code Editor",
     searchPlaceholder: "Search",
     toolsTitle: "Development Tools",
     toolsDescription: "Provides commonly used development tools such as JSON formatting, XML formatting, MD5 encryption, AES encryption and decryption, etc.",
@@ -112,6 +116,10 @@ const i18n = {
     navHome: "首页",
     navArchives: "归档",
     navTools: "工具集",
+    navDbDesigner: "数据库设计",
+    navDrawSystem: "抽奖系统",
+    navExam: "日语刷题",
+    navMiniPen: "代码编辑器",
     searchPlaceholder: "搜索",
     toolsTitle: "开发工具集",
     toolsDescription: "提供JSON格式化、XML格式化、MD5加密、AES加密解密等开发常用工具",
@@ -219,6 +227,10 @@ const i18n = {
     navHome: "ホーム",
     navArchives: "アーカイブ",
     navTools: "ツール集",
+    navDbDesigner: "データベース設計",
+    navDrawSystem: "抽選システム",
+    navExam: "日本語練習",
+    navMiniPen: "コードエディタ",
     searchPlaceholder: "検索",
     toolsTitle: "開発ツール集",
     toolsDescription: "JSONフォーマット、XMLフォーマット、MD5暗号化、AES暗号化/復号など、開発によく使われるツールを提供します。",
@@ -338,6 +350,10 @@ function updateLanguage(lang) {
   document.querySelectorAll('.main-nav-link')[0].textContent = langData.navHome;
   document.querySelectorAll('.main-nav-link')[1].textContent = langData.navArchives;
   document.querySelectorAll('.main-nav-link')[2].textContent = langData.navTools;
+  document.querySelectorAll('.main-nav-link')[3].textContent = langData.navDbDesigner;
+  document.querySelectorAll('.main-nav-link')[4].textContent = langData.navDrawSystem;
+  document.querySelectorAll('.main-nav-link')[5].textContent = langData.navExam;
+  document.querySelectorAll('.main-nav-link')[6].textContent = langData.navMiniPen;
   
   // 更新搜索框
   document.querySelector('.search-form-input').placeholder = langData.searchPlaceholder;

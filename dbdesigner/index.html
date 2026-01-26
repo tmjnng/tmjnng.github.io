@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Database Designer - Web版数据库设计工具</title>
     <link rel="stylesheet" href="css/style.css">
+    <script src="js/i18n.js"></script>
 </head>
 <body>
     <div id="app-container">
@@ -20,6 +21,11 @@
                 </div>
             </div>
             <div class="toolbar-right">
+                <select id="language-selector" style="margin-right: 15px; padding: 5px; border: 1px solid #ddd; border-radius: 3px;">
+                    <option value="en">English</option>
+                    <option value="zh">中文</option>
+                    <option value="ja">日本語</option>
+                </select>
                 <button id="btn-add-table">添加表</button>
                 <button id="btn-add-field">添加字段</button>
                 <button id="btn-add-relation">添加关系</button>

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MiniPen - 在线代码编辑器</title>
     <link rel="stylesheet" href="css/style.css">
+    <script src="js/i18n.js"></script>
 </head>
 <body>
     <div id="app-container">
@@ -21,6 +22,11 @@
                 </div>
             </div>
             <div class="toolbar-center">
+                <select id="language-selector" style="margin-right: 15px; padding: 5px; border: 1px solid #4e4e4e; border-radius: 3px; background: #3e3e3e; color: #fff;">
+                    <option value="en">English</option>
+                    <option value="zh">中文</option>
+                    <option value="ja">日本語</option>
+                </select>
                 <div id="current-time" class="time-display">00:00:00</div>
                 <div id="external-ip" class="ip-display">获取IP中...</div>
             </div>

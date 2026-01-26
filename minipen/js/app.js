@@ -15,6 +15,7 @@ class MiniPen {
         this.loadDefaultCode();
         this.initTimeDisplay();
         this.fetchExternalIP();
+        this.initLanguageSelector();
         this.updatePreview();
     }
 
@@ -342,10 +343,11 @@ button:hover {
         previewContainer.classList.toggle('fullscreen');
         
         const btn = document.getElementById('btn-fullscreen');
+        const langData = i18n[currentLang];
         if (previewContainer.classList.contains('fullscreen')) {
-            btn.textContent = '退出全屏';
+            btn.textContent = langData.buttons.close || '退出全屏';
         } else {
-            btn.textContent = '全屏预览';
+            btn.textContent = langData.toolbar.fullscreen || '全屏预览';
         }
     }
 
@@ -454,7 +456,16 @@ window.addEventListener('message', (event) => {
             miniPen.addConsoleMessage(message, method);
         }
     }
-});
+
+    initLanguageSelector() {
+        const selector = document.getElementById('language-selector');
+        if (selector) {
+            selector.addEventListener('change', function() {
+                updateLanguage(this.value);
+            });
+        }
+    }
+}
 
 // 初始化应用
 let miniPen;
