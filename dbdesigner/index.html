@@ -131,6 +131,26 @@
         </div>
     </div>
 
+    <div id="export-modal" class="modal">
+        <div class="modal-content">
+            <h3>导出SQL</h3>
+            <div class="form-group">
+                <label for="db-type">数据库类型</label>
+                <select id="db-type" required>
+                    <option value="generic">通用SQL</option>
+                    <option value="oracle">Oracle</option>
+                    <option value="postgresql">PostgreSQL</option>
+                    <option value="mysql">MySQL</option>
+                    <option value="sqlserver">SQL Server</option>
+                </select>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn-cancel" onclick="document.getElementById('export-modal').style.display='none'">取消</button>
+                <button type="button" class="btn-save" onclick="designer.exportAsSQL()">导出</button>
+            </div>
+        </div>
+    </div>
+
     <script src="js/app.js"></script>
     <script src="js/table.js"></script>
     <script src="js/relation.js"></script>

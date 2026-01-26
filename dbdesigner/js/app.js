@@ -524,13 +524,7 @@ class DatabaseDesigner {
     }
 
     exportDesign() {
-        const exportType = prompt('请选择导出格式：\n1. JSON\n2. SQL');
-        
-        if (exportType === '1') {
-            this.exportAsJSON();
-        } else if (exportType === '2') {
-            this.exportAsSQL();
-        }
+        document.getElementById('export-modal').style.display = 'block';
     }
 
     exportAsJSON() {
@@ -551,29 +545,91 @@ class DatabaseDesigner {
     }
 
     exportAsSQL() {
+        const dbType = document.getElementById('db-type').value;
         let sql = '';
-        
-        // 生成表结构SQL
+
+        const typeMapping = {
+            generic: {
+                INT: 'INT',
+                VARCHAR: 'VARCHAR',
+                TEXT: 'TEXT',
+                DATE: 'DATE',
+                DATETIME: 'DATETIME',
+                BOOLEAN: 'BOOLEAN',
+                FLOAT: 'FLOAT'
+            },
+            oracle: {
+                INT: 'NUMBER(10)',
+                VARCHAR: 'VARCHAR2',
+                TEXT: 'CLOB',
+                DATE: 'DATE',
+                DATETIME: 'TIMESTAMP',
+                BOOLEAN: 'NUMBER(1)',
+                FLOAT: 'NUMBER(10,2)'
+            },
+            postgresql: {
+                INT: 'INTEGER',
+                VARCHAR: 'VARCHAR',
+                TEXT: 'TEXT',
+                DATE: 'DATE',
+                DATETIME: 'TIMESTAMP',
+                BOOLEAN: 'BOOLEAN',
+                FLOAT: 'DOUBLE PRECISION'
+            },
+            mysql: {
+                INT: 'INT',
+                VARCHAR: 'VARCHAR',
+                TEXT: 'TEXT',
+                DATE: 'DATE',
+                DATETIME: 'DATETIME',
+                BOOLEAN: 'TINYINT(1)',
+                FLOAT: 'FLOAT'
+            },
+            sqlserver: {
+                INT: 'INT',
+                VARCHAR: 'NVARCHAR',
+                TEXT: 'NVARCHAR(MAX)',
+                DATE: 'DATE',
+                DATETIME: 'DATETIME',
+                BOOLEAN: 'BIT',
+                FLOAT: 'FLOAT'
+            }
+        };
+
+        const mapping = typeMapping[dbType] || typeMapping.generic;
+
         this.tables.forEach(table => {
             sql += `CREATE TABLE ${table.name} (\n`;
             const fieldsSql = table.fields.map(field => {
-                let fieldSql = `  ${field.name} ${field.type}`;
-                if (field.length) {
-                    fieldSql += `(${field.length})`;
+                let fieldSql = `  ${field.name} ${mapping[field.type]}`;
+                
+                if (field.length && field.type === 'VARCHAR') {
+                    if (dbType === 'oracle') {
+                        fieldSql = `  ${field.name} VARCHAR2(${field.length})`;
+                    } else {
+                        fieldSql = `  ${field.name} VARCHAR(${field.length})`;
+                    }
                 }
+                
                 if (!field.nullable) {
                     fieldSql += ' NOT NULL';
                 }
+                
                 if (field.default) {
-                    fieldSql += ` DEFAULT '${field.default}'`;
+                    if (dbType === 'oracle') {
+                        fieldSql += ` DEFAULT '${field.default}'`;
+                    } else {
+                        fieldSql += ` DEFAULT '${field.default}'`;
+                    }
                 }
+                
                 if (field.unique) {
                     fieldSql += ' UNIQUE';
                 }
+                
                 return fieldSql;
             }).join(',\n');
             
-            // 添加主键约束
             const primaryFields = table.fields.filter(f => f.primary);
             if (primaryFields.length > 0) {
                 const primarySql = `,\n  PRIMARY KEY (${primaryFields.map(f => f.name).join(', ')})`;
@@ -584,18 +640,36 @@ class DatabaseDesigner {
             
             sql += '\n);\n\n';
         });
-        
-        // 生成关系SQL
+
         this.relations.forEach(relation => {
-            sql += `ALTER TABLE ${relation.toTable} ADD FOREIGN KEY (${relation.fromField}) REFERENCES ${relation.fromTable}(${relation.toField});\n`;
+            if (dbType === 'oracle') {
+                sql += `ALTER TABLE ${relation.toTable} ADD CONSTRAINT fk_${relation.toTable}_${relation.fromTable} FOREIGN KEY (${relation.fromField}) REFERENCES ${relation.fromTable}(${relation.toField});\n`;
+            } else if (dbType === 'postgresql') {
+                sql += `ALTER TABLE ${relation.toTable} ADD CONSTRAINT fk_${relation.toTable}_${relation.fromTable} FOREIGN KEY (${relation.fromField}) REFERENCES ${relation.fromTable}(${relation.toField}) ON DELETE CASCADE;\n`;
+            } else if (dbType === 'mysql') {
+                sql += `ALTER TABLE ${relation.toTable} ADD CONSTRAINT fk_${relation.toTable}_${relation.fromTable} FOREIGN KEY (${relation.fromField}) REFERENCES ${relation.fromTable}(${relation.toField}) ON DELETE CASCADE ON UPDATE CASCADE;\n`;
+            } else if (dbType === 'sqlserver') {
+                sql += `ALTER TABLE ${relation.toTable} ADD CONSTRAINT fk_${relation.toTable}_${relation.fromTable} FOREIGN KEY (${relation.fromField}) REFERENCES ${relation.fromTable}(${relation.toField}) ON DELETE CASCADE;\n`;
+            } else {
+                sql += `ALTER TABLE ${relation.toTable} ADD FOREIGN KEY (${relation.fromField}) REFERENCES ${relation.fromTable}(${relation.toField});\n`;
+            }
         });
+        
+        document.getElementById('export-modal').style.display = 'none';
         
         const dataStr = sql;
         const dataBlob = new Blob([dataStr], { type: 'text/plain' });
         const url = URL.createObjectURL(dataBlob);
         const link = document.createElement('a');
         link.href = url;
-        link.download = `database-design-${new Date().toISOString().split('T')[0]}.sql`;
+        const dbTypeName = {
+            generic: 'generic',
+            oracle: 'oracle',
+            postgresql: 'postgresql',
+            mysql: 'mysql',
+            sqlserver: 'sqlserver'
+        }[dbType];
+        link.download = `database-design-${dbTypeName}-${new Date().toISOString().split('T')[0]}.sql`;
         link.click();
         URL.revokeObjectURL(url);
     }
