@@ -1,7 +1,7 @@
 {
   "name": "JLPT日语刷题系统与工具集合",
   "version": "1.0.0",
-  "description": "包含JLPT日语刷题系统和多种工具的网站项目",
+  "description": "包含JLPT日语刷题系统、数据库设计工具和多种工具的网站项目",
   "author": "tmjnng",
   "skills": [
     {
@@ -16,6 +16,20 @@
         "JSON"
       ],
       "scope": "exam/"
+    },
+    {
+      "name": "数据库设计工具开发",
+      "description": "开发和维护数据库设计工具，支持多种数据库SQL导出，包括Oracle、PostgreSQL、MySQL、SQL Server",
+      "keywords": ["数据库设计", "SQL导出", "前端工具", "数据库建模"],
+      "tools": [
+        "JavaScript",
+        "HTML5",
+        "CSS3",
+        "拖拽功能",
+        "数据类型映射",
+        "SQL生成"
+      ],
+      "scope": "dbdesigner/"
     },
     {
       "name": "工具集开发",
@@ -67,7 +81,7 @@
   ],
   "workspace": {
     "root": "C:\\Users\\NEWCON\\Desktop\\vbs\\tool-workspace\\tmjnng.github.io",
-    "main_modules": ["exam", "tool"],
+    "main_modules": ["exam", "tool", "dbdesigner"],
     "development": {
       "environment": "Windows",
       "preferred_commands": ["PowerShell", "CMD"],
