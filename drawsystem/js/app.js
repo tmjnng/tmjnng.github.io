@@ -356,7 +356,7 @@ class DrawSystem {
     addPrizeLevel() {
         const name = prompt('请输入级别名称:');
         if (name && name.trim()) {
-            this.prizes.push({
+            this.prizeLevels.push({
                 id: `level_${Date.now()}`,
                 name: name.trim(),
                 color: '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0'),
@@ -365,6 +365,73 @@ class DrawSystem {
             this.saveData();
             this.renderAll();
         }
+    }
+
+    editPrizeLevel(id) {
+        const level = this.prizeLevels.find(l => l.id === id);
+        if (!level) return;
+
+        const modalHtml = `
+            <div class="modal active">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>编辑奖品级别</h3>
+                        <button class="modal-close" onclick="this.closest('.modal').remove()">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="edit-level-name">级别名称</label>
+                            <input type="text" id="edit-level-name" value="${this.escapeHtml(level.name)}">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-level-color">颜色</label>
+                            <input type="color" id="edit-level-color" value="${level.color}">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-level-order">顺序</label>
+                            <input type="number" id="edit-level-order" value="${level.order}" min="1">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn" onclick="this.closest('.modal').remove()">取消</button>
+                        <button class="btn btn-primary" onclick="drawSystem.savePrizeLevel('${id}')">保存</button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        document.getElementById('modal-container').innerHTML = modalHtml;
+    }
+
+    savePrizeLevel(id) {
+        const level = this.prizeLevels.find(l => l.id === id);
+        if (!level) return;
+
+        level.name = document.getElementById('edit-level-name').value.trim();
+        level.color = document.getElementById('edit-level-color').value;
+        level.order = parseInt(document.getElementById('edit-level-order').value) || 1;
+
+        this.prizeLevels.sort((a, b) => a.order - b.order);
+        this.saveData();
+        this.renderAll();
+
+        document.querySelector('.modal').remove();
+    }
+
+    movePrizeLevel(id, direction) {
+        const index = this.prizeLevels.findIndex(l => l.id === id);
+        if (index === -1) return;
+
+        const newIndex = index + direction;
+        if (newIndex < 0 || newIndex >= this.prizeLevels.length) return;
+
+        const temp = this.prizeLevels[index].order;
+        this.prizeLevels[index].order = this.prizeLevels[newIndex].order;
+        this.prizeLevels[newIndex].order = temp;
+
+        this.prizeLevels.sort((a, b) => a.order - b.order);
+        this.saveData();
+        this.renderAll();
     }
 
     deletePrizeLevel(id) {
@@ -391,6 +458,44 @@ class DrawSystem {
         const link = document.createElement('a');
         link.href = url;
         link.download = `抽奖结果_${new Date().toLocaleDateString()}.json`;
+        link.click();
+        URL.revokeObjectURL(url);
+    }
+
+    exportSampleParticipant() {
+        const sampleData = [
+            { id: "participant_1", name: "张三", phone: "13800138001", department: "技术部" },
+            { id: "participant_2", name: "李四", phone: "13800138002", department: "市场部" },
+            { id: "participant_3", name: "王五", phone: "13800138003", department: "财务部" },
+            { id: "participant_4", name: "赵六", phone: "13800138004", department: "人事部" },
+            { id: "participant_5", name: "钱七", phone: "13800138005", department: "行政部" }
+        ];
+
+        const json = JSON.stringify(sampleData, null, 2);
+        const blob = new Blob([json], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `名单导入示例.json`;
+        link.click();
+        URL.revokeObjectURL(url);
+    }
+
+    exportSamplePrize() {
+        const sampleData = [
+            { id: "prize_1", name: "iPhone 15 Pro", levelId: "level_1", count: 1, description: "最新款苹果手机" },
+            { id: "prize_2", name: "iPad Air", levelId: "level_2", count: 2, description: "苹果平板电脑" },
+            { id: "prize_3", name: "AirPods Pro", levelId: "level_3", count: 5, description: "苹果无线耳机" },
+            { id: "prize_4", name: "移动电源", levelId: "level_4", count: 10, description: "10000mAh充电宝" },
+            { id: "prize_5", name: "定制水杯", levelId: "level_5", count: 20, description: "公司定制水杯" }
+        ];
+
+        const json = JSON.stringify(sampleData, null, 2);
+        const blob = new Blob([json], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `奖品导入示例.json`;
         link.click();
         URL.revokeObjectURL(url);
     }
@@ -444,13 +549,16 @@ class DrawSystem {
             return;
         }
 
-        container.innerHTML = this.prizeLevels.map(level => `
+        container.innerHTML = this.prizeLevels.map((level, index) => `
             <div class="list-item">
                 <div class="list-item-content">
                     <div class="list-item-name" style="color: ${level.color}">${this.escapeHtml(level.name)}</div>
                     <div class="list-item-meta">顺序: ${level.order}</div>
                 </div>
                 <div class="list-item-actions">
+                    <button class="list-item-btn edit" onclick="drawSystem.movePrizeLevel('${level.id}', -1)" title="上移" ${index === 0 ? 'disabled' : ''}>↑</button>
+                    <button class="list-item-btn edit" onclick="drawSystem.movePrizeLevel('${level.id}', 1)" title="下移" ${index === this.prizeLevels.length - 1 ? 'disabled' : ''}>↓</button>
+                    <button class="list-item-btn edit" onclick="drawSystem.editPrizeLevel('${level.id}')">编辑</button>
                     <button class="list-item-btn delete" onclick="drawSystem.deletePrizeLevel('${level.id}')">删除</button>
                 </div>
             </div>

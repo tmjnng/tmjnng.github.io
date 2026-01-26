@@ -23,6 +23,7 @@
                         <div class="panel-actions">
                             <input type="file" id="participant-file" accept=".json,.csv,.txt" style="display: none;">
                             <button class="btn btn-sm" onclick="document.getElementById('participant-file').click()">导入名单</button>
+                            <button class="btn btn-sm" onclick="drawSystem.exportSampleParticipant()">示例</button>
                             <button class="btn btn-sm btn-success" onclick="drawSystem.addParticipant()">添加名单</button>
                         </div>
                     </div>
@@ -52,6 +53,7 @@
                         <div class="panel-actions">
                             <input type="file" id="prize-file" accept=".json,.csv,.txt" style="display: none;">
                             <button class="btn btn-sm" onclick="document.getElementById('prize-file').click()">导入奖品</button>
+                            <button class="btn btn-sm" onclick="drawSystem.exportSamplePrize()">示例</button>
                             <button class="btn btn-sm btn-success" onclick="drawSystem.addPrize()">添加奖品</button>
                         </div>
                     </div>
