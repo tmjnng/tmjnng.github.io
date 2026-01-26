@@ -19,12 +19,32 @@ class DatabaseDesigner {
         // 工具栏按钮事件
         document.getElementById('btn-new').addEventListener('click', () => this.newDesign());
         document.getElementById('btn-save').addEventListener('click', () => this.saveDesign());
-        document.getElementById('btn-export').addEventListener('click', () => this.exportDesign());
-        document.getElementById('btn-import').addEventListener('click', () => this.importDesign());
+        document.getElementById('btn-export').addEventListener('click', () => this.showExportModal());
+        document.getElementById('btn-import').addEventListener('click', () => this.showImportModal());
         document.getElementById('btn-add-table').addEventListener('click', () => this.addTable());
         document.getElementById('btn-add-field').addEventListener('click', () => this.addFieldToSelected());
         document.getElementById('btn-add-relation').addEventListener('click', () => this.addRelation());
         document.getElementById('btn-delete').addEventListener('click', () => this.deleteSelected());
+
+        // 导出格式选择事件
+        document.getElementById('export-format').addEventListener('change', (e) => {
+            const dbTypeGroup = document.getElementById('db-type-group');
+            if (e.target.value === 'sql') {
+                dbTypeGroup.style.display = 'block';
+            } else {
+                dbTypeGroup.style.display = 'none';
+            }
+        });
+
+        // 导入格式选择事件
+        document.getElementById('import-format').addEventListener('change', (e) => {
+            const sqlTypeGroup = document.getElementById('import-sql-type-group');
+            if (e.target.value === 'sql') {
+                sqlTypeGroup.style.display = 'block';
+            } else {
+                sqlTypeGroup.style.display = 'none';
+            }
+        });
 
         // 模态框事件
         document.querySelectorAll('.btn-cancel').forEach(btn => {
@@ -84,7 +104,25 @@ class DatabaseDesigner {
         alert('设计已保存到本地存储');
     }
 
+    showExportModal() {
+        document.getElementById('export-modal').style.display = 'block';
+    }
+
+    showImportModal() {
+        document.getElementById('import-modal').style.display = 'block';
+    }
+
     exportDesign() {
+        const exportFormat = document.getElementById('export-format').value;
+        
+        if (exportFormat === 'json') {
+            this.exportAsJSON();
+        } else if (exportFormat === 'sql') {
+            this.exportAsSQL();
+        }
+    }
+
+    exportAsJSON() {
         const design = {
             tables: this.tables,
             relations: this.relations,
@@ -102,32 +140,181 @@ class DatabaseDesigner {
     }
 
     importDesign() {
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = '.json';
-        input.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    try {
-                        const design = JSON.parse(event.target.result);
-                        this.tables = design.tables || [];
-                        this.relations = design.relations || [];
-                        this.clearCanvas();
-                        this.renderTables();
-                        this.renderRelations();
-                        this.updateTableList();
-                        this.updatePropertyPanel();
-                        alert('设计已成功导入');
-                    } catch (error) {
-                        alert('导入失败：无效的JSON文件');
-                    }
-                };
-                reader.readAsText(file);
+        const importFormat = document.getElementById('import-format').value;
+        
+        if (importFormat === 'json') {
+            this.importAsJSON();
+        } else if (importFormat === 'sql') {
+            this.importAsSQL();
+        }
+    }
+
+    importAsJSON() {
+        const fileInput = document.getElementById('import-file');
+        const file = fileInput.files[0];
+        
+        if (!file) {
+            alert('请选择文件');
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            try {
+                const design = JSON.parse(event.target.result);
+                this.tables = design.tables || [];
+                this.relations = design.relations || [];
+                this.clearCanvas();
+                this.renderTables();
+                this.renderRelations();
+                this.updateTableList();
+                this.updatePropertyPanel();
+                document.getElementById('import-modal').style.display = 'none';
+                alert('设计已成功导入');
+            } catch (error) {
+                alert('导入失败：无效的JSON文件');
             }
-        });
-        input.click();
+        };
+        reader.readAsText(file);
+    }
+
+    importAsSQL() {
+        const fileInput = document.getElementById('import-file');
+        const sqlType = document.getElementById('import-sql-type').value;
+        const file = fileInput.files[0];
+        
+        if (!file) {
+            alert('请选择文件');
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            try {
+                const sql = event.target.result;
+                this.parseSQL(sql, sqlType);
+                document.getElementById('import-modal').style.display = 'none';
+                alert('设计已成功导入');
+            } catch (error) {
+                alert('导入失败：无效的SQL文件');
+            }
+        };
+        reader.readAsText(file);
+    }
+
+    parseSQL(sql, dbType) {
+        const createTableRegex = /CREATE\s+TABLE\s+([^\s(]+)\s*\(([\s\S]*?)\);/gi;
+        const alterTableRegex = /ALTER\s+TABLE\s+([^\s]+)\s+ADD\s+(?:CONSTRAINT\s+\w+\s+)?FOREIGN\s+KEY\s*\(([^)]+)\)\s*REFERENCES\s+([^\s(]+)\s*\(([^)]+)\)/gi;
+        
+        const tables = [];
+        const relations = [];
+        let match;
+
+        while ((match = createTableRegex.exec(sql)) !== null) {
+            const tableName = match[1].replace(/`/g, '').replace(/"/g, '');
+            const tableContent = match[2];
+            
+            const fields = [];
+            const fieldRegex = /(\w+)\s+(\w+)(?:\(([^)]+)\))?([^,]*)/gi;
+            let fieldMatch;
+            
+            while ((fieldMatch = fieldRegex.exec(tableContent)) !== null) {
+                const fieldName = fieldMatch[1];
+                let fieldType = fieldMatch[2].toUpperCase();
+                const fieldLength = fieldMatch[3] || '';
+                const fieldOptions = fieldMatch[4] || '';
+                
+                if (fieldName === 'PRIMARY' || fieldName === 'CONSTRAINT' || fieldName === 'FOREIGN') {
+                    continue;
+                }
+                
+                let mappedType = 'VARCHAR';
+                switch (fieldType) {
+                    case 'INT':
+                    case 'INTEGER':
+                    case 'NUMBER':
+                    case 'BIGINT':
+                        mappedType = 'INT';
+                        break;
+                    case 'VARCHAR':
+                    case 'VARCHAR2':
+                    case 'NVARCHAR':
+                    case 'CHAR':
+                        mappedType = 'VARCHAR';
+                        break;
+                    case 'TEXT':
+                    case 'CLOB':
+                    case 'NTEXT':
+                        mappedType = 'TEXT';
+                        break;
+                    case 'DATE':
+                        mappedType = 'DATE';
+                        break;
+                    case 'DATETIME':
+                    case 'TIMESTAMP':
+                        mappedType = 'DATETIME';
+                        break;
+                    case 'BOOLEAN':
+                    case 'BIT':
+                    case 'TINYINT':
+                        mappedType = 'BOOLEAN';
+                        break;
+                    case 'FLOAT':
+                    case 'DOUBLE':
+                    case 'DECIMAL':
+                    case 'NUMERIC':
+                        mappedType = 'FLOAT';
+                        break;
+                }
+                
+                const field = {
+                    id: `field_${Date.now()}_${fields.length}`,
+                    name: fieldName,
+                    type: mappedType,
+                    length: fieldLength,
+                    default: '',
+                    nullable: !fieldOptions.includes('NOT NULL'),
+                    primary: fieldOptions.includes('PRIMARY KEY'),
+                    unique: fieldOptions.includes('UNIQUE'),
+                    comment: ''
+                };
+                
+                fields.push(field);
+            }
+            
+            tables.push({
+                id: `table_${Date.now()}_${tables.length}`,
+                name: tableName,
+                fields: fields,
+                position: {
+                    x: 100 + tables.length * 50,
+                    y: 100 + tables.length * 50
+                }
+            });
+        }
+        
+        while ((match = alterTableRegex.exec(sql)) !== null) {
+            const toTable = match[1].replace(/`/g, '').replace(/"/g, '');
+            const fromField = match[2].replace(/`/g, '').replace(/"/g, '');
+            const fromTable = match[3].replace(/`/g, '').replace(/"/g, '');
+            const toField = match[4].replace(/`/g, '').replace(/"/g, '');
+            
+            relations.push({
+                id: `relation_${Date.now()}_${relations.length}`,
+                fromTable: fromTable,
+                toTable: toTable,
+                fromField: fromField,
+                toField: toField
+            });
+        }
+        
+        this.tables = tables;
+        this.relations = relations;
+        this.clearCanvas();
+        this.renderTables();
+        this.renderRelations();
+        this.updateTableList();
+        this.updatePropertyPanel();
     }
 
     addTable() {
@@ -577,7 +764,30 @@ class DatabaseDesigner {
         URL.revokeObjectURL(url);
     }
 
+    exportDesign() {
+        document.getElementById('export-modal').style.display = 'block';
+    }
+
+    exportAsJSON() {
+        const design = {
+            tables: this.tables,
+            relations: this.relations,
+            timestamp: new Date().toISOString()
+        };
+        
+        const dataStr = JSON.stringify(design, null, 2);
+        const dataBlob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(dataBlob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `database-design-${new Date().toISOString().split('T')[0]}.json`;
+        link.click();
+        URL.revokeObjectURL(url);
+        document.getElementById('export-modal').style.display = 'none';
+    }
+
     exportAsSQL() {
+        const exportFormat = document.getElementById('export-format').value;
         const dbType = document.getElementById('db-type').value;
         let sql = '';
 
@@ -688,8 +898,6 @@ class DatabaseDesigner {
             }
         });
         
-        document.getElementById('export-modal').style.display = 'none';
-        
         const dataStr = sql;
         const dataBlob = new Blob([dataStr], { type: 'text/plain' });
         const url = URL.createObjectURL(dataBlob);
@@ -705,33 +913,7 @@ class DatabaseDesigner {
         link.download = `database-design-${dbTypeName}-${new Date().toISOString().split('T')[0]}.sql`;
         link.click();
         URL.revokeObjectURL(url);
-    }
-
-    importDesign() {
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = '.json';
-        input.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    try {
-                        const design = JSON.parse(event.target.result);
-                        this.tables = design.tables || [];
-                        this.relations = design.relations || [];
-                        this.renderTables();
-                        this.updateTableList();
-                        this.deselectAll();
-                        alert('设计已成功导入');
-                    } catch (error) {
-                        alert('导入失败：无效的JSON文件');
-                    }
-                };
-                reader.readAsText(file);
-            }
-        });
-        input.click();
+        document.getElementById('export-modal').style.display = 'none';
     }
 
     saveDesign() {
