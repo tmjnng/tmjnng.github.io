@@ -60,6 +60,7 @@ class DrawSystem {
 
         document.getElementById('participant-file').addEventListener('change', (e) => this.handleFileImport(e, 'participant'));
         document.getElementById('prize-file').addEventListener('change', (e) => this.handleFileImport(e, 'prize'));
+        document.getElementById('prize-level-file').addEventListener('change', (e) => this.handleFileImport(e, 'prize-level'));
 
         document.getElementById('draw-level').addEventListener('change', (e) => {
             this.updateDrawCountLimit(e.target.value);
@@ -112,6 +113,8 @@ class DrawSystem {
                 data = data.participants;
             } else if (type === 'prize' && data.prizes) {
                 data = data.prizes;
+            } else if (type === 'prize-level' && data.prizeLevels) {
+                data = data.prizeLevels;
             } else {
                 throw new Error('数据格式不正确');
             }
@@ -142,6 +145,18 @@ class DrawSystem {
                     });
                 }
             });
+        } else if (type === 'prize-level') {
+            data.forEach(item => {
+                if (!this.prizeLevels.find(l => l.name === item.name)) {
+                    this.prizeLevels.push({
+                        id: item.id || `level_${Date.now()}_${this.prizeLevels.length}`,
+                        name: item.name,
+                        color: item.color || '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0'),
+                        order: item.order || this.prizeLevels.length + 1
+                    });
+                }
+            });
+            this.prizeLevels.sort((a, b) => a.order - b.order);
         }
 
         this.saveData();
@@ -496,6 +511,25 @@ class DrawSystem {
         const link = document.createElement('a');
         link.href = url;
         link.download = `奖品导入示例.json`;
+        link.click();
+        URL.revokeObjectURL(url);
+    }
+
+    exportSamplePrizeLevel() {
+        const sampleData = [
+            { id: "level_1", name: "特等奖", color: "#FFD700", order: 1 },
+            { id: "level_2", name: "一等奖", color: "#C0C0C0", order: 2 },
+            { id: "level_3", name: "二等奖", color: "#CD7F32", order: 3 },
+            { id: "level_4", name: "三等奖", color: "#667eea", order: 4 },
+            { id: "level_5", name: "参与奖", color: "#48bb78", order: 5 }
+        ];
+
+        const json = JSON.stringify(sampleData, null, 2);
+        const blob = new Blob([json], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `奖品级别导入示例.json`;
         link.click();
         URL.revokeObjectURL(url);
     }

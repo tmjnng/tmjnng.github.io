@@ -40,7 +40,12 @@
                 <section class="panel">
                     <div class="panel-header">
                         <h2>奖品级别</h2>
-                        <button class="btn btn-sm btn-success" onclick="drawSystem.addPrizeLevel()">添加级别</button>
+                        <div class="panel-actions">
+                            <input type="file" id="prize-level-file" accept=".json" style="display: none;">
+                            <button class="btn btn-sm" onclick="document.getElementById('prize-level-file').click()">导入级别</button>
+                            <button class="btn btn-sm" onclick="drawSystem.exportSamplePrizeLevel()">示例</button>
+                            <button class="btn btn-sm btn-success" onclick="drawSystem.addPrizeLevel()">添加级别</button>
+                        </div>
                     </div>
                     <div class="panel-body">
                         <div id="prize-level-list" class="list-container"></div>
