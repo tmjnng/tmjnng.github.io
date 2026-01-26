@@ -22,6 +22,8 @@ class DatabaseDesigner {
         document.getElementById('btn-export').addEventListener('click', () => this.exportDesign());
         document.getElementById('btn-import').addEventListener('click', () => this.importDesign());
         document.getElementById('btn-add-table').addEventListener('click', () => this.addTable());
+        document.getElementById('btn-add-field').addEventListener('click', () => this.addFieldToSelected());
+        document.getElementById('btn-add-relation').addEventListener('click', () => this.addRelation());
         document.getElementById('btn-delete').addEventListener('click', () => this.deleteSelected());
 
         // 模态框事件
@@ -338,6 +340,37 @@ class DatabaseDesigner {
         table.fields.push(newField);
         this.renderTables();
         this.selectField(newField, table);
+    }
+
+    addFieldToSelected() {
+        if (!this.selectedElement || !this.selectedElement.fields) {
+            alert('请先选择一个表');
+            return;
+        }
+        this.addField(this.selectedElement);
+    }
+
+    addRelation() {
+        if (this.tables.length < 2) {
+            alert('至少需要两个表才能创建关系');
+            return;
+        }
+
+        const fromTable = this.selectedElement && this.selectedElement.fields ? this.selectedElement : this.tables[0];
+        const toTable = this.tables.find(t => t.id !== fromTable.id) || this.tables[1];
+
+        const relationId = `relation_${Date.now()}`;
+        const newRelation = {
+            id: relationId,
+            fromTable: fromTable.id,
+            toTable: toTable.id,
+            fromField: fromTable.fields[0].name,
+            toField: toTable.fields[0].name
+        };
+
+        this.relations.push(newRelation);
+        this.renderRelations();
+        alert('关系已添加，可以在属性面板中编辑');
     }
 
     updateTableList() {
