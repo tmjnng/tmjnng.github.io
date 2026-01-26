@@ -1,9 +1,23 @@
 {
   "name": "JLPT日语刷题系统与工具集合",
   "version": "1.0.0",
-  "description": "包含JLPT日语刷题系统、数据库设计工具和多种工具的网站项目",
+  "description": "包含JLPT日语刷题系统、数据库设计工具、抽奖系统和多种工具的网站项目",
   "author": "tmjnng",
   "skills": [
+    {
+      "name": "抽奖系统开发",
+      "description": "开发和维护抽奖系统，支持名单、奖品、奖品级别的导入和管理，包含动画效果和数据持久化功能",
+      "keywords": ["抽奖系统", "名单管理", "奖品管理", "前端开发", "动画效果"],
+      "tools": [
+        "JavaScript (ES6+)",
+        "HTML5",
+        "CSS3",
+        "localStorage",
+        "文件导入",
+        "动画效果"
+      ],
+      "scope": "drawsystem/"
+    },
     {
       "name": "JLPT系统开发",
       "description": "开发和维护JLPT日语刷题系统，包括N5-N1级别的题目管理、练习模式、考试模式等功能",
@@ -81,7 +95,7 @@
   ],
   "workspace": {
     "root": "C:\\Users\\NEWCON\\Desktop\\vbs\\tool-workspace\\tmjnng.github.io",
-    "main_modules": ["exam", "tool", "dbdesigner"],
+    "main_modules": ["exam", "tool", "dbdesigner", "drawsystem"],
     "development": {
       "environment": "Windows",
       "preferred_commands": ["PowerShell", "CMD"],

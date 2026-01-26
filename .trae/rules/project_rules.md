@@ -7,6 +7,7 @@
   - JLPT日语刷题系统（N5-N1级别）
   - 工具集合（AES加密、Base64编码、JSON处理等）
   - 数据库设计工具（支持多种数据库SQL导出）
+  - 抽奖系统（支持名单、奖品、奖品级别导入）
   - 个人网站相关功能
 
 ## 目录结构
@@ -23,6 +24,10 @@ tmjnng.github.io/
 │   ├── DEVELOPMENT.md # 开发规范
 │   └── index.html     # 工具集主页面
 ├── dbdesigner/        # 数据库设计工具
+│   ├── css/           # 样式文件
+│   ├── js/            # JavaScript文件
+│   └── index.html     # 主页面
+├── drawsystem/        # 抽奖系统
 │   ├── css/           # 样式文件
 │   ├── js/            # JavaScript文件
 │   └── index.html     # 主页面
