@@ -515,14 +515,39 @@
         const ipDisplay = document.getElementById('external-ip');
         if (!ipDisplay) return;
 
-        try {
-          const response = await fetch('https://api.ipify.org?format=json');
-          const data = await response.json();
-          ipDisplay.textContent = `IP: ${data.ip}`;
-        } catch (error) {
-          console.error('获取外网IP失败:', error);
-          ipDisplay.textContent = 'IP: 获取失败';
+        const ipApis = [
+          'https://api.ipify.org?format=json',
+          'https://ipapi.co/json/',
+          'https://api.ip.sb/geoip',
+          'https://ip.seeip.org/jsonip'
+        ];
+
+        for (const apiUrl of ipApis) {
+          try {
+            const response = await fetch(apiUrl);
+            if (!response.ok) continue;
+            
+            const data = await response.json();
+            let ip = '';
+            
+            if (data.ip) {
+              ip = data.ip;
+            } else if (data.query) {
+              ip = data.query;
+            }
+            
+            if (ip) {
+              ipDisplay.textContent = `IP: ${ip}`;
+              return;
+            }
+          } catch (error) {
+            console.warn(`API ${apiUrl} 获取IP失败:`, error);
+            continue;
+          }
         }
+
+        console.error('所有IP API都失败');
+        ipDisplay.textContent = 'IP: 获取失败';
       }
     </script>
   </body>
