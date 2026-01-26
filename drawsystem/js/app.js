@@ -534,6 +534,55 @@ class DrawSystem {
         URL.revokeObjectURL(url);
     }
 
+    importAllSamples() {
+        if (!confirm('确定要导入所有示例数据吗？这将覆盖现有数据。')) {
+            return;
+        }
+
+        const samplePrizeLevels = [
+            { id: "level_1", name: "特等奖", color: "#FFD700", order: 1 },
+            { id: "level_2", name: "一等奖", color: "#C0C0C0", order: 2 },
+            { id: "level_3", name: "二等奖", color: "#CD7F32", order: 3 },
+            { id: "level_4", name: "三等奖", color: "#667eea", order: 4 },
+            { id: "level_5", name: "参与奖", color: "#48bb78", order: 5 }
+        ];
+
+        const sampleParticipants = [
+            { id: "participant_1", name: "张三", phone: "13800138001", department: "技术部" },
+            { id: "participant_2", name: "李四", phone: "13800138002", department: "市场部" },
+            { id: "participant_3", name: "王五", phone: "13800138003", department: "财务部" },
+            { id: "participant_4", name: "赵六", phone: "13800138004", department: "人事部" },
+            { id: "participant_5", name: "钱七", phone: "13800138005", department: "行政部" },
+            { id: "participant_6", name: "周八", phone: "13800138006", department: "技术部" },
+            { id: "participant_7", name: "吴九", phone: "13800138007", department: "市场部" },
+            { id: "participant_8", name: "郑十", phone: "13800138008", department: "财务部" }
+        ];
+
+        const samplePrizes = [
+            { id: "prize_1", name: "iPhone 15 Pro", levelId: "level_1", count: 1, description: "最新款苹果手机" },
+            { id: "prize_2", name: "iPad Air", levelId: "level_2", count: 2, description: "苹果平板电脑" },
+            { id: "prize_3", name: "AirPods Pro", levelId: "level_3", count: 5, description: "苹果无线耳机" },
+            { id: "prize_4", name: "移动电源", levelId: "level_4", count: 10, description: "10000mAh充电宝" },
+            { id: "prize_5", name: "定制水杯", levelId: "level_5", count: 20, description: "公司定制水杯" }
+        ];
+
+        this.prizeLevels = samplePrizeLevels;
+        this.participants = sampleParticipants.map(p => ({
+            ...p,
+            createdAt: new Date().toISOString()
+        }));
+        this.prizes = samplePrizes.map(p => ({
+            ...p,
+            given: 0
+        }));
+        this.winners = [];
+
+        this.saveData();
+        this.renderAll();
+
+        alert('示例数据导入成功！\n\n奖品级别：5个\n名单人数：8人\n奖品数量：5种');
+    }
+
     renderAll() {
         this.renderParticipants();
         this.renderPrizeLevels();
