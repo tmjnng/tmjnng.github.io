@@ -1,0 +1,364 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #333;
+    background-color: #1e1e1e;
+    overflow: hidden;
+}
+
+#app-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* 顶部工具栏 */
+#toolbar {
+    background-color: #2d2d2d;
+    border-bottom: 1px solid #3e3e3e;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.toolbar-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.toolbar-left h1 {
+    font-size: 20px;
+    color: #fff;
+    font-weight: bold;
+}
+
+.toolbar-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.toolbar-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.time-display {
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    font-family: 'Courier New', monospace;
+    padding: 6px 12px;
+    background-color: #3e3e3e;
+    border-radius: 4px;
+    border: 1px solid #4e4e4e;
+    min-width: 100px;
+    text-align: center;
+    margin-right: 10px;
+}
+
+.ip-display {
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    font-family: 'Courier New', monospace;
+    padding: 6px 12px;
+    background-color: #1e3a5f;
+    border-radius: 4px;
+    border: 1px solid #2a4a7f;
+    min-width: 120px;
+    text-align: center;
+}
+
+.toolbar-right {
+    display: flex;
+    gap: 8px;
+}
+
+button {
+    padding: 6px 12px;
+    border: 1px solid #4e4e4e;
+    border-radius: 4px;
+    background-color: #3e3e3e;
+    color: #fff;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+button:hover {
+    background-color: #4e4e4e;
+    border-color: #5e5e5e;
+}
+
+button:active {
+    background-color: #2e2e2e;
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* 主工作区域 */
+#workspace {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+}
+
+/* 左侧编辑器区域 */
+#editors-container {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #3e3e3e;
+    overflow: hidden;
+}
+
+.editor-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #3e3e3e;
+    overflow: hidden;
+}
+
+.panel-header {
+    background-color: #252526;
+    padding: 8px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #3e3e3e;
+}
+
+.panel-title {
+    color: #fff;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.panel-toggle {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 2px 8px;
+}
+
+.panel-toggle:hover {
+    background-color: #3e3e3e;
+}
+
+.editor-wrapper {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+}
+
+.code-editor {
+    width: 100%;
+    height: 100%;
+    background-color: #1e1e1e;
+    color: #d4d4d4;
+    border: none;
+    padding: 15px;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    resize: none;
+    outline: none;
+}
+
+.code-editor::placeholder {
+    color: #6e6e6e;
+}
+
+/* 右侧预览区域 */
+#preview-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.preview-header {
+    background-color: #252526;
+    padding: 8px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #3e3e3e;
+}
+
+.preview-title {
+    color: #fff;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.preview-controls {
+    display: flex;
+    gap: 8px;
+}
+
+#preview-frame {
+    flex: 1;
+    background-color: #fff;
+    overflow: hidden;
+}
+
+#preview {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background-color: #fff;
+}
+
+/* 控制台面板 */
+.console-panel {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 300px;
+    background-color: #1e1e1e;
+    border: 1px solid #3e3e3e;
+    border-radius: 8px 8px 0 0;
+    box-shadow: 0 -4px 12px rgba(0,0,0,0.5);
+    z-index: 1000;
+    display: none;
+}
+
+.console-panel.active {
+    display: flex;
+    flex-direction: column;
+}
+
+.console-header {
+    background-color: #252526;
+    padding: 8px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #3e3e3e;
+}
+
+.console-title {
+    color: #fff;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.console-output {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 12px;
+    color: #d4d4d4;
+}
+
+.console-message {
+    padding: 4px 0;
+    border-bottom: 1px solid #2e2e2e;
+}
+
+.console-message.error {
+    color: #f48771;
+}
+
+.console-message.warning {
+    color: #cca700;
+}
+
+.console-message.info {
+    color: #75beff;
+}
+
+/* 全屏预览 */
+#preview.fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    background-color: #fff;
+}
+
+/* 响应式设计 */
+@media (max-width: 1200px) {
+    #editors-container {
+        width: 45%;
+    }
+}
+
+@media (max-width: 768px) {
+    #toolbar {
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px;
+    }
+
+    .toolbar-left,
+    .toolbar-center,
+    .toolbar-right {
+        width: 100%;
+        justify-content: center;
+    }
+
+    #workspace {
+        flex-direction: column;
+    }
+
+    #editors-container,
+    #preview-container {
+        width: 100%;
+        height: 50%;
+    }
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1e1e1e;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #3e3e3e;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #4e4e4e;
+}
+
+/* 编辑器面板折叠状态 */
+.editor-panel.collapsed {
+    flex: 0 0 40px;
+}
+
+.editor-panel.collapsed .editor-wrapper {
+    display: none;
+}

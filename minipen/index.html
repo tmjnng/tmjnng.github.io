@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MiniPen - 在线代码编辑器</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="app-container">
+        <!-- 顶部工具栏 -->
+        <header id="toolbar">
+            <div class="toolbar-left">
+                <h1>MiniPen</h1>
+                <div class="toolbar-buttons">
+                    <button id="btn-new">新建</button>
+                    <button id="btn-save">保存</button>
+                    <button id="btn-export">导出</button>
+                    <button id="btn-import">导入</button>
+                    <button id="btn-fullscreen">全屏预览</button>
+                </div>
+            </div>
+            <div class="toolbar-center">
+                <div id="current-time" class="time-display">00:00:00</div>
+                <div id="external-ip" class="ip-display">获取IP中...</div>
+            </div>
+            <div class="toolbar-right">
+                <button id="btn-run">运行</button>
+                <button id="btn-clear">清空</button>
+            </div>
+        </header>
+
+        <!-- 主工作区域 -->
+        <main id="workspace">
+            <!-- 左侧编辑器区域 -->
+            <div id="editors-container">
+                <!-- HTML编辑器 -->
+                <div class="editor-panel" id="html-panel">
+                    <div class="panel-header">
+                        <span class="panel-title">HTML</span>
+                        <button class="panel-toggle" data-panel="html">折叠</button>
+                    </div>
+                    <div class="editor-wrapper">
+                        <textarea id="html-editor" class="code-editor" placeholder="在此输入HTML代码..."></textarea>
+                    </div>
+                </div>
+
+                <!-- CSS编辑器 -->
+                <div class="editor-panel" id="css-panel">
+                    <div class="panel-header">
+                        <span class="panel-title">CSS</span>
+                        <button class="panel-toggle" data-panel="css">折叠</button>
+                    </div>
+                    <div class="editor-wrapper">
+                        <textarea id="css-editor" class="code-editor" placeholder="在此输入CSS代码..."></textarea>
+                    </div>
+                </div>
+
+                <!-- JavaScript编辑器 -->
+                <div class="editor-panel" id="js-panel">
+                    <div class="panel-header">
+                        <span class="panel-title">JavaScript</span>
+                        <button class="panel-toggle" data-panel="js">折叠</button>
+                    </div>
+                    <div class="editor-wrapper">
+                        <textarea id="js-editor" class="code-editor" placeholder="在此输入JavaScript代码..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧预览区域 -->
+            <div id="preview-container">
+                <div class="preview-header">
+                    <span class="preview-title">实时预览</span>
+                    <div class="preview-controls">
+                        <button id="btn-refresh">刷新</button>
+                        <button id="btn-console">控制台</button>
+                    </div>
+                </div>
+                <div id="preview-frame">
+                    <iframe id="preview" sandbox="allow-scripts allow-same-origin"></iframe>
+                </div>
+            </div>
+        </main>
+
+        <!-- 控制台面板 -->
+        <div id="console-panel" class="console-panel">
+            <div class="console-header">
+                <span class="console-title">控制台</span>
+                <button id="btn-close-console">关闭</button>
+            </div>
+            <div id="console-output" class="console-output"></div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
