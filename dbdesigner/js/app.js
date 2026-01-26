@@ -13,6 +13,7 @@ class DatabaseDesigner {
         this.bindEvents();
         this.initCanvas();
         this.updateTableList();
+        this.initTimeDisplay();
     }
 
     bindEvents() {
@@ -925,6 +926,39 @@ class DatabaseDesigner {
         
         localStorage.setItem('databaseDesign', JSON.stringify(design));
         alert('设计已保存到本地存储');
+    }
+
+    initTimeDisplay() {
+        const updateTime = () => {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const timeString = `${hours}:${minutes}:${seconds}`;
+            
+            const timeDisplay = document.getElementById('current-time');
+            if (timeDisplay) {
+                timeDisplay.textContent = timeString;
+            }
+        };
+
+        updateTime();
+        setInterval(updateTime, 1000);
+        this.fetchExternalIP();
+    }
+
+    async fetchExternalIP() {
+        const ipDisplay = document.getElementById('external-ip');
+        if (!ipDisplay) return;
+
+        try {
+            const response = await fetch('https://api.ipify.org?format=json');
+            const data = await response.json();
+            ipDisplay.textContent = `IP: ${data.ip}`;
+        } catch (error) {
+            console.error('获取外网IP失败:', error);
+            ipDisplay.textContent = 'IP: 获取失败';
+        }
     }
 }
 
