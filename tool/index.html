@@ -28,6 +28,7 @@
   <script src="js/web-tools.js"></script>
   <script src="js/random-tools.js"></script>
   <script src="js/regex-tools.js"></script>
+  <script src="js/qrcode-tools.js"></script>
   <style>
     .tool-container {
       margin: 50px 0;
@@ -507,6 +508,22 @@
                 </div>
                 <button class="copy-btn" onclick="copyResult('regex-result')" data-i18n="copyResult">复制结果</button>
                 <div id="regex-result" class="tool-result"></div>
+              </div>
+
+              <!-- 二维码生成器 -->
+              <div class="tool-card">
+                <h3 data-i18n="qrcodeTool">二维码生成器</h3>
+                <textarea id="qrcode-input" data-i18n-placeholder="qrcodeInputPlaceholder" placeholder="请输入文本或链接..."></textarea>
+                <div style="margin-bottom: 10px;">
+                  <label><span data-i18n="qrcodeSize">大小</span>: </label>
+                  <input type="number" id="qrcode-size" value="200" min="100" max="500" style="width: 80px;">
+                </div>
+                <div class="tool-buttons">
+                  <button onclick="generateQRCode()" data-i18n="qrcodeGenerate">生成</button>
+                  <button onclick="clearQRCode()" data-i18n="qrcodeClear">清除</button>
+                </div>
+                <button class="copy-btn" onclick="downloadQRCode()" data-i18n="qrcodeDownload">下载</button>
+                <div id="qrcode-result" class="tool-result" style="text-align: center;"></div>
               </div>
             </div>
           </div>

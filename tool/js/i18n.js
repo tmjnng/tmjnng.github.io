@@ -35,6 +35,7 @@ const i18n = {
     webTool: "HTML/CSS/JS Tools",
     randomTool: "Random String Generator",
     regexTool: "Regex Tester",
+    qrcodeTool: "QR Code Generator",
 
     // 输入框占位符
     jsonPlaceholder: "Please enter JSON string...",
@@ -50,10 +51,20 @@ const i18n = {
     unicodePlaceholder: "Please enter text to convert...",
     webPlaceholder: "Please enter code to process...",
     randomLengthPlaceholder: "Length",
+    qrcodeInputPlaceholder: "Please enter text or link...",
     randomUppercase: "Uppercase (A-Z)",
     randomLowercase: "Lowercase (a-z)",
     randomNumbers: "Numbers (0-9)",
     randomSymbols: "Symbols (!@#$...)",
+
+    // 二维码生成器
+    qrcodeSize: "Size",
+    qrcodeGenerate: "Generate",
+    qrcodeClear: "Clear",
+    qrcodeDownload: "Download",
+    qrcodeError: "Error",
+    qrcodeErrorInput: "Please enter text or link",
+    qrcodeErrorDownload: "Please generate QR code first",
 
     // 正则表达式测试器
     regexPatternPlaceholder: "Please enter regex pattern (e.g., \\d+)",
@@ -173,6 +184,7 @@ const i18n = {
     webTool: "HTML/CSS/JS 工具",
     randomTool: "随机字符串生成",
     regexTool: "正则表达式测试器",
+    qrcodeTool: "二维码生成器",
 
     // 输入框占位符
     jsonPlaceholder: "请输入JSON字符串...",
@@ -188,10 +200,20 @@ const i18n = {
     unicodePlaceholder: "请输入要转换的文本...",
     webPlaceholder: "请输入要处理的代码...",
     randomLengthPlaceholder: "长度",
+    qrcodeInputPlaceholder: "请输入文本或链接...",
     randomUppercase: "大写字母 (A-Z)",
     randomLowercase: "小写字母 (a-z)",
     randomNumbers: "数字 (0-9)",
     randomSymbols: "特殊符号 (!@#$...)",
+
+    // 二维码生成器
+    qrcodeSize: "大小",
+    qrcodeGenerate: "生成",
+    qrcodeClear: "清除",
+    qrcodeDownload: "下载",
+    qrcodeError: "错误",
+    qrcodeErrorInput: "请输入文本或链接",
+    qrcodeErrorDownload: "请先生成二维码",
 
     // 正则表达式测试器
     regexPatternPlaceholder: "请输入正则表达式 (例如: \\d+)",
@@ -311,6 +333,7 @@ const i18n = {
     webTool: "HTML/CSS/JS ツール",
     randomTool: "ランダム文字列生成",
     regexTool: "正規表現テスター",
+    qrcodeTool: "QRコードジェネレーター",
 
     // 输入框占位符
     jsonPlaceholder: "JSON文字列を入力してください...",
@@ -326,10 +349,20 @@ const i18n = {
     unicodePlaceholder: "変換するテキストを入力してください...",
     webPlaceholder: "処理するコードを入力してください...",
     randomLengthPlaceholder: "長さ",
+    qrcodeInputPlaceholder: "テキストまたはリンクを入力してください...",
     randomUppercase: "大文字 (A-Z)",
     randomLowercase: "小文字 (a-z)",
     randomNumbers: "数字 (0-9)",
     randomSymbols: "記号 (!@#$...)",
+
+    // 二维码生成器
+    qrcodeSize: "サイズ",
+    qrcodeGenerate: "生成",
+    qrcodeClear: "クリア",
+    qrcodeDownload: "ダウンロード",
+    qrcodeError: "エラー",
+    qrcodeErrorInput: "テキストまたはリンクを入力してください",
+    qrcodeErrorDownload: "まずQRコードを生成してください",
 
     // 正则表达式测试器
     regexPatternPlaceholder: "正規表現を入力してください (例: \\d+)",
