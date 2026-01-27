@@ -359,6 +359,11 @@ class MiniPen {
         const ipDisplay = document.getElementById('external-ip');
         if (!ipDisplay) return;
 
+        // 使用国际化的加载文本
+        if (typeof i18n !== 'undefined' && typeof currentLang !== 'undefined') {
+            ipDisplay.textContent = i18n[currentLang].ipLoading;
+        }
+
         const ipApis = [
             'https://api.ipify.org?format=json',
             'https://ipapi.co/json/',
@@ -381,7 +386,12 @@ class MiniPen {
                 }
                 
                 if (ip) {
-                    ipDisplay.textContent = `IP: ${ip}`;
+                    // 使用国际化的前缀
+                    if (typeof i18n !== 'undefined' && typeof currentLang !== 'undefined') {
+                        ipDisplay.textContent = `${i18n[currentLang].ipPrefix}${ip}`;
+                    } else {
+                        ipDisplay.textContent = `IP: ${ip}`;
+                    }
                     return;
                 }
             } catch (error) {
@@ -391,7 +401,12 @@ class MiniPen {
         }
 
         console.error('所有IP API都失败');
-        ipDisplay.textContent = 'IP: 获取失败';
+        // 使用国际化的失败文本
+        if (typeof i18n !== 'undefined' && typeof currentLang !== 'undefined') {
+            ipDisplay.textContent = i18n[currentLang].ipFailed;
+        } else {
+            ipDisplay.textContent = 'IP: 获取失败';
+        }
     }
 
     initLanguageSelector() {

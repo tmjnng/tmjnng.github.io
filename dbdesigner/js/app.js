@@ -960,13 +960,28 @@ class DatabaseDesigner {
         const ipDisplay = document.getElementById('external-ip');
         if (!ipDisplay) return;
 
+        // 使用国际化的加载文本
+        if (typeof i18n !== 'undefined' && typeof currentLang !== 'undefined') {
+            ipDisplay.textContent = i18n[currentLang].ipLoading;
+        }
+
         try {
             const response = await fetch('https://api.ipify.org?format=json');
             const data = await response.json();
-            ipDisplay.textContent = `IP: ${data.ip}`;
+            // 使用国际化的前缀
+            if (typeof i18n !== 'undefined' && typeof currentLang !== 'undefined') {
+                ipDisplay.textContent = `${i18n[currentLang].ipPrefix}${data.ip}`;
+            } else {
+                ipDisplay.textContent = `IP: ${data.ip}`;
+            }
         } catch (error) {
             console.error('获取外网IP失败:', error);
-            ipDisplay.textContent = 'IP: 获取失败';
+            // 使用国际化的失败文本
+            if (typeof i18n !== 'undefined' && typeof currentLang !== 'undefined') {
+                ipDisplay.textContent = i18n[currentLang].ipFailed;
+            } else {
+                ipDisplay.textContent = 'IP: 获取失败';
+            }
         }
     }
 

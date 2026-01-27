@@ -66,7 +66,11 @@ const i18n = {
       DATETIME: "DATETIME",
       BOOLEAN: "BOOLEAN",
       FLOAT: "FLOAT"
-    }
+    },
+    // IP相关
+    ipLoading: "Getting IP...",
+    ipFailed: "IP: Failed to get",
+    ipPrefix: "IP: "
   },
 
   zh: {
@@ -136,7 +140,11 @@ const i18n = {
       DATETIME: "DATETIME",
       BOOLEAN: "BOOLEAN",
       FLOAT: "FLOAT"
-    }
+    },
+    // IP相关
+    ipLoading: "获取IP中...",
+    ipFailed: "IP: 获取失败",
+    ipPrefix: "IP: "
   },
 
   ja: {
@@ -206,7 +214,11 @@ const i18n = {
       DATETIME: "DATETIME",
       BOOLEAN: "BOOLEAN",
       FLOAT: "FLOAT"
-    }
+    },
+    // IP相关
+    ipLoading: "IPを取得中...",
+    ipFailed: "IP: 取得失敗",
+    ipPrefix: "IP: "
   }
 };
 
@@ -237,6 +249,15 @@ function updateLanguage(lang) {
       el.textContent = langData[key];
     }
   });
+  
+  // 更新IP显示
+  const ipDisplay = document.getElementById('external-ip');
+  if (ipDisplay && ipDisplay.textContent === 'IP: 获取失败') {
+    ipDisplay.textContent = langData.ipFailed;
+  } else if (ipDisplay && ipDisplay.textContent.startsWith('IP: ')) {
+    const ip = ipDisplay.textContent.substring(4);
+    ipDisplay.textContent = `${langData.ipPrefix}${ip}`;
+  }
 }
 
 document.addEventListener('DOMContentLoaded', function() {

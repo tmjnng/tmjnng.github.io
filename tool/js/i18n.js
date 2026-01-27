@@ -14,6 +14,11 @@ const i18n = {
     toolsTitle: "Development Tools",
     toolsDescription: "Provides commonly used development tools such as JSON formatting, XML formatting, MD5 encryption, AES encryption and decryption, etc.",
     
+    // IP相关
+    ipLoading: "Getting IP...",
+    ipFailed: "IP: Failed to get",
+    ipPrefix: "IP: ",
+    
     // 工具名称
     jsonFormatter: "JSON Formatter",
     xmlFormatter: "XML Formatter",
@@ -126,6 +131,11 @@ const i18n = {
     toolsTitle: "开发工具集",
     toolsDescription: "提供JSON格式化、XML格式化、MD5加密、AES加密解密等开发常用工具",
     
+    // IP相关
+    ipLoading: "获取IP中...",
+    ipFailed: "IP: 获取失败",
+    ipPrefix: "IP: ",
+    
     // 工具名称
     jsonFormatter: "JSON格式化",
     xmlFormatter: "XML格式化",
@@ -237,6 +247,11 @@ const i18n = {
     searchPlaceholder: "検索",
     toolsTitle: "開発ツール集",
     toolsDescription: "JSONフォーマット、XMLフォーマット、MD5暗号化、AES暗号化/復号など、開発によく使われるツールを提供します。",
+    
+    // IP相关
+    ipLoading: "IPを取得中...",
+    ipFailed: "IP: 取得失敗",
+    ipPrefix: "IP: ",
     
     // 工具名称
     jsonFormatter: "JSONフォーマッター",
@@ -474,6 +489,17 @@ function updateLanguage(lang) {
   
   // 更新页脚
   document.querySelector('#footer-info').innerHTML = `${langData.footerCopyright}<br>Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>`;
+  
+  // 更新IP显示
+  const ipDisplay = document.getElementById('external-ip');
+  if (ipDisplay && ipDisplay.textContent === '获取IP中...') {
+    ipDisplay.textContent = langData.ipLoading;
+  } else if (ipDisplay && ipDisplay.textContent === 'IP: 获取失败') {
+    ipDisplay.textContent = langData.ipFailed;
+  } else if (ipDisplay && ipDisplay.textContent.startsWith('IP: ')) {
+    const ip = ipDisplay.textContent.substring(4);
+    ipDisplay.textContent = `${langData.ipPrefix}${ip}`;
+  }
 }
 
 // 语言选择器事件监听
