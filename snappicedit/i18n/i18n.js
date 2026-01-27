@@ -36,8 +36,7 @@ const i18n = {
       title: "Advanced Features",
       extractColors: "Extract Colors",
       chromaKey: "Chroma Key:",
-      thumbnail: "Generate Thumbnail:",
-      qrCode: "Add QR Code:"
+      thumbnail: "Generate Thumbnail:"
     },
     export: {
       title: "Export Options",
@@ -89,8 +88,7 @@ const i18n = {
       title: "高级功能",
       extractColors: "提取主色调",
       chromaKey: "自动抠图:",
-      thumbnail: "生成缩略图:",
-      qrCode: "添加二维码:"
+      thumbnail: "生成缩略图:"
     },
     export: {
       title: "导出选项",
@@ -140,10 +138,9 @@ const i18n = {
     },
     advanced: {
       title: "高度な機能",
-      extractColors: "色を抽出",
+      extractColors: "主要色を抽出",
       chromaKey: "クロマキー:",
-      thumbnail: "サムネイルを生成:",
-      qrCode: "QRコードを追加:"
+      thumbnail: "サムネイルを生成:"
     },
     export: {
       title: "エクスポートオプション",

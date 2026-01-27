@@ -55,11 +55,7 @@ class SnapPicEdit {
             this.updateCanvas();
         });
         document.getElementById('thumbnail-size').addEventListener('input', () => this.updateCanvas());
-        document.getElementById('add-qr-code').addEventListener('change', (e) => {
-            document.getElementById('qr-code-text').disabled = !e.target.checked;
-            this.updateCanvas();
-        });
-        document.getElementById('qr-code-text').addEventListener('input', () => this.updateCanvas());
+
         
         // 导出事件
         document.getElementById('export-single').addEventListener('click', () => this.exportImage());
@@ -149,7 +145,6 @@ class SnapPicEdit {
         if (this.images.length > 0) {
             this.drawCurrentImage();
             this.drawWatermark();
-            this.drawQRCode();
         }
     }
 
@@ -263,21 +258,7 @@ class SnapPicEdit {
         this.ctx.fillText(text, x, y);
     }
 
-    drawQRCode() {
-        if (!document.getElementById('add-qr-code').checked) return;
-        
-        const text = document.getElementById('qr-code-text').value;
-        if (!text) return;
-        
-        // 生成二维码的逻辑将在qr-code.js中实现
-        if (typeof generateQRCode === 'function') {
-            const qrCanvas = generateQRCode(text, 128);
-            if (qrCanvas) {
-                // 绘制二维码到右下角
-                this.ctx.drawImage(qrCanvas, this.canvas.width - 140, this.canvas.height - 140, 128, 128);
-            }
-        }
-    }
+
 
     extractColors() {
         if (this.images.length === 0) return;
