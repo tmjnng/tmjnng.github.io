@@ -70,7 +70,9 @@ const i18n = {
     // IP相关
     ipLoading: "Getting IP...",
     ipFailed: "IP: Failed to get",
-    ipPrefix: "IP: "
+    ipPrefix: "IP: ",
+    // Property panel
+    selectElement: "Select a table or field to edit"
   },
 
   zh: {
@@ -144,7 +146,9 @@ const i18n = {
     // IP相关
     ipLoading: "获取IP中...",
     ipFailed: "IP: 获取失败",
-    ipPrefix: "IP: "
+    ipPrefix: "IP: ",
+    // Property panel
+    selectElement: "选择一个表或字段进行编辑"
   },
 
   ja: {
@@ -218,7 +222,9 @@ const i18n = {
     // IP相关
     ipLoading: "IPを取得中...",
     ipFailed: "IP: 取得失敗",
-    ipPrefix: "IP: "
+    ipPrefix: "IP: ",
+    // Property panel
+    selectElement: "テーブルまたはフィールドを選択して編集してください"
   }
 };
 
@@ -257,6 +263,15 @@ function updateLanguage(lang) {
   } else if (ipDisplay && ipDisplay.textContent.startsWith('IP: ')) {
     const ip = ipDisplay.textContent.substring(4);
     ipDisplay.textContent = `${langData.ipPrefix}${ip}`;
+  }
+  
+  // 更新属性面板默认文本
+  const propertyContent = document.getElementById('property-content');
+  if (propertyContent && propertyContent.querySelector('p') && 
+      (propertyContent.querySelector('p').textContent === '选择一个表或字段进行编辑' || 
+       propertyContent.querySelector('p').textContent === 'Select a table or field to edit' ||
+       propertyContent.querySelector('p').textContent === 'テーブルまたはフィールドを選択して編集してください')) {
+    propertyContent.querySelector('p').textContent = langData.selectElement;
   }
 }
 
