@@ -34,6 +34,7 @@ const i18n = {
     unicodeTool: "Unicode Converter",
     webTool: "HTML/CSS/JS Tools",
     randomTool: "Random String Generator",
+    regexTool: "Regex Tester",
 
     // 输入框占位符
     jsonPlaceholder: "Please enter JSON string...",
@@ -53,6 +54,26 @@ const i18n = {
     randomLowercase: "Lowercase (a-z)",
     randomNumbers: "Numbers (0-9)",
     randomSymbols: "Symbols (!@#$...)",
+
+    // 正则表达式测试器
+    regexPatternPlaceholder: "Please enter regex pattern (e.g., \\d+)",
+    regexTestTextPlaceholder: "Please enter test text...",
+    regexFlagGlobal: "Global match (g)",
+    regexFlagIgnoreCase: "Ignore case (i)",
+    regexFlagMultiline: "Multiline (m)",
+    regexFlagDotAll: "Single line (s)",
+    regexTest: "Test",
+    regexClear: "Clear",
+    regexNoMatch: "No matches found",
+    regexMatchResults: "Match Results",
+    regexMatches: "matches",
+    regexMatchContent: "Match content",
+    regexPosition: "Position",
+    regexCaptureGroups: "Capture groups",
+    regexHighlight: "Highlight display",
+    regexError: "Error",
+    regexErrorPattern: "Please enter regex pattern",
+    regexErrorTestText: "Please enter test text",
 
     // 按钮文本
     format: "Format",
@@ -151,6 +172,7 @@ const i18n = {
     unicodeTool: "Unicode编码转换",
     webTool: "HTML/CSS/JS 工具",
     randomTool: "随机字符串生成",
+    regexTool: "正则表达式测试器",
 
     // 输入框占位符
     jsonPlaceholder: "请输入JSON字符串...",
@@ -170,6 +192,26 @@ const i18n = {
     randomLowercase: "小写字母 (a-z)",
     randomNumbers: "数字 (0-9)",
     randomSymbols: "特殊符号 (!@#$...)",
+
+    // 正则表达式测试器
+    regexPatternPlaceholder: "请输入正则表达式 (例如: \\d+)",
+    regexTestTextPlaceholder: "请输入测试文本...",
+    regexFlagGlobal: "全局匹配 (g)",
+    regexFlagIgnoreCase: "忽略大小写 (i)",
+    regexFlagMultiline: "多行匹配 (m)",
+    regexFlagDotAll: "单行匹配 (s)",
+    regexTest: "测试",
+    regexClear: "清除",
+    regexNoMatch: "未找到匹配项",
+    regexMatchResults: "匹配结果",
+    regexMatches: "个匹配",
+    regexMatchContent: "匹配内容",
+    regexPosition: "位置",
+    regexCaptureGroups: "捕获组",
+    regexHighlight: "高亮显示",
+    regexError: "错误",
+    regexErrorPattern: "请输入正则表达式",
+    regexErrorTestText: "请输入测试文本",
 
     // 按钮文本
     format: "格式化",
@@ -268,6 +310,7 @@ const i18n = {
     unicodeTool: "Unicodeコンバーター",
     webTool: "HTML/CSS/JS ツール",
     randomTool: "ランダム文字列生成",
+    regexTool: "正規表現テスター",
 
     // 输入框占位符
     jsonPlaceholder: "JSON文字列を入力してください...",
@@ -287,6 +330,26 @@ const i18n = {
     randomLowercase: "小文字 (a-z)",
     randomNumbers: "数字 (0-9)",
     randomSymbols: "記号 (!@#$...)",
+
+    // 正则表达式测试器
+    regexPatternPlaceholder: "正規表現を入力してください (例: \\d+)",
+    regexTestTextPlaceholder: "テストテキストを入力してください...",
+    regexFlagGlobal: "グローバルマッチ (g)",
+    regexFlagIgnoreCase: "大文字小文字を区別しない (i)",
+    regexFlagMultiline: "マルチライン (m)",
+    regexFlagDotAll: "シングルライン (s)",
+    regexTest: "テスト",
+    regexClear: "クリア",
+    regexNoMatch: "マッチが見つかりません",
+    regexMatchResults: "マッチ結果",
+    regexMatches: "件のマッチ",
+    regexMatchContent: "マッチ内容",
+    regexPosition: "位置",
+    regexCaptureGroups: "キャプチャグループ",
+    regexHighlight: "ハイライト表示",
+    regexError: "エラー",
+    regexErrorPattern: "正規表現を入力してください",
+    regexErrorTestText: "テストテキストを入力してください",
 
     // 按钮文本
     format: "フォーマット",

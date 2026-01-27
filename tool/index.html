@@ -27,6 +27,7 @@
   <script src="js/unicode-tools.js"></script>
   <script src="js/web-tools.js"></script>
   <script src="js/random-tools.js"></script>
+  <script src="js/regex-tools.js"></script>
   <style>
     .tool-container {
       margin: 50px 0;
@@ -166,6 +167,26 @@
       border: 1px solid #91d5ff;
       min-width: 120px;
       text-align: center;
+    }
+    
+    .regex-flags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    
+    .regex-flags label {
+      display: flex;
+      align-items: center;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    
+    .regex-flags input[type="checkbox"] {
+      width: auto;
+      margin-right: 5px;
+      margin-bottom: 0;
     }
   </style>
 </head>
@@ -467,6 +488,25 @@
                 </div>
                 <button class="copy-btn" onclick="copyRandomResult()"><span data-i18n="copyResult">复制结果</span></button>
                 <div id="random-result" class="tool-result"></div>
+              </div>
+
+              <!-- 正则表达式测试器 -->
+              <div class="tool-card">
+                <h3 data-i18n="regexTool">正则表达式测试器</h3>
+                <input type="text" id="regex-pattern" data-i18n-placeholder="regexPatternPlaceholder" placeholder="请输入正则表达式 (例如: \d+)">
+                <textarea id="regex-test-text" data-i18n-placeholder="regexTestTextPlaceholder" placeholder="请输入测试文本..."></textarea>
+                <div class="regex-flags" style="margin-bottom: 10px;">
+                  <label><input type="checkbox" id="regex-flag-g"> <span data-i18n="regexFlagGlobal">全局匹配 (g)</span></label>
+                  <label><input type="checkbox" id="regex-flag-i"> <span data-i18n="regexFlagIgnoreCase">忽略大小写 (i)</span></label>
+                  <label><input type="checkbox" id="regex-flag-m"> <span data-i18n="regexFlagMultiline">多行匹配 (m)</span></label>
+                  <label><input type="checkbox" id="regex-flag-s"> <span data-i18n="regexFlagDotAll">单行匹配 (s)</span></label>
+                </div>
+                <div class="tool-buttons">
+                  <button onclick="testRegex()" data-i18n="regexTest">测试</button>
+                  <button onclick="clearRegexResults()" data-i18n="regexClear">清除</button>
+                </div>
+                <button class="copy-btn" onclick="copyResult('regex-result')" data-i18n="copyResult">复制结果</button>
+                <div id="regex-result" class="tool-result"></div>
               </div>
             </div>
           </div>
