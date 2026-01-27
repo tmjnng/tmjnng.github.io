@@ -15,12 +15,24 @@ function initTimer() {
 
 // 更新计时器显示
 function updateTimerDisplay() {
-  const display = document.getElementById('timer-display');
-  const hours = Math.floor(timerSeconds / 3600);
-  const minutes = Math.floor((timerSeconds % 3600) / 60);
-  const seconds = timerSeconds % 60;
-  
-  display.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  try {
+    const display = document.getElementById('timer-display');
+    if (!display) return;
+    
+    // 确保timerSeconds是有效的数字
+    const validSeconds = Math.max(0, parseInt(timerSeconds) || 0);
+    
+    const hours = Math.floor(validSeconds / 3600);
+    const minutes = Math.floor((validSeconds % 3600) / 60);
+    const seconds = validSeconds % 60;
+    
+    // 限制小时数，避免显示过大的数字
+    const displayHours = Math.min(hours, 9999);
+    
+    display.textContent = `${displayHours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  } catch (error) {
+    console.error('更新显示失败:', error);
+  }
 }
 
 // 更新计时器状态
@@ -37,10 +49,25 @@ function startTimer() {
   
   // 如果是倒计时模式，初始化时间
   if (timerMode === 'countdown' && !timerRunning) {
-    const hours = parseInt(document.getElementById('timer-hours').value) || 0;
-    const minutes = parseInt(document.getElementById('timer-minutes').value) || 0;
-    const seconds = parseInt(document.getElementById('timer-seconds').value) || 0;
-    timerSeconds = hours * 3600 + minutes * 60 + seconds;
+    try {
+      const hoursInput = document.getElementById('timer-hours');
+      const minutesInput = document.getElementById('timer-minutes');
+      const secondsInput = document.getElementById('timer-seconds');
+      
+      const hours = hoursInput ? parseInt(hoursInput.value) || 0 : 0;
+      const minutes = minutesInput ? parseInt(minutesInput.value) || 0 : 0;
+      const seconds = secondsInput ? parseInt(secondsInput.value) || 0 : 0;
+      
+      // 确保值在有效范围内
+      const validHours = Math.max(0, Math.min(23, hours));
+      const validMinutes = Math.max(0, Math.min(59, minutes));
+      const validSeconds = Math.max(0, Math.min(59, seconds));
+      
+      timerSeconds = validHours * 3600 + validMinutes * 60 + validSeconds;
+    } catch (error) {
+      console.error('获取时间值失败:', error);
+      timerSeconds = 0;
+    }
   }
   
   // 如果是正向计时模式，记录开始时间
@@ -86,9 +113,17 @@ function resetTimer() {
   timerSeconds = 0;
   
   // 重置输入框
-  document.getElementById('timer-hours').value = 0;
-  document.getElementById('timer-minutes').value = 25;
-  document.getElementById('timer-seconds').value = 0;
+  try {
+    const hoursInput = document.getElementById('timer-hours');
+    const minutesInput = document.getElementById('timer-minutes');
+    const secondsInput = document.getElementById('timer-seconds');
+    
+    if (hoursInput) hoursInput.value = 0;
+    if (minutesInput) minutesInput.value = 25;
+    if (secondsInput) secondsInput.value = 0;
+  } catch (error) {
+    console.error('重置输入框失败:', error);
+  }
   
   updateTimerDisplay();
   updateTimerStatus('已重置');
@@ -97,13 +132,21 @@ function resetTimer() {
 // 设置计时器预设
 function setTimerPreset(minutes) {
   resetTimer();
-  document.getElementById('timer-minutes').value = minutes;
-  document.getElementById('timer-hours').value = 0;
-  document.getElementById('timer-seconds').value = 0;
-  
-  // 更新显示
-  timerSeconds = minutes * 60;
-  updateTimerDisplay();
+  try {
+    const minutesInput = document.getElementById('timer-minutes');
+    const hoursInput = document.getElementById('timer-hours');
+    const secondsInput = document.getElementById('timer-seconds');
+    
+    if (minutesInput) minutesInput.value = minutes;
+    if (hoursInput) hoursInput.value = 0;
+    if (secondsInput) secondsInput.value = 0;
+    
+    // 更新显示
+    timerSeconds = minutes * 60;
+    updateTimerDisplay();
+  } catch (error) {
+    console.error('设置预设时间失败:', error);
+  }
 }
 
 // 显示通知
