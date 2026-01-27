@@ -5,7 +5,7 @@ class MiniPen {
         this.jsEditor = document.getElementById('js-editor');
         this.preview = document.getElementById('preview');
         this.consoleOutput = document.getElementById('console-output');
-        this.currentLang = 'zh';
+        this.currentLang = 'en';
         
         this.debounceTimer = null;
         this.initApp();
@@ -255,15 +255,53 @@ class MiniPen {
     }
 
     toggleFullscreen() {
-        const previewContainer = document.getElementById('preview-frame');
-        previewContainer.classList.toggle('fullscreen');
+        const previewContainer = document.getElementById('preview-container');
+        const previewFrame = document.getElementById('preview-frame');
         
-        const btn = document.getElementById('btn-fullscreen');
-        const langData = i18n[currentLang];
-        if (previewContainer.classList.contains('fullscreen')) {
-            btn.textContent = langData.buttons.close || '退出全屏';
-        } else {
+        if (previewFrame.classList.contains('fullscreen')) {
+            // 退出全屏
+            previewFrame.classList.remove('fullscreen');
+            previewContainer.classList.remove('fullscreen');
+            
+            const btn = document.getElementById('btn-fullscreen');
+            const langData = i18n[currentLang];
             btn.textContent = langData.toolbar.fullscreen || '全屏预览';
+        } else {
+            // 进入全屏
+            previewFrame.classList.add('fullscreen');
+            previewContainer.classList.add('fullscreen');
+            
+            const btn = document.getElementById('btn-fullscreen');
+            const langData = i18n[currentLang];
+            btn.textContent = langData.buttons.close || '退出全屏';
+            
+            // 创建一个退出全屏的按钮，显示在预览框内
+            const exitFullscreenBtn = document.createElement('button');
+            exitFullscreenBtn.id = 'btn-exit-fullscreen';
+            exitFullscreenBtn.textContent = langData.buttons.close || '退出全屏';
+            exitFullscreenBtn.style.position = 'absolute';
+            exitFullscreenBtn.style.top = '20px';
+            exitFullscreenBtn.style.right = '20px';
+            exitFullscreenBtn.style.zIndex = '10000';
+            exitFullscreenBtn.style.padding = '10px 20px';
+            exitFullscreenBtn.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+            exitFullscreenBtn.style.color = 'white';
+            exitFullscreenBtn.style.border = 'none';
+            exitFullscreenBtn.style.borderRadius = '4px';
+            exitFullscreenBtn.style.cursor = 'pointer';
+            exitFullscreenBtn.style.fontSize = '14px';
+            
+            exitFullscreenBtn.addEventListener('click', () => {
+                this.toggleFullscreen();
+            });
+            
+            // 确保只有一个退出按钮
+            const existingBtn = document.getElementById('btn-exit-fullscreen');
+            if (existingBtn) {
+                existingBtn.remove();
+            }
+            
+            previewFrame.appendChild(exitFullscreenBtn);
         }
     }
 
@@ -355,6 +393,15 @@ class MiniPen {
         console.error('所有IP API都失败');
         ipDisplay.textContent = 'IP: 获取失败';
     }
+
+    initLanguageSelector() {
+        const selector = document.getElementById('language-selector');
+        if (selector) {
+            selector.addEventListener('change', function() {
+                updateLanguage(this.value);
+            });
+        }
+    }
 }
 
 // 监听来自iframe的控制台消息
@@ -372,16 +419,7 @@ window.addEventListener('message', (event) => {
             miniPen.addConsoleMessage(message, method);
         }
     }
-
-    initLanguageSelector() {
-        const selector = document.getElementById('language-selector');
-        if (selector) {
-            selector.addEventListener('change', function() {
-                updateLanguage(this.value);
-            });
-        }
-    }
-}
+});
 
 // 初始化应用
 let miniPen;

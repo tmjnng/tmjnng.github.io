@@ -9,7 +9,9 @@ const i18n = {
       import: "Import",
       fullscreen: "Fullscreen Preview",
       run: "Run",
-      clear: "Clear"
+      clear: "Clear",
+      refresh: "Refresh",
+      console: "Console"
     },
     panels: {
       html: "HTML",
@@ -152,7 +154,9 @@ button:hover {
       import: "导入",
       fullscreen: "全屏预览",
       run: "运行",
-      clear: "清空"
+      clear: "清空",
+      refresh: "刷新",
+      console: "控制台"
     },
     panels: {
       html: "HTML",
@@ -289,13 +293,15 @@ button:hover {
     pageTitle: "MiniPen - オンラインコードエディタ",
     appTitle: "MiniPen",
     toolbar: {
-      new: "新規作成",
+      new: "新規",
       save: "保存",
       export: "エクスポート",
       import: "インポート",
       fullscreen: "フルスクリーンプレビュー",
       run: "実行",
-      clear: "クリア"
+      clear: "クリア",
+      refresh: "更新",
+      console: "コンソール"
     },
     panels: {
       html: "HTML",
@@ -429,32 +435,72 @@ button:hover {
   }
 };
 
-let currentLang = 'zh';
+let currentLang = 'en';
 
 function updateLanguage(lang) {
   currentLang = lang;
   const langData = i18n[lang];
   
   document.title = langData.pageTitle;
-  document.querySelector('.toolbar-left h1').textContent = langData.appTitle;
+  const toolbarTitle = document.querySelector('.toolbar-left h1');
+  if (toolbarTitle) toolbarTitle.textContent = langData.appTitle;
   
-  document.getElementById('btn-new').textContent = langData.toolbar.new;
-  document.getElementById('btn-save').textContent = langData.toolbar.save;
-  document.getElementById('btn-export').textContent = langData.toolbar.export;
-  document.getElementById('btn-import').textContent = langData.toolbar.import;
-  document.getElementById('btn-fullscreen').textContent = langData.toolbar.fullscreen;
-  document.getElementById('btn-run').textContent = langData.toolbar.run;
-  document.getElementById('btn-clear').textContent = langData.toolbar.clear;
+  const btnNew = document.getElementById('btn-new');
+  if (btnNew) btnNew.textContent = langData.toolbar.new;
   
-  document.querySelector('.panel-title[data-panel="html"]').textContent = langData.panels.html;
-  document.querySelector('.panel-title[data-panel="css"]').textContent = langData.panels.css;
-  document.querySelector('.panel-title[data-panel="js"]').textContent = langData.panels.javascript;
-  document.querySelector('.preview-title').textContent = langData.panels.preview;
-  document.querySelector('.console-title').textContent = langData.panels.console;
+  const btnSave = document.getElementById('btn-save');
+  if (btnSave) btnSave.textContent = langData.toolbar.save;
   
-  document.getElementById('html-editor').placeholder = langData.editors.htmlPlaceholder;
-  document.getElementById('css-editor').placeholder = langData.editors.cssPlaceholder;
-  document.getElementById('js-editor').placeholder = langData.editors.jsPlaceholder;
+  const btnExport = document.getElementById('btn-export');
+  if (btnExport) btnExport.textContent = langData.toolbar.export;
+  
+  const btnImport = document.getElementById('btn-import');
+  if (btnImport) btnImport.textContent = langData.toolbar.import;
+  
+  const btnFullscreen = document.getElementById('btn-fullscreen');
+  if (btnFullscreen) btnFullscreen.textContent = langData.toolbar.fullscreen;
+  
+  const btnRun = document.getElementById('btn-run');
+  if (btnRun) btnRun.textContent = langData.toolbar.run;
+  
+  const btnClear = document.getElementById('btn-clear');
+  if (btnClear) btnClear.textContent = langData.toolbar.clear;
+  
+  const htmlPanel = document.querySelector('#html-panel .panel-title');
+  if (htmlPanel) htmlPanel.textContent = langData.panels.html;
+  
+  const cssPanel = document.querySelector('#css-panel .panel-title');
+  if (cssPanel) cssPanel.textContent = langData.panels.css;
+  
+  const jsPanel = document.querySelector('#js-panel .panel-title');
+  if (jsPanel) jsPanel.textContent = langData.panels.javascript;
+  
+  const previewTitle = document.querySelector('.preview-title');
+  if (previewTitle) previewTitle.textContent = langData.panels.preview;
+  
+  const consoleTitle = document.querySelector('.console-title');
+  if (consoleTitle) consoleTitle.textContent = langData.panels.console;
+  
+  const htmlEditor = document.getElementById('html-editor');
+  if (htmlEditor) htmlEditor.placeholder = langData.editors.htmlPlaceholder;
+  
+  const cssEditor = document.getElementById('css-editor');
+  if (cssEditor) cssEditor.placeholder = langData.editors.cssPlaceholder;
+  
+  const jsEditor = document.getElementById('js-editor');
+  if (jsEditor) jsEditor.placeholder = langData.editors.jsPlaceholder;
+  
+  // 刷新和控制台按钮国际化
+  const btnRefresh = document.getElementById('btn-refresh');
+  if (btnRefresh) btnRefresh.textContent = langData.toolbar.refresh || '刷新';
+  
+  const btnConsole = document.getElementById('btn-console');
+  if (btnConsole) btnConsole.textContent = langData.toolbar.console || '控制台';
+  
+  // 折叠按钮国际化
+  document.querySelectorAll('.panel-toggle').forEach(btn => {
+    btn.textContent = langData.buttons.collapse || '折叠';
+  });
   
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
@@ -465,5 +511,5 @@ function updateLanguage(lang) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  updateLanguage('zh');
+  updateLanguage('en');
 });
