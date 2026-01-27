@@ -47,8 +47,8 @@ function startTimer() {
   
   timerMode = document.getElementById('timer-mode').value;
   
-  // 如果是倒计时模式，初始化时间
-  if (timerMode === 'countdown' && !timerRunning) {
+  // 如果是倒计时模式，从输入框读取时间
+  if (timerMode === 'countdown') {
     try {
       const hoursInput = document.getElementById('timer-hours');
       const minutesInput = document.getElementById('timer-minutes');
@@ -71,7 +71,7 @@ function startTimer() {
   }
   
   // 如果是正向计时模式，记录开始时间
-  if (timerMode === 'stopwatch' && !timerRunning) {
+  if (timerMode === 'stopwatch') {
     startTime = Date.now() - (timerSeconds * 1000);
   }
   
@@ -131,7 +131,10 @@ function resetTimer() {
 
 // 设置计时器预设
 function setTimerPreset(minutes) {
-  resetTimer();
+  // 停止当前计时
+  clearInterval(timerInterval);
+  timerRunning = false;
+  
   try {
     const minutesInput = document.getElementById('timer-minutes');
     const hoursInput = document.getElementById('timer-hours');
@@ -141,9 +144,19 @@ function setTimerPreset(minutes) {
     if (hoursInput) hoursInput.value = 0;
     if (secondsInput) secondsInput.value = 0;
     
-    // 更新显示
-    timerSeconds = minutes * 60;
-    updateTimerDisplay();
+    // 更新显示（只更新倒计时模式的显示）
+    const currentMode = document.getElementById('timer-mode').value;
+    if (currentMode === 'countdown') {
+      timerSeconds = minutes * 60;
+      updateTimerDisplay();
+    } else {
+      // 正向计时模式，重置为0
+      timerSeconds = 0;
+      startTime = Date.now();
+      updateTimerDisplay();
+    }
+    
+    updateTimerStatus('已设置预设时间');
   } catch (error) {
     console.error('设置预设时间失败:', error);
   }
