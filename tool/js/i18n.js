@@ -36,6 +36,7 @@ const i18n = {
     randomTool: "Random String Generator",
     regexTool: "Regex Tester",
     qrcodeTool: "QR Code Generator",
+    timerTool: "Countdown/Timer",
 
     // 输入框占位符
     jsonPlaceholder: "Please enter JSON string...",
@@ -85,6 +86,20 @@ const i18n = {
     regexError: "Error",
     regexErrorPattern: "Please enter regex pattern",
     regexErrorTestText: "Please enter test text",
+
+    // 计时器
+    timerMode: "Mode",
+    timerCountdown: "Countdown",
+    timerStopwatch: "Stopwatch",
+    timerTime: "Time",
+    timerNotification: "Enable Notification",
+    timerPreset: "Preset",
+    timerPresetPomodoro: "Pomodoro (25min)",
+    timerPresetShortBreak: "Short Break (5min)",
+    timerPresetLongBreak: "Long Break (15min)",
+    timerStart: "Start",
+    timerPause: "Pause",
+    timerReset: "Reset",
 
     // 按钮文本
     format: "Format",
@@ -185,6 +200,7 @@ const i18n = {
     randomTool: "随机字符串生成",
     regexTool: "正则表达式测试器",
     qrcodeTool: "二维码生成器",
+    timerTool: "倒计时/计时器",
 
     // 输入框占位符
     jsonPlaceholder: "请输入JSON字符串...",
@@ -234,6 +250,20 @@ const i18n = {
     regexError: "错误",
     regexErrorPattern: "请输入正则表达式",
     regexErrorTestText: "请输入测试文本",
+
+    // 计时器
+    timerMode: "模式",
+    timerCountdown: "倒计时",
+    timerStopwatch: "正向计时",
+    timerTime: "时间",
+    timerNotification: "启用通知",
+    timerPreset: "预设",
+    timerPresetPomodoro: "番茄工作法 (25分钟)",
+    timerPresetShortBreak: "短休息 (5分钟)",
+    timerPresetLongBreak: "长休息 (15分钟)",
+    timerStart: "开始",
+    timerPause: "暂停",
+    timerReset: "重置",
 
     // 按钮文本
     format: "格式化",
@@ -334,6 +364,7 @@ const i18n = {
     randomTool: "ランダム文字列生成",
     regexTool: "正規表現テスター",
     qrcodeTool: "QRコードジェネレーター",
+    timerTool: "カウントダウン/タイマー",
 
     // 输入框占位符
     jsonPlaceholder: "JSON文字列を入力してください...",
@@ -383,6 +414,20 @@ const i18n = {
     regexError: "エラー",
     regexErrorPattern: "正規表現を入力してください",
     regexErrorTestText: "テストテキストを入力してください",
+
+    // タイマー
+    timerMode: "モード",
+    timerCountdown: "カウントダウン",
+    timerStopwatch: "ストップウォッチ",
+    timerTime: "時間",
+    timerNotification: "通知を有効にする",
+    timerPreset: "プリセット",
+    timerPresetPomodoro: "ポモドーロテクニック (25分)",
+    timerPresetShortBreak: "短い休憩 (5分)",
+    timerPresetLongBreak: "長い休憩 (15分)",
+    timerStart: "開始",
+    timerPause: "一時停止",
+    timerReset: "リセット",
 
     // 按钮文本
     format: "フォーマット",
