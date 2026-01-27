@@ -8,12 +8,12 @@ function testRegex() {
   const resultDiv = document.getElementById('regex-result');
 
   if (!pattern) {
-    resultDiv.innerHTML = `<span style="color: red;">${i18n[langData.currentLang].regexError}: ${i18n[langData.currentLang].regexErrorPattern}</span>`;
+    resultDiv.innerHTML = `<span style="color: red;">${i18n[currentLang].regexError}: ${i18n[currentLang].regexErrorPattern}</span>`;
     return;
   }
 
   if (!testText) {
-    resultDiv.innerHTML = `<span style="color: red;">${i18n[langData.currentLang].regexError}: ${i18n[langData.currentLang].regexErrorTestText}</span>`;
+    resultDiv.innerHTML = `<span style="color: red;">${i18n[currentLang].regexError}: ${i18n[currentLang].regexErrorTestText}</span>`;
     return;
   }
 
@@ -56,15 +56,15 @@ function testRegex() {
 
     let resultHTML = '';
     if (matches.length === 0) {
-      resultHTML = `<span style="color: orange;">${i18n[langData.currentLang].regexNoMatch}</span>`;
+      resultHTML = `<span style="color: orange;">${i18n[currentLang].regexNoMatch}</span>`;
     } else {
-      resultHTML += `<strong>${i18n[langData.currentLang].regexMatchResults} (${matches.length} ${i18n[langData.currentLang].regexMatches}):</strong>\n\n`;
+      resultHTML += `<strong>${i18n[currentLang].regexMatchResults} (${matches.length} ${i18n[currentLang].regexMatches}):</strong>\n\n`;
       matches.forEach((m, idx) => {
-        resultHTML += `<strong>${i18n[langData.currentLang].regexMatchResults} #${idx + 1}:</strong>\n`;
-        resultHTML += `  ${i18n[langData.currentLang].regexMatchContent}: "${escapeHtml(m.match)}"\n`;
-        resultHTML += `  ${i18n[langData.currentLang].regexPosition}: ${m.index}\n`;
+        resultHTML += `<strong>${i18n[currentLang].regexMatchResults} #${idx + 1}:</strong>\n`;
+        resultHTML += `  ${i18n[currentLang].regexMatchContent}: "${escapeHtml(m.match)}"\n`;
+        resultHTML += `  ${i18n[currentLang].regexPosition}: ${m.index}\n`;
         if (m.groups.length > 0) {
-          resultHTML += `  ${i18n[langData.currentLang].regexCaptureGroups}:\n`;
+          resultHTML += `  ${i18n[currentLang].regexCaptureGroups}:\n`;
           m.groups.forEach((group, groupIdx) => {
             resultHTML += `    $${groupIdx + 1}: "${escapeHtml(group)}"\n`;
           });
@@ -72,7 +72,7 @@ function testRegex() {
         resultHTML += '\n';
       });
 
-      resultHTML += `<strong>${i18n[langData.currentLang].regexHighlight}:</strong>\n`;
+      resultHTML += `<strong>${i18n[currentLang].regexHighlight}:</strong>\n`;
       let highlightedText = escapeHtml(testText);
       let offset = 0;
       matches.forEach((m) => {
@@ -89,7 +89,7 @@ function testRegex() {
 
     resultDiv.innerHTML = resultHTML;
   } catch (error) {
-    resultDiv.innerHTML = `<span style="color: red;">${i18n[langData.currentLang].regexError}: ${escapeHtml(error.message)}</span>`;
+    resultDiv.innerHTML = `<span style="color: red;">${i18n[currentLang].regexError}: ${escapeHtml(error.message)}</span>`;
   }
 }
 
