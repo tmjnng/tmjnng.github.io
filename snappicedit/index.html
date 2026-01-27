@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SnapPicEdit - 图片编辑工具</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- 顶部导航栏 -->
+        <header class="app-header">
+            <h1>SnapPicEdit</h1>
+            <div class="header-controls">
+                <select id="language-selector">
+                    <option value="en">English</option>
+                    <option value="zh">中文</option>
+                    <option value="ja">日本語</option>
+                </select>
+            </div>
+        </header>
+
+        <!-- 主内容区域 -->
+        <main class="app-main">
+            <!-- 左侧控制面板 -->
+            <aside class="control-panel">
+                <!-- 图片上传 -->
+                <section class="control-section">
+                    <h3 data-i18n="upload.title">图片上传</h3>
+                    <input type="file" id="image-upload" accept="image/*" multiple>
+                    <div id="image-preview-container" class="image-preview-container"></div>
+                </section>
+
+                <!-- 分辨率设置 -->
+                <section class="control-section">
+                    <h3 data-i18n="resolution.title">分辨率设置</h3>
+                    <div class="resolution-controls">
+                        <div class="input-group">
+                            <label data-i18n="resolution.width">宽度:</label>
+                            <input type="number" id="width-input" min="1" value="500">
+                        </div>
+                        <div class="input-group">
+                            <label data-i18n="resolution.height">高度:</label>
+                            <input type="number" id="height-input" min="1" value="500">
+                        </div>
+                        <div class="input-group">
+                            <label data-i18n="resolution.keepRatio">保持比例:</label>
+                            <input type="checkbox" id="keep-ratio" checked>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 背景色选择 -->
+                <section class="control-section">
+                    <h3 data-i18n="background.title">背景色</h3>
+                    <input type="color" id="background-color" value="#ffffff">
+                    <div class="input-group">
+                        <label data-i18n="background.transparent">透明背景:</label>
+                        <input type="checkbox" id="transparent-bg">
+                    </div>
+                </section>
+
+                <!-- 缩放和裁剪 -->
+                <section class="control-section">
+                    <h3 data-i18n="scale.title">缩放和裁剪</h3>
+                    <div class="input-group">
+                        <label data-i18n="scale.mode">模式:</label>
+                        <select id="scale-mode">
+                            <option value="contain" data-i18n="scale.contain">等比缩放</option>
+                            <option value="cover" data-i18n="scale.cover">居中裁剪</option>
+                        </select>
+                    </div>
+                </section>
+
+                <!-- 文字水印 -->
+                <section class="control-section">
+                    <h3 data-i18n="watermark.title">文字水印</h3>
+                    <div class="input-group">
+                        <label data-i18n="watermark.text">文字:</label>
+                        <input type="text" id="watermark-text" placeholder="输入水印文字">
+                    </div>
+                    <div class="input-group">
+                        <label data-i18n="watermark.font">字体:</label>
+                        <select id="watermark-font">
+                            <option value="Arial">Arial</option>
+                            <option value="Helvetica">Helvetica</option>
+                            <option value="Times New Roman">Times New Roman</option>
+                            <option value="SimSun">宋体</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label data-i18n="watermark.size">大小:</label>
+                        <input type="number" id="watermark-size" min="1" value="24">
+                    </div>
+                    <div class="input-group">
+                        <label data-i18n="watermark.color">颜色:</label>
+                        <input type="color" id="watermark-color" value="#000000">
+                    </div>
+                    <div class="input-group">
+                        <label data-i18n="watermark.position">位置:</label>
+                        <select id="watermark-position">
+                            <option value="top-left">左上角</option>
+                            <option value="top-right">右上角</option>
+                            <option value="bottom-left">左下角</option>
+                            <option value="bottom-right">右下角</option>
+                            <option value="center">居中</option>
+                        </select>
+                    </div>
+                </section>
+
+                <!-- 图片处理 -->
+                <section class="control-section">
+                    <h3 data-i18n="process.title">图片处理</h3>
+                    <div class="input-group">
+                        <label data-i18n="process.quality">压缩质量:</label>
+                        <input type="range" id="quality-slider" min="0.1" max="1" step="0.1" value="0.6">
+                        <span id="quality-value">0.6</span>
+                    </div>
+                    <div class="input-group">
+                        <label data-i18n="process.format">输出格式:</label>
+                        <select id="output-format">
+                            <option value="jpg">JPG</option>
+                            <option value="png">PNG</option>
+                            <option value="webp">WebP</option>
+                        </select>
+                    </div>
+                </section>
+
+                <!-- 高级功能 -->
+                <section class="control-section">
+                    <h3 data-i18n="advanced.title">高级功能</h3>
+                    
+                    <!-- 主色调提取 -->
+                    <div class="input-group">
+                        <button id="extract-colors" data-i18n="advanced.extractColors">提取主色调</button>
+                        <div id="color-palette" class="color-palette"></div>
+                    </div>
+
+                    <!-- 自动抠图 -->
+                    <div class="input-group">
+                        <label data-i18n="advanced.chromaKey">自动抠图:</label>
+                        <input type="checkbox" id="chroma-key">
+                        <input type="color" id="chroma-color" value="#00ff00" disabled>
+                    </div>
+
+                    <!-- 缩略图生成 -->
+                    <div class="input-group">
+                        <label data-i18n="advanced.thumbnail">生成缩略图:</label>
+                        <input type="checkbox" id="generate-thumbnail">
+                        <input type="number" id="thumbnail-size" min="10" value="150" disabled>
+                    </div>
+
+                    <!-- 二维码生成 -->
+                    <div class="input-group">
+                        <label data-i18n="advanced.qrCode">添加二维码:</label>
+                        <input type="checkbox" id="add-qr-code">
+                        <input type="text" id="qr-code-text" placeholder="输入二维码内容" disabled>
+                    </div>
+                </section>
+
+                <!-- 导出选项 -->
+                <section class="control-section">
+                    <h3 data-i18n="export.title">导出选项</h3>
+                    <button id="export-single" data-i18n="export.single">导出当前图片</button>
+                    <button id="export-batch" data-i18n="export.batch">批量导出</button>
+                </section>
+            </aside>
+
+            <!-- 右侧预览区域 -->
+            <section class="preview-section">
+                <h3 data-i18n="preview.title">实时预览</h3>
+                <div class="preview-container">
+                    <canvas id="preview-canvas" class="preview-canvas"></canvas>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- 国际化脚本 -->
+    <script src="i18n/i18n.js"></script>
+    <!-- 核心脚本 -->
+    <script src="js/app.js"></script>
+    <script src="js/image-processor.js"></script>
+    <script src="js/qr-code.js"></script>
+    <script src="js/color-extractor.js"></script>
+</main>
+</body>
+</html>

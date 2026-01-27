@@ -9,6 +9,7 @@ const i18n = {
     navDrawSystem: "Lottery System",
     navExam: "JLPT Practice",
     navMiniPen: "Code Editor",
+    navSnapPicEdit: "Image Editor",
     searchPlaceholder: "Search",
     toolsTitle: "Development Tools",
     toolsDescription: "Provides commonly used development tools such as JSON formatting, XML formatting, MD5 encryption, AES encryption and decryption, etc.",
@@ -120,6 +121,7 @@ const i18n = {
     navDrawSystem: "抽奖系统",
     navExam: "日语刷题",
     navMiniPen: "代码编辑器",
+    navSnapPicEdit: "图片编辑器",
     searchPlaceholder: "搜索",
     toolsTitle: "开发工具集",
     toolsDescription: "提供JSON格式化、XML格式化、MD5加密、AES加密解密等开发常用工具",
@@ -231,6 +233,7 @@ const i18n = {
     navDrawSystem: "抽選システム",
     navExam: "日本語練習",
     navMiniPen: "コードエディタ",
+    navSnapPicEdit: "画像エディタ",
     searchPlaceholder: "検索",
     toolsTitle: "開発ツール集",
     toolsDescription: "JSONフォーマット、XMLフォーマット、MD5暗号化、AES暗号化/復号など、開発によく使われるツールを提供します。",
@@ -354,6 +357,7 @@ function updateLanguage(lang) {
   document.querySelectorAll('.main-nav-link')[4].textContent = langData.navDrawSystem;
   document.querySelectorAll('.main-nav-link')[5].textContent = langData.navExam;
   document.querySelectorAll('.main-nav-link')[6].textContent = langData.navMiniPen;
+  document.querySelectorAll('.main-nav-link')[7].textContent = langData.navSnapPicEdit;
   
   // 更新搜索框
   document.querySelector('.search-form-input').placeholder = langData.searchPlaceholder;
