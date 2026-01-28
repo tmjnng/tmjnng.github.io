@@ -120,7 +120,61 @@ class PhotoEditor {
         this.ctx.fillStyle = '#95a5a6';
         this.ctx.font = '20px Arial';
         this.ctx.textAlign = 'center';
-        this.ctx.fillText('点击左边的"上传图片"按钮开始编辑', this.canvas.width / 2, this.canvas.height / 2);
+        this.ctx.fillText('点击此处或拖拽图片到此处开始编辑', this.canvas.width / 2, this.canvas.height / 2);
+        
+        // 设置画布容器点击和拖拽上传
+        this.setupCanvasUpload();
+    }
+    
+    setupCanvasUpload() {
+        const canvasContainer = document.querySelector('.canvas-container');
+        if (!canvasContainer) return;
+        
+        // 点击画布容器触发上传（仅在没有图片时）
+        canvasContainer.addEventListener('click', (e) => {
+            if (!this.image && e.target === this.canvas) {
+                console.log('点击画布，触发上传');
+                document.getElementById('image-upload').click();
+            }
+        });
+        
+        // 拖拽上传
+        canvasContainer.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            canvasContainer.style.borderColor = '#3498db';
+            canvasContainer.style.borderStyle = 'dashed';
+            canvasContainer.style.borderWidth = '3px';
+        });
+        
+        canvasContainer.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            canvasContainer.style.borderColor = '';
+            canvasContainer.style.borderStyle = '';
+            canvasContainer.style.borderWidth = '';
+        });
+        
+        canvasContainer.addEventListener('drop', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // 恢复样式
+            canvasContainer.style.borderColor = '';
+            canvasContainer.style.borderStyle = '';
+            canvasContainer.style.borderWidth = '';
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                const file = files[0];
+                if (file.type.match('image.*')) {
+                    console.log('拖拽上传图片:', file);
+                    this.loadImage(file);
+                } else {
+                    alert('请拖拽图片文件！');
+                }
+            }
+        });
     }
     
     loadImage(file) {
@@ -142,6 +196,14 @@ class PhotoEditor {
                 this.image = img;
                 this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
                 this.ctx.drawImage(this.image, 0, 0, this.canvas.width, this.canvas.height);
+                
+                // 重置画布容器样式
+                const canvasContainer = document.querySelector('.canvas-container');
+                if (canvasContainer) {
+                    canvasContainer.style.borderColor = '';
+                    canvasContainer.style.borderStyle = '';
+                    canvasContainer.style.borderWidth = '';
+                }
                 
                 // 保存历史记录
                 this.saveState();
