@@ -120,7 +120,7 @@ class PhotoEditor {
         this.ctx.fillStyle = '#95a5a6';
         this.ctx.font = '20px Arial';
         this.ctx.textAlign = 'center';
-        this.ctx.fillText('点击"上传图片"开始编辑', this.canvas.width / 2, this.canvas.height / 2);
+        this.ctx.fillText('点击左边的"上传图片"按钮开始编辑', this.canvas.width / 2, this.canvas.height / 2);
     }
     
     loadImage(file) {
