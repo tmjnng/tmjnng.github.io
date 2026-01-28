@@ -49,17 +49,30 @@ class PhotoEditor {
         const uploadBtn = document.getElementById('upload-btn');
         const imageUpload = document.getElementById('image-upload');
         
+        console.log('初始化上传功能...');
+        console.log('uploadBtn:', uploadBtn);
+        console.log('imageUpload:', imageUpload);
+        
         if (uploadBtn && imageUpload) {
             uploadBtn.addEventListener('click', () => {
+                console.log('点击上传按钮');
                 imageUpload.click();
             });
             
             imageUpload.addEventListener('change', (e) => {
+                console.log('文件选择改变');
                 const file = e.target.files[0];
+                console.log('选择的文件:', file);
+                
                 if (file && file.type.match('image.*')) {
+                    console.log('开始加载图片');
                     this.loadImage(file);
+                } else {
+                    console.error('无效的文件类型');
                 }
             });
+            
+            console.log('上传功能初始化完成');
         } else {
             console.error("Upload button or image upload input not found!");
         }
@@ -111,10 +124,15 @@ class PhotoEditor {
     }
     
     loadImage(file) {
+        console.log('loadImage被调用，文件:', file);
+        
         const reader = new FileReader();
         reader.onload = (e) => {
+            console.log('FileReader读取完成');
             const img = new Image();
             img.onload = () => {
+                console.log('图片加载完成，尺寸:', img.width, 'x', img.height);
+                
                 // 调整画布大小以适应图片
                 this.canvas.width = Math.min(img.width, 800);
                 this.canvas.height = Math.min(img.height, 600);
@@ -127,8 +145,16 @@ class PhotoEditor {
                 
                 // 保存历史记录
                 this.saveState();
+                
+                console.log('图片加载并绘制完成');
+            };
+            img.onerror = () => {
+                console.error('图片加载失败');
             };
             img.src = e.target.result;
+        };
+        reader.onerror = () => {
+            console.error('FileReader读取失败');
         };
         reader.readAsDataURL(file);
     }
@@ -486,13 +512,6 @@ document.addEventListener('DOMContentLoaded', () => {
         brushSizeValue.textContent = brushSizeSlider.value;
     });
     
-    // 更新画笔透明度显示
-    const brushOpacitySlider = document.getElementById('brush-opacity');
-    const brushOpacityValue = document.getElementById('brush-opacity-value');
-    brushOpacityValue.textContent = brushOpacitySlider.value + '%';
-    brushOpacitySlider.addEventListener('input', () => {
-        brushOpacityValue.textContent = brushOpacitySlider.value + '%';
-    });
     // 更新画笔透明度显示
     const brushOpacitySlider = document.getElementById('brush-opacity');
     const brushOpacityValue = document.getElementById('brush-opacity-value');
