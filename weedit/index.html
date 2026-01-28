@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>微信公众号图文排版工具</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="editor-container">
+        <!-- 顶部工具栏 -->
+        <div class="toolbar">
+            <h1>微信公众号图文排版工具</h1>
+            <div class="template-buttons">
+                <button class="template-btn" data-template="h1">标题1</button>
+                <button class="template-btn" data-template="p">正文</button>
+                <button class="template-btn" data-template="blockquote">引用</button>
+                <button class="template-btn" data-template="hr">分割线</button>
+                <button class="template-btn" data-template="small">注释</button>
+            </div>
+            <div class="action-buttons">
+                <button id="copy-btn">复制到剪贴板</button>
+            </div>
+        </div>
+        
+        <!-- 主要内容区 -->
+        <div class="main-content">
+            <!-- 左侧编辑区 -->
+            <div class="editor-section">
+                <h2>编辑区</h2>
+                <div id="editor" contenteditable="true" class="editor"></div>
+            </div>
+            
+            <!-- 右侧预览区 -->
+            <div class="preview-section">
+                <h2>预览区</h2>
+                <div id="preview" class="preview"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/app.js"></script>
+</body>
+</html>
