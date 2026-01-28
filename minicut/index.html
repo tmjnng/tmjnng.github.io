@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MiniCut - 在线视频编辑器</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- 顶部菜单栏 -->
+        <header class="app-header">
+            <div class="header-left">
+                <h1>MiniCut</h1>
+                <div class="project-info">
+                    <span id="project-name">未命名项目</span>
+                    <button id="rename-project" class="btn btn-small">重命名</button>
+                </div>
+            </div>
+            <div class="header-center">
+                <button id="play-btn" class="btn btn-primary"><i>▶</i> 播放</button>
+                <button id="pause-btn" class="btn" style="display:none;"><i>⏸</i> 暂停</button>
+                <div class="timeline-position">
+                    <span id="current-time">00:00</span> / <span id="total-time">00:00</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <button id="export-btn" class="btn btn-success">导出视频</button>
+                <button id="save-btn" class="btn">保存项目</button>
+            </div>
+        </header>
+
+        <!-- 主内容区域 -->
+        <main class="app-main">
+            <!-- 左侧媒体库 -->
+            <aside class="media-library">
+                <div class="library-header">
+                    <h3>媒体库</h3>
+                    <div class="library-actions">
+                        <input type="file" id="media-upload" accept="video/*,image/*" multiple style="display: none;">
+                        <button id="upload-btn" class="btn btn-small">上传</button>
+                        <button id="import-template" class="btn btn-small">导入模板</button>
+                    </div>
+                </div>
+                <div class="media-items" id="media-items">
+                    <div class="placeholder-message">点击"上传"按钮添加视频或图片</div>
+                </div>
+            </aside>
+
+            <!-- 中央预览区域 -->
+            <section class="preview-area">
+                <div class="preview-container">
+                    <video id="preview-video" controls style="max-width: 100%; max-height: 100%;">
+                        您的浏览器不支持视频播放
+                    </video>
+                    <canvas id="preview-canvas" style="display: none; max-width: 100%; max-height: 100%;"></canvas>
+                    <div id="preview-overlay" class="preview-overlay"></div>
+                </div>
+                <div class="preview-controls">
+                    <button id="zoom-in" class="btn btn-small">+</button>
+                    <button id="zoom-out" class="btn btn-small">-</button>
+                    <span id="zoom-level">100%</span>
+                </div>
+            </section>
+
+            <!-- 右侧属性面板 -->
+            <aside class="properties-panel">
+                <div class="properties-section">
+                    <h3>视频属性</h3>
+                    <div class="property-group">
+                        <div class="input-group">
+                            <label>持续时间</label>
+                            <input type="text" id="clip-duration" value="10秒">
+                        </div>
+                        <div class="input-group">
+                            <label>音量</label>
+                            <input type="range" id="clip-volume" min="0" max="100" value="100">
+                            <span id="volume-value">100%</span>
+                        </div>
+                        <div class="input-group">
+                            <label>不透明度</label>
+                            <input type="range" id="clip-opacity" min="0" max="100" value="100">
+                            <span id="opacity-value">100%</span>
+                        </div>
+                        <div class="input-group">
+                            <label>速度</label>
+                            <select id="clip-speed">
+                                <option value="0.25">0.25x</option>
+                                <option value="0.5">0.5x</option>
+                                <option value="1" selected>1x (正常)</option>
+                                <option value="1.25">1.25x</option>
+                                <option value="1.5">1.5x</option>
+                                <option value="2">2x</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="properties-section">
+                    <h3>特效</h3>
+                    <div class="effect-group">
+                        <div class="input-group">
+                            <label>
+                                <input type="checkbox" id="fade-in"> 淡入
+                            </label>
+                        </div>
+                        <div class="input-group">
+                            <label>
+                                <input type="checkbox" id="fade-out"> 淡出
+                            </label>
+                        </div>
+                        <div class="input-group">
+                            <label>
+                                <input type="checkbox" id="motion-blur"> 运动模糊
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="properties-section">
+                    <h3>文本</h3>
+                    <div class="input-group">
+                        <input type="text" id="text-overlay" placeholder="输入要添加的文字">
+                    </div>
+                    <div class="input-group">
+                        <label>字体</label>
+                        <select id="text-font">
+                            <option value="Arial">Arial</option>
+                            <option value="Helvetica">Helvetica</option>
+                            <option value="SimHei">黑体</option>
+                            <option value="SimSun">宋体</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>大小</label>
+                        <input type="number" id="text-size" min="10" max="100" value="24">
+                    </div>
+                    <div class="input-group">
+                        <label>颜色</label>
+                        <input type="color" id="text-color" value="#ffffff">
+                    </div>
+                    <button id="add-text-btn" class="btn btn-small">添加文字</button>
+                </div>
+            </aside>
+
+            <!-- 底部时间轴 -->
+            <section class="timeline-area">
+                <div class="timeline-header">
+                    <div class="track-labels">
+                        <div class="track-label">视频</div>
+                        <div class="track-label">音频</div>
+                        <div class="track-label">文字</div>
+                    </div>
+                    <div class="timeline-ruler" id="timeline-ruler">
+                        <!-- 尺子刻度将通过JS生成 -->
+                    </div>
+                </div>
+                <div class="timeline-tracks">
+                    <div class="video-track track">
+                        <div class="track-name">视频</div>
+                        <div class="track-content" id="video-track">
+                            <!-- 视频片段将通过JS添加 -->
+                        </div>
+                    </div>
+                    <div class="audio-track track">
+                        <div class="track-name">音频</div>
+                        <div class="track-content" id="audio-track">
+                            <!-- 音频片段将通过JS添加 -->
+                        </div>
+                    </div>
+                    <div class="text-track track">
+                        <div class="track-name">文字</div>
+                        <div class="track-content" id="text-track">
+                            <!-- 文字片段将通过JS添加 -->
+                        </div>
+                    </div>
+                </div>
+                <div class="playhead" id="playhead">
+                    <div class="playhead-line"></div>
+                    <div class="playhead-pointer">▼</div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script src="js/media-manager.js"></script>
+    <script src="js/timeline.js"></script>
+    <script src="js/effects.js"></script>
+    <script src="js/exporter.js"></script>
+</body>
+</html>

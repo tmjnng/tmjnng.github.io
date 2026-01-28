@@ -1,0 +1,482 @@
+/* MiniCut - 在线视频编辑器样式 */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #1a1a1a;
+    color: #ffffff;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* 顶部菜单栏 */
+.app-header {
+    background-color: #2d2d2d;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    z-index: 100;
+    height: 60px;
+}
+
+.header-left, .header-center, .header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.header-left h1 {
+    font-size: 1.5rem;
+    color: #4CAF50;
+    margin-right: 20px;
+}
+
+.project-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.timeline-position {
+    margin: 0 20px;
+    font-family: monospace;
+}
+
+.btn {
+    background-color: #4a4a4a;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #5a5a5a;
+}
+
+.btn-primary {
+    background-color: #2196F3;
+}
+
+.btn-primary:hover {
+    background-color: #0b7dda;
+}
+
+.btn-success {
+    background-color: #4CAF50;
+}
+
+.btn-success:hover {
+    background-color: #45a049;
+}
+
+.btn-small {
+    padding: 4px 8px;
+    font-size: 12px;
+}
+
+.btn i {
+    margin-right: 5px;
+}
+
+/* 主内容区域 */
+.app-main {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+}
+
+/* 左侧媒体库 */
+.media-library {
+    width: 250px;
+    background-color: #252525;
+    padding: 15px;
+    overflow-y: auto;
+    border-right: 1px solid #333;
+    display: flex;
+    flex-direction: column;
+}
+
+.library-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.library-header h3 {
+    font-size: 1rem;
+    color: #4CAF50;
+}
+
+.library-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.media-items {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.media-item {
+    background-color: #333;
+    border: 1px solid #444;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 8px;
+    cursor: grab;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.media-item:hover {
+    background-color: #3a3a3a;
+    border-color: #4CAF50;
+}
+
+.media-item i {
+    font-size: 20px;
+}
+
+.media-item.video i {
+    color: #2196F3;
+}
+
+.media-item.image i {
+    color: #FF9800;
+}
+
+.placeholder-message {
+    color: #aaa;
+    text-align: center;
+    padding: 20px;
+    font-style: italic;
+}
+
+/* 中央预览区域 */
+.preview-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #1a1a1a;
+    padding: 10px;
+}
+
+.preview-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #000;
+    border: 1px solid #333;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+    min-height: 400px;
+}
+
+.preview-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    /* 添加网格背景 */
+    background-image: 
+        linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+.preview-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+/* 右侧属性面板 */
+.properties-panel {
+    width: 250px;
+    background-color: #252525;
+    padding: 15px;
+    overflow-y: auto;
+    border-left: 1px solid #333;
+}
+
+.properties-section {
+    margin-bottom: 20px;
+}
+
+.properties-section h3 {
+    color: #4CAF50;
+    font-size: 1rem;
+    margin-bottom: 12px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #333;
+}
+
+.property-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.input-group label {
+    font-size: 14px;
+    color: #ccc;
+}
+
+.input-group input, .input-group select {
+    padding: 6px;
+    background-color: #333;
+    border: 1px solid #444;
+    border-radius: 4px;
+    color: white;
+}
+
+.input-group input[type="range"] {
+    padding: 0;
+}
+
+.effect-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* 底部时间轴区域 */
+.timeline-area {
+    height: 200px;
+    background-color: #252525;
+    border-top: 1px solid #333;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.timeline-header {
+    height: 40px;
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #333;
+    background-color: #2d2d2d;
+}
+
+.track-labels {
+    display: flex;
+    height: 20px;
+    font-size: 12px;
+    color: #aaa;
+    padding: 0 50px 0 80px;
+}
+
+.track-label {
+    width: 200px;
+    text-align: center;
+    border-right: 1px solid #333;
+}
+
+.timeline-ruler {
+    height: 20px;
+    display: flex;
+    background-color: #1a1a1a;
+    overflow-x: auto;
+    padding-left: 80px;
+}
+
+.ruler-mark {
+    position: relative;
+    min-width: 50px;
+    height: 20px;
+    border-right: 1px solid #444;
+}
+
+.ruler-mark::after {
+    content: attr(data-time);
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    font-size: 10px;
+    color: #aaa;
+}
+
+.timeline-tracks {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-x: auto;
+    padding-left: 80px;
+}
+
+.track {
+    height: 40px;
+    display: flex;
+    border-bottom: 1px solid #333;
+}
+
+.track:last-child {
+    border-bottom: none;
+}
+
+.track-name {
+    width: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #2d2d2d;
+    border-right: 1px solid #333;
+    font-size: 12px;
+    color: #aaa;
+}
+
+.track-content {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    background-color: #1e1e1e;
+}
+
+.clip {
+    position: absolute;
+    height: 30px;
+    background: linear-gradient(to right, #2196F3, #21CBF3);
+    border: 1px solid #1976D2;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    overflow: hidden;
+    cursor: pointer;
+    user-select: none;
+}
+
+.clip.audio {
+    background: linear-gradient(to right, #9C27B0, #E040FB);
+    border-color: #7B1FA2;
+}
+
+.clip.text {
+    background: linear-gradient(to right, #FF9800, #FFD54F);
+    border-color: #F57C00;
+}
+
+.clip.selected {
+    border: 2px solid #4CAF50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+}
+
+.clip-handle {
+    position: absolute;
+    top: 0;
+    width: 6px;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.5);
+    cursor: ew-resize;
+    z-index: 10;
+}
+
+.clip-handle.left {
+    left: 0;
+}
+
+.clip-handle.right {
+    right: 0;
+}
+
+.playhead {
+    position: absolute;
+    top: 40px;
+    width: 1px;
+    height: calc(100% - 40px);
+    background-color: #FF5252;
+    z-index: 100;
+    pointer-events: none;
+}
+
+.playhead-line {
+    position: absolute;
+    top: 0;
+    left: -2px;
+    width: 5px;
+    height: 100%;
+    background-color: #FF5252;
+    opacity: 0.6;
+}
+
+.playhead-pointer {
+    position: absolute;
+    top: -10px;
+    left: -4px;
+    color: #FF5252;
+    font-size: 12px;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #252525;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #666;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .app-main {
+        flex-direction: column;
+    }
+    
+    .media-library, .properties-panel {
+        width: 100%;
+        max-height: 200px;
+    }
+    
+    .preview-area {
+        min-height: 300px;
+    }
+    
+    .timeline-area {
+        height: 150px;
+    }
+}

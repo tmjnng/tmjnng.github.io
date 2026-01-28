@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MiniPhotoEdit - 在线图片编辑器</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- 顶部菜单栏 -->
+        <header class="app-header">
+            <h1>MiniPhotoEdit</h1>
+            <div class="header-controls">
+                <select id="language-selector">
+                    <option value="en">English</option>
+                    <option value="zh" selected>中文</option>
+                    <option value="ja">日本語</option>
+                </select>
+                <button id="save-btn" class="btn">保存</button>
+                <button id="undo-btn" class="btn">撤销</button>
+                <button id="redo-btn" class="btn">重做</button>
+            </div>
+        </header>
+
+        <!-- 主内容区域 -->
+        <main class="app-main">
+            <!-- 左侧工具栏 -->
+            <aside class="tool-panel">
+                <div class="tool-section">
+                    <h3>基础工具</h3>
+                    <div class="tool-group">
+                        <button class="tool-btn active" data-tool="move" title="移动">
+                            <i>↖</i> 移动
+                        </button>
+                        <button class="tool-btn" data-tool="crop" title="裁剪">
+                            <i>✂</i> 裁剪
+                        </button>
+                        <button class="tool-btn" data-tool="brush" title="画笔">
+                            <i>✏</i> 画笔
+                        </button>
+                        <button class="tool-btn" data-tool="text" title="文字">
+                            <i>T</i> 文字
+                        </button>
+                        <button class="tool-btn" data-tool="shape" title="形状">
+                            <i>◆</i> 形状
+                        </button>
+                    </div>
+                </div>
+
+                <div class="tool-section">
+                    <h3>调整</h3>
+                    <div class="adjustment-group">
+                        <div class="slider-control">
+                            <label for="brightness">亮度</label>
+                            <input type="range" id="brightness" min="-100" max="100" value="0">
+                        </div>
+                        <div class="slider-control">
+                            <label for="contrast">对比度</label>
+                            <input type="range" id="contrast" min="-100" max="100" value="0">
+                        </div>
+                        <div class="slider-control">
+                            <label for="saturation">饱和度</label>
+                            <input type="range" id="saturation" min="-100" max="100" value="0">
+                        </div>
+                        <div class="slider-control">
+                            <label for="hue">色相</label>
+                            <input type="range" id="hue" min="0" max="360" value="0">
+                        </div>
+                        <div class="slider-control">
+                            <label for="blur">模糊</label>
+                            <input type="range" id="blur" min="0" max="20" value="0" step="0.1">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-section">
+                    <h3>滤镜</h3>
+                    <div class="filter-group">
+                        <button class="filter-btn" data-filter="none">原图</button>
+                        <button class="filter-btn" data-filter="grayscale">灰度</button>
+                        <button class="filter-btn" data-filter="sepia">怀旧</button>
+                        <button class="filter-btn" data-filter="invert">反色</button>
+                        <button class="filter-btn" data-filter="vintage">复古</button>
+                        <button class="filter-btn" data-filter="lomo">LOMO</button>
+                        <button class="filter-btn" data-filter="clarity">清晰</button>
+                        <button class="filter-btn" data-filter="hazy">朦胧</button>
+                    </div>
+                </div>
+
+                <div class="tool-section">
+                    <h3>操作</h3>
+                    <div class="action-group">
+                        <input type="file" id="image-upload" accept="image/*" style="display: none;">
+                        <button id="upload-btn" class="btn">上传图片</button>
+                        <button id="rotate-left-btn" class="btn">左旋转</button>
+                        <button id="rotate-right-btn" class="btn">右旋转</button>
+                        <button id="flip-horizontal-btn" class="btn">水平翻转</button>
+                        <button id="flip-vertical-btn" class="btn">垂直翻转</button>
+                        <button id="reset-btn" class="btn">重置</button>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- 中间画布区域 -->
+            <section class="canvas-section">
+                <div class="canvas-container">
+                    <canvas id="main-canvas"></canvas>
+                    <canvas id="temp-canvas" style="position: absolute; top: 0; left: 0;"></canvas>
+                    <div id="crop-overlay" class="crop-overlay" style="display: none;">
+                        <div class="crop-box">
+                            <div class="crop-handle" data-direction="nw"></div>
+                            <div class="crop-handle" data-direction="ne"></div>
+                            <div class="crop-handle" data-direction="sw"></div>
+                            <div class="crop-handle" data-direction="se"></div>
+                            <div class="crop-handle" data-direction="n"></div>
+                            <div class="crop-handle" data-direction="e"></div>
+                            <div class="crop-handle" data-direction="s"></div>
+                            <div class="crop-handle" data-direction="w"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 右侧属性面板 -->
+            <aside class="property-panel">
+                <div class="property-section">
+                    <h3>画笔设置</h3>
+                    <div class="property-group">
+                        <div class="input-group">
+                            <label for="brush-size">大小</label>
+                            <input type="range" id="brush-size" min="1" max="50" value="5">
+                            <span id="brush-size-value">5</span>
+                        </div>
+                        <div class="input-group">
+                            <label for="brush-color">颜色</label>
+                            <input type="color" id="brush-color" value="#ff0000">
+                        </div>
+                        <div class="input-group">
+                            <label for="brush-opacity">透明度</label>
+                            <input type="range" id="brush-opacity" min="0" max="100" value="100">
+                            <span id="brush-opacity-value">100%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="property-section">
+                    <h3>文字设置</h3>
+                    <div class="property-group">
+                        <div class="input-group">
+                            <label for="text-content">内容</label>
+                            <input type="text" id="text-content" placeholder="输入文字...">
+                        </div>
+                        <div class="input-group">
+                            <label for="text-font">字体</label>
+                            <select id="text-font">
+                                <option value="Arial">Arial</option>
+                                <option value="Helvetica">Helvetica</option>
+                                <option value="Times New Roman">Times New Roman</option>
+                                <option value="SimSun">宋体</option>
+                                <option value="SimHei">黑体</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="text-size">大小</label>
+                            <input type="number" id="text-size" min="8" max="100" value="24">
+                        </div>
+                        <div class="input-group">
+                            <label for="text-color">颜色</label>
+                            <input type="color" id="text-color" value="#000000">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="property-section">
+                    <h3>图层</h3>
+                    <div class="layer-list">
+                        <div class="layer-item active">
+                            <span>背景层</span>
+                            <div class="layer-controls">
+                                <button class="layer-btn" title="可见性">👁</button>
+                                <button class="layer-btn" title="锁定">🔒</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script src="js/crop-tool.js"></script>
+    <script src="js/filter-tool.js"></script>
+    <script src="js/text-tool.js"></script>
+    <script src="js/draw-tool.js"></script>
+</body>
+</html>
