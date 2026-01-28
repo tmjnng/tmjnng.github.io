@@ -46,16 +46,23 @@ class PhotoEditor {
         });
         
         // 图像上传
-        document.getElementById('upload-btn').addEventListener('click', () => {
-            document.getElementById('image-upload').click();
-        });
+        const uploadBtn = document.getElementById('upload-btn');
+        const imageUpload = document.getElementById('image-upload');
         
-        document.getElementById('image-upload').addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (file && file.type.match('image.*')) {
-                this.loadImage(file);
-            }
-        });
+        if (uploadBtn && imageUpload) {
+            uploadBtn.addEventListener('click', () => {
+                imageUpload.click();
+            });
+            
+            imageUpload.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file && file.type.match('image.*')) {
+                    this.loadImage(file);
+                }
+            });
+        } else {
+            console.error("Upload button or image upload input not found!");
+        }
         
         // 撤销/重做
         document.getElementById('undo-btn').addEventListener('click', () => this.undo());
@@ -269,11 +276,22 @@ class PhotoEditor {
     applyAdjustments() {
         if (!this.image) return;
         
-        const brightness = parseInt(document.getElementById('brightness').value);
-        const contrast = parseInt(document.getElementById('contrast').value);
-        const saturation = parseInt(document.getElementById('saturation').value);
-        const hue = parseInt(document.getElementById('hue').value);
-        const blur = parseFloat(document.getElementById('blur').value);
+        const brightnessElement = document.getElementById('brightness');
+        const contrastElement = document.getElementById('contrast');
+        const saturationElement = document.getElementById('saturation');
+        const hueElement = document.getElementById('hue');
+        const blurElement = document.getElementById('blur');
+        
+        if (!(brightnessElement && contrastElement && saturationElement && hueElement && blurElement)) {
+            console.error("Adjustment elements not found!");
+            return;
+        }
+        
+        const brightness = parseInt(brightnessElement.value);
+        const contrast = parseInt(contrastElement.value);
+        const saturation = parseInt(saturationElement.value);
+        const hue = parseInt(hueElement.value);
+        const blur = parseFloat(blurElement.value);
         
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         
@@ -468,6 +486,13 @@ document.addEventListener('DOMContentLoaded', () => {
         brushSizeValue.textContent = brushSizeSlider.value;
     });
     
+    // 更新画笔透明度显示
+    const brushOpacitySlider = document.getElementById('brush-opacity');
+    const brushOpacityValue = document.getElementById('brush-opacity-value');
+    brushOpacityValue.textContent = brushOpacitySlider.value + '%';
+    brushOpacitySlider.addEventListener('input', () => {
+        brushOpacityValue.textContent = brushOpacitySlider.value + '%';
+    });
     // 更新画笔透明度显示
     const brushOpacitySlider = document.getElementById('brush-opacity');
     const brushOpacityValue = document.getElementById('brush-opacity-value');
