@@ -132,8 +132,8 @@ class PhotoEditor {
         
         // 点击画布容器触发上传（仅在没有图片时）
         canvasContainer.addEventListener('click', (e) => {
-            if (!this.image && e.target === this.canvas) {
-                console.log('点击画布，触发上传');
+            if (!this.image) {
+                console.log('点击画布容器，触发上传');
                 document.getElementById('image-upload').click();
             }
         });
