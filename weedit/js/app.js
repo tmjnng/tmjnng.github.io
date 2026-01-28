@@ -20,8 +20,13 @@ document.addEventListener('DOMContentLoaded', function() {
      * 初始化编辑器
      */
     function initEditor() {
+        if (!editor) {
+            console.error('编辑器元素未找到');
+            return;
+        }
+        
         // 设置默认内容
-        if (!editor.innerHTML.trim()) {
+        if (!editor.innerHTML || !editor.innerHTML.trim()) {
             editor.innerHTML = '<p>在此输入内容...</p>';
         }
         
@@ -33,8 +38,15 @@ document.addEventListener('DOMContentLoaded', function() {
      * 初始化事件监听
      */
     function initEventListeners() {
+        if (!editor) {
+            console.error('编辑器元素未找到，无法绑定事件');
+            return;
+        }
+        
         // 编辑器内容变化时更新预览
-        editor.addEventListener('input', updatePreview);
+        editor.addEventListener('input', function() {
+            updatePreview();
+        });
         
         // 安全粘贴功能
         editor.addEventListener('paste', handlePaste);
@@ -112,6 +124,11 @@ document.addEventListener('DOMContentLoaded', function() {
      * HTML清洗与标准化
      */
     function sanitizeForChat(htmlString) {
+        // 处理空字符串或undefined
+        if (!htmlString || htmlString === undefined || htmlString === null) {
+            return '';
+        }
+        
         // 创建临时DOM元素
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = htmlString;
@@ -121,9 +138,13 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // 递归清洗节点
         function cleanNode(node) {
-            if (node.nodeType === Node.ELEMENT_NODE) {
+            if (node.nodeType === Node.TEXT_NODE) {
+                return node;
+            } else if (node.nodeType === Node.ELEMENT_NODE) {
+                const tagName = node.tagName.toLowerCase();
+                
                 // 检查是否为允许的标签
-                if (!allowedTags.includes(node.tagName.toLowerCase())) {
+                if (!allowedTags.includes(tagName)) {
                     // 对于不允许的标签，保留其内容
                     const fragment = document.createDocumentFragment();
                     while (node.firstChild) {
@@ -137,22 +158,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 node.removeAttribute('id');
                 
                 // 处理样式，确保内联样式
-                if (node.style.length > 0) {
-                    // 保留内联样式
-                } else if (node.tagName.toLowerCase() === 'h1') {
-                    node.style.cssText = 'font-size:24px; font-weight:bold; margin:20px 0;';
-                } else if (node.tagName.toLowerCase() === 'h2') {
-                    node.style.cssText = 'font-size:20px; font-weight:bold; margin:16px 0;';
-                } else if (node.tagName.toLowerCase() === 'h3') {
-                    node.style.cssText = 'font-size:18px; font-weight:bold; margin:12px 0;';
-                } else if (node.tagName.toLowerCase() === 'p') {
-                    node.style.cssText = 'font-size:16px; line-height:1.8; margin-bottom:16px;';
-                } else if (node.tagName.toLowerCase() === 'blockquote') {
-                    node.style.cssText = 'border-left:4px solid #1890ff; padding-left:16px; margin:16px 0; color:#666;';
-                } else if (node.tagName.toLowerCase() === 'hr') {
-                    node.style.cssText = 'margin:24px 0; border:none; border-top:1px solid #e0e0e0;';
-                } else if (node.tagName.toLowerCase() === 'small') {
-                    node.style.cssText = 'font-size:14px; color:#999;';
+                if (node.style.length === 0) {
+                    if (tagName === 'h1') {
+                        node.style.cssText = 'font-size:24px; font-weight:bold; margin:20px 0;';
+                    } else if (tagName === 'h2') {
+                        node.style.cssText = 'font-size:20px; font-weight:bold; margin:16px 0;';
+                    } else if (tagName === 'h3') {
+                        node.style.cssText = 'font-size:18px; font-weight:bold; margin:12px 0;';
+                    } else if (tagName === 'p') {
+                        node.style.cssText = 'font-size:16px; line-height:1.8; margin-bottom:16px;';
+                    } else if (tagName === 'blockquote') {
+                        node.style.cssText = 'border-left:4px solid #1890ff; padding-left:16px; margin:16px 0; color:#666;';
+                    } else if (tagName === 'hr') {
+                        node.style.cssText = 'margin:24px 0; border:none; border-top:1px solid #e0e0e0;';
+                    } else if (tagName === 'small') {
+                        node.style.cssText = 'font-size:14px; color:#999;';
+                    }
                 }
                 
                 // 递归处理子节点
@@ -165,31 +186,52 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                     child = nextChild;
                 }
+                
+                return node;
             }
             
             return node;
         }
         
         // 清洗DOM
-        const cleanedDiv = cleanNode(tempDiv);
+        const cleanedNode = cleanNode(tempDiv);
         
         // 返回清洗后的HTML
-        return cleanedDiv.innerHTML;
+        let result = '';
+        if (cleanedNode.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
+            // 如果是DocumentFragment，需要特殊处理
+            const tempContainer = document.createElement('div');
+            tempContainer.appendChild(cleanedNode);
+            result = tempContainer.innerHTML;
+        } else {
+            result = cleanedNode.innerHTML;
+        }
+        
+        return result;
     }
     
     /**
      * 更新预览
      */
     function updatePreview() {
-        const editorContent = editor.innerHTML;
-        const cleanedContent = sanitizeForChat(editorContent);
+        if (!editor || !preview) {
+            console.error('编辑器或预览元素未找到');
+            return;
+        }
         
-        // 创建预览内容容器
-        preview.innerHTML = `
-            <div class="preview-content">
-                ${cleanedContent}
-            </div>
-        `;
+        try {
+            const editorContent = editor.innerHTML || '';
+            const cleanedContent = sanitizeForChat(editorContent);
+            
+            // 创建预览内容容器
+            preview.innerHTML = `
+                <div class="preview-content">
+                    ${cleanedContent}
+                </div>
+            `;
+        } catch (error) {
+            console.error('更新预览时发生错误:', error);
+        }
     }
     
     /**

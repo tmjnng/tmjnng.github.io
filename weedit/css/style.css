@@ -159,6 +159,9 @@ body {
     font-size: 16px;
     line-height: 1.8;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 
 /* 模拟iOS阅读界面的内容样式 */
