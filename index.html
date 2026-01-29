@@ -2,203 +2,401 @@
 <html>
 <head>
   <meta charset="utf-8">
-  
-  
-  <title>Hexo</title>
-  <meta name="google-adsense-account" content="ca-pub-6721838138610031">
+  <title>在线工具集合</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="google-adsense-account" content="ca-pub-6721838138610031">
   <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/index.html">
-<meta property="og:site_name" content="Hexo">
-<meta property="og:locale" content="en_US">
-<meta property="article:author" content="John Doe">
-<meta name="twitter:card" content="summary">
+  <meta property="og:title" content="在线工具集合">
+  <meta property="og:url" content="http://example.com/index.html">
+  <meta property="og:site_name" content="在线工具集合">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="article:author" content="Developer">
+  <meta name="twitter:card" content="summary">
   
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  <link rel="alternate" href="/atom.xml" title="在线工具集合" type="application/atom+xml">
+  <link rel="shortcut icon" href="/favicon.png">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+  <meta name="generator" content="Custom">
   
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
     
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
-
-  
-  
-<link rel="stylesheet" href="/css/style.css">
-
-  
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
     
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
-
-  
-<meta name="generator" content="Hexo 5.3.0"></head>
-
+    #container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    #wrap {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      padding: 20px;
+      margin-top: 20px;
+    }
+    
+    #header {
+      margin-bottom: 30px;
+    }
+    
+    #header-outer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    
+    #header-title {
+      flex: 1;
+    }
+    
+    #logo {
+      font-size: 28px;
+      font-weight: 700;
+      color: #667eea;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    
+    #logo:hover {
+      color: #764ba2;
+      transform: scale(1.05);
+    }
+    
+    #header-inner {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    
+    #main-nav {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    
+    .main-nav-link {
+      padding: 10px 20px;
+      background: #667eea;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      font-size: 14px;
+    }
+    
+    .main-nav-link:hover {
+      background: #764ba2;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+    }
+    
+    #sub-nav {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    #language-selector {
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background: #fff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    #language-selector:hover {
+      border-color: #667eea;
+    }
+    
+    .nav-icon {
+      width: 36px;
+      height: 36px;
+      background: #fff;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .nav-icon:hover {
+      background: #667eea;
+      transform: scale(1.1);
+    }
+    
+    #main {
+      padding: 40px 0;
+    }
+    
+    .hero {
+      text-align: center;
+      padding: 60px 20px;
+      margin-bottom: 40px;
+    }
+    
+    .hero h1 {
+      font-size: 48px;
+      font-weight: 700;
+      color: #667eea;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .hero p {
+      font-size: 18px;
+      color: #666;
+      max-width: 700px;
+      margin: 0 auto;
+      line-height: 1.8;
+    }
+    
+    .tools-section {
+      margin-bottom: 40px;
+    }
+    
+    .section-title {
+      font-size: 32px;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 30px;
+      padding-bottom: 15px;
+      border-bottom: 3px solid #667eea;
+    }
+    
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+      margin-bottom: 30px;
+    }
+    
+    .tool-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 25px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: 2px solid transparent;
+    }
+    
+    .tool-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+      border-color: #667eea;
+    }
+    
+    .tool-card h3 {
+      font-size: 20px;
+      font-weight: 600;
+      color: #667eea;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .tool-card p {
+      color: #666;
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 15px;
+    }
+    
+    .tool-card .icon {
+      font-size: 32px;
+    }
+    
+    .tool-card .arrow {
+      color: #667eea;
+      font-size: 20px;
+      transition: transform 0.3s ease;
+    }
+    
+    .tool-card:hover .arrow {
+      transform: translateX(5px);
+    }
+    
+    #footer {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      color: #666;
+      margin-top: 40px;
+    }
+    
+    #footer a {
+      color: #667eea;
+      text-decoration: none;
+    }
+    
+    #footer a:hover {
+      text-decoration: underline;
+    }
+    
+    @media (max-width: 768px) {
+      #header-outer {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      #main-nav {
+        justify-content: center;
+      }
+      
+      .tools-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .hero h1 {
+        font-size: 36px;
+      }
+    }
+  </style>
+</head>
 <body>
   <div id="container">
     <div id="wrap">
       <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
-      </div>
-    </div>
-  </div>
-</header>
+        <div id="header-outer">
+          <div id="header-title">
+            <h1>
+              <a href="/" id="logo">在线工具集合</a>
+            </h1>
+          </div>
+          <div id="header-inner">
+            <nav id="main-nav">
+              <a class="main-nav-link" href="/blog/">博客</a>
+              <a class="main-nav-link" href="/archives">归档</a>
+              <a class="main-nav-link" href="/tool/index.html">工具集</a>
+              <a class="main-nav-link" href="/dbdesigner/">数据库设计</a>
+              <a class="main-nav-link" href="/drawsystem/">抽奖系统</a>
+              <a class="main-nav-link" href="/exam/">日语刷题</a>
+              <a class="main-nav-link" href="/minipen/">代码编辑器</a>
+              <a class="main-nav-link" href="/snappicedit/">图片编辑器</a>
+              <a class="main-nav-link" href="/minicut/">视频编辑器</a>
+              <a class="main-nav-link" href="/miniphotoedit/">Photo编辑器</a>
+              <a class="main-nav-link" href="/weedit/">微信排版</a>
+            </nav>
+            <nav id="sub-nav">
+              <select id="language-selector">
+                <option value="zh">中文</option>
+                <option value="en">English</option>
+                <option value="ja">日本語</option>
+              </select>
+              <a class="nav-icon" href="/atom.xml" title="RSS Feed">📡</a>
+              <a class="nav-icon" href="#" title="Search">🔍</a>
+            </nav>
+          </div>
+        </div>
+      </header>
 
       <div class="outer">
         <section id="main">
-  
-    <article id="post-hello-world" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/01/25/hello-world/" class="article-date">
-  <time class="dt-published" datetime="2021-01-25T13:03:34.510Z" itemprop="datePublished">2021-01-25</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/01/25/hello-world/">Hello World</a>
-    </h1>
-  
+          <div class="hero">
+            <h1>欢迎使用在线工具集合</h1>
+            <p>提供各种实用的在线工具，包括开发工具、编辑器、设计工具等，全部免费使用，无需注册</p>
+          </div>
 
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+          <div class="tools-section">
+            <h2 class="section-title">开发工具</h2>
+            <div class="tools-grid">
+              <a href="/tool/index.html" class="tool-card">
+                <h3><span class="icon">🛠️</span> 开发工具集</h3>
+                <p>JSON格式化、XML格式化、MD5加密、AES加密解密、Base64编码、URL编码、时间戳转换、颜色转换、Unicode编码、正则表达式测试、二维码生成、倒计时器等</p>
+                <span class="arrow">→</span>
+              </a>
+              
+              <a href="/dbdesigner/" class="tool-card">
+                <h3><span class="icon">🗄️</span> 数据库设计工具</h3>
+                <p>支持多种数据库类型，可视化设计表结构，自动生成SQL脚本，支持导出JSON和多种数据库格式</p>
+                <span class="arrow">→</span>
+              </a>
+            </div>
+          </div>
 
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2021/01/25/hello-world/" data-id="ckkclcx7d0000fkvghh8cbgjc" data-title="Hello World" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
+          <div class="tools-section">
+            <h2 class="section-title">编辑器</h2>
+            <div class="tools-grid">
+              <a href="/minipen/" class="tool-card">
+                <h3><span class="icon">💻</span> MiniPen 代码编辑器</h3>
+                <p>在线代码编辑器，支持HTML、CSS、JavaScript实时预览，类似CodePen功能</p>
+                <span class="arrow">→</span>
+              </a>
+              
+              <a href="/snappicedit/" class="tool-card">
+                <h3><span class="icon">🖼️</span> SnapPicEdit 图片编辑器</h3>
+                <p>在线图片编辑工具，支持图片上传、裁剪、滤镜、水印、压缩、格式转换等功能</p>
+                <span class="arrow">→</span>
+              </a>
+              
+              <a href="/miniphotoedit/" class="tool-card">
+                <h3><span class="icon">📷</span> MiniPhotoEdit 图片编辑器</h3>
+                <p>专业在线图片编辑器，类似Photoshop功能，支持图层、滤镜、调整、绘图等</p>
+                <span class="arrow">→</span>
+              </a>
+              
+              <a href="/minicut/" class="tool-card">
+                <h3><span class="icon">🎬</span> MiniCut 视频编辑器</h3>
+                <p>在线视频编辑器，类似剪映功能，支持视频导入、时间轴编辑、特效添加、转场效果等</p>
+                <span class="arrow">→</span>
+              </a>
+              
+              <a href="/weedit/" class="tool-card">
+                <h3><span class="icon">📝</span> 微信公众号图文排版</h3>
+                <p>微信公众号图文排版工具，支持安全粘贴、样式模板、HTML清洗、一键复制、响应式预览等功能</p>
+                <span class="arrow">→</span>
+              </a>
+            </div>
+          </div>
 
-
-
-  
-
-
-</section>
-        
-          <aside id="sidebar">
-  
-    
-
-  
-    
-
-  
-    
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2021/01/25/hello-world/">Hello World</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
+          <div class="tools-section">
+            <h2 class="section-title">学习工具</h2>
+            <div class="tools-grid">
+              <a href="/exam/" class="tool-card">
+                <h3><span class="icon">📚</span> JLPT 日语刷题</h3>
+                <p>JLPT日语刷题系统，支持N5-N1级别，提供大量练习题目，帮助提升日语能力</p>
+                <span class="arrow">→</span>
+              </a>
+              
+              <a href="/drawsystem/" class="tool-card">
+                <h3><span class="icon">🎁</span> 抽奖系统</h3>
+                <p>在线抽奖系统，支持名单导入、奖品设置、奖品级别管理，适合各种抽奖活动</p>
+                <span class="arrow">→</span>
+              </a>
+            </div>
+          </div>
+        </section>
       </div>
+
       <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      
-      &copy; 2021 John Doe<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+        <p>&copy; 2026 在线工具集合 | Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></p>
+      </footer>
     </div>
   </div>
-</footer>
-
-    </div>
-    <nav id="mobile-nav">
   
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
-
-
-<script src="/js/jquery-3.4.1.min.js"></script>
-
-
-
-  
-<script src="/fancybox/jquery.fancybox.min.js"></script>
-
-
-
-
-<script src="/js/script.js"></script>
-
-
-
-
-
-  </div>
+  <script src="/js/jquery-3.4.1.min.js"></script>
+  <script src="/js/script.js"></script>
 </body>
 </html>
