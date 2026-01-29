@@ -1,0 +1,268 @@
+/* grade-themes.css: 年级主题样式 */
+/* 根据年级设置不同的颜色主题和字体大小 */
+
+/* 1-2年级：幼儿友好，大字体，鲜艳色彩 */
+[data-grade="1"],
+[data-grade="2"] {
+    --color-primary: #ff6b6b;
+    --color-secondary: #feca57;
+    --color-bg: #fff5f5;
+    --font-size-base: 18px;
+    --radius-lg: 20px;
+    --radius-xl: 24px;
+}
+
+[data-grade="1"] .node-item,
+[data-grade="2"] .node-item {
+    font-size: 1.1em;
+    padding: 14px var(--space-md);
+}
+
+[data-grade="1"] .concept-card h1,
+[data-grade="2"] .concept-card h1 {
+    font-size: 2.2rem;
+}
+
+[data-grade="1"] .content,
+[data-grade="2"] .content {
+    font-size: 1.2rem;
+    line-height: 2;
+}
+
+/* 3-4年级：小学中高年级，活泼但稍稳重 */
+[data-grade="3"],
+[data-grade="4"] {
+    --color-primary: #4ecdc4;
+    --color-secondary: #44a08d;
+    --color-bg: #f0f9f9;
+    --font-size-base: 16px;
+}
+
+[data-grade="3"] .concept-card h1,
+[data-grade="4"] .concept-card h1 {
+    font-size: 2rem;
+}
+
+/* 5-6年级：小学毕业，准备衔接初中 */
+[data-grade="5"],
+[data-grade="6"] {
+    --color-primary: #667eea;
+    --color-secondary: #764ba2;
+    --color-bg: #f5f3ff;
+    --font-size-base: 16px;
+}
+
+[data-grade="6"] {
+    --color-primary: #5f27cd;
+}
+
+/* 7-9年级：中学，学术感增强 */
+[data-grade="7"],
+[data-grade="8"],
+[data-grade="9"] {
+    --color-primary: #2c3e50;
+    --color-secondary: #3498db;
+    --color-bg: #f8f9fa;
+    --font-size-base: 15px;
+    --radius-md: 6px;
+    --radius-lg: 10px;
+}
+
+[data-grade="7"] .concept-card h1,
+[data-grade="8"] .concept-card h1,
+[data-grade="9"] .concept-card h1 {
+    font-size: 1.6rem;
+}
+
+/* 9年级特别：中考模式 */
+[data-grade="9"] {
+    --color-primary: #c0392b;
+    --color-secondary: #e74c3c;
+}
+
+[data-grade="9"] .btn-practice {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+}
+
+[data-grade="9"] .exercise-panel {
+    border-left: 4px solid var(--color-primary);
+}
+
+/* 高中：深色主题选项 */
+[data-grade="10"],
+[data-grade="11"],
+[data-grade="12"] {
+    --color-primary: #2c3e50;
+    --color-secondary: #34495e;
+    --color-bg: #ecf0f1;
+    --font-size-base: 15px;
+}
+
+[data-grade="12"] {
+    --color-primary: #8e44ad;
+    --color-secondary: #9b59b6;
+}
+
+[data-grade="10"] .concept-card,
+[data-grade="11"] .concept-card,
+[data-grade="12"] .concept-card {
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.08);
+}
+
+/* 大学：学术经典 */
+[data-grade="university"] {
+    --color-primary: #2c3e50;
+    --color-secondary: #7f8c8d;
+    --color-bg: #fafafa;
+    --font-serif: "Times New Roman", "SimSun", "STSong", serif;
+    --content-max-width: 1000px;
+    --font-size-base: 16px;
+}
+
+[data-grade="university"] .concept-card {
+    font-family: var(--font-serif);
+    line-height: 1.9;
+    font-size: 1.05rem;
+}
+
+[data-grade="university"] .concept-card h1 {
+    font-family: var(--font-sans);
+    font-size: 1.8rem;
+}
+
+[data-grade="university"] .formulas {
+    font-family: var(--font-serif);
+}
+
+/* 主题切换动画 */
+body {
+    transition: background-color var(--transition-normal);
+}
+
+.concept-card, .exercise-panel {
+    transition: box-shadow var(--transition-normal);
+}
+
+/* 难度星星颜色 */
+.difficulty {
+    color: #f39c12;
+}
+
+/* 状态图标 */
+.status-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+}
+
+/* 已掌握状态 */
+.node-item[data-status="mastered"] .status-icon {
+    color: #2ecc71;
+}
+
+/* 学习中状态 */
+.node-item[data-status="learning"] .status-icon {
+    color: #f39c12;
+}
+
+/* 困难状态 */
+.node-item[data-status="struggling"] .status-icon {
+    color: #e74c3c;
+}
+
+/* 新节点状态 */
+.node-item[data-status="new"] .status-icon {
+    color: #bdc3c7;
+}
+
+/* KaTeX 公式样式优化 */
+.katex-display {
+    margin: 1.5em 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.katex {
+    font-size: 1.1em;
+}
+
+/* 代码块样式 */
+code {
+    font-family: var(--font-mono);
+    background: #f4f4f4;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 0.9em;
+}
+
+/* 强调文字 */
+strong {
+    font-weight: 600;
+    color: var(--color-primary);
+}
+
+/* 链接样式 */
+a {
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+a:hover {
+    color: var(--color-secondary);
+    text-decoration: underline;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-text-light);
+}
+
+/* 选中文字样式 */
+::selection {
+    background: var(--color-primary);
+    color: white;
+}
+
+/* 焦点样式 */
+:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+/* 禁用状态 */
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* 加载动画 */
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid var(--color-border);
+    border-radius: 50%;
+    border-top-color: var(--color-primary);
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}

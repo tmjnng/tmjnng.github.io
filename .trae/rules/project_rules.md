@@ -17,6 +17,7 @@
   - weedit微信公众号图文排版工具
   - Sudoku数独游戏（经典益智游戏）
   - Gobang五子棋游戏（经典策略游戏）
+  - MathGrade数学学习系统（分年级数学学习，支持G1-G9）
 
 ## 目录结构
 ```
@@ -66,6 +67,18 @@ tmjnng.github.io/
 │   └── index.html     # 主页面
 ├── gobang/            # 五子棋游戏
 │   └── index.html     # 主页面
+├── MathGrade/         # 数学学习系统
+│   ├── shared/        # 共享基础设施
+│   │   ├── core/      # 核心类（GradeApp, KnowledgeGraph等）
+│   │   ├── ui/        # UI组件（TreeNavigator, CanvasBoard等）
+│   │   ├── utils/     # 工具函数（storage, mathEval等）
+│   │   └── styles/    # 样式文件
+│   ├── grade1/        # 一年级
+│   ├── grade3/        # 三年级（样板）
+│   ├── grade6/        # 六年级
+│   ├── grade9/        # 九年级
+│   ├── index.html     # 总入口
+│   └── sw.js          # Service Worker
 ├── .trae/             # Trae相关配置
 │   └── rules/         # 规则文件
 ├── user.rules.md      # 个人规则文件
@@ -175,7 +188,34 @@ tmjnng.github.io/
 - **响应式设计**：适配不同屏幕尺寸
 - **纯前端实现**：所有功能在浏览器端完成，无后端依赖
 
-### 13. 安全规范
+### 13. MathGrade数学学习系统规范
+- **架构设计**：采用分年级架构，每个年级独立但共享底层引擎
+- **核心组件**：
+  - GradeApp.js: 应用控制器，自动检测年级、初始化主题
+  - KnowledgeGraph.js: 知识图谱渲染器
+  - QuestionGenerator.js: 题目生成器（模板引擎）
+  - ProgressTracker.js: 进度追踪器
+  - TreeNavigator.js: 左侧树形导航
+  - FormulaRenderer.js: KaTeX公式渲染封装
+  - CanvasBoard.js: 草稿板组件（支持绘画、橡皮擦、保存PNG）
+  - ExercisePanel.js: 习题面板（选择题、填空题、反馈系统）
+- **存储规范**：
+  - 使用GradeStorage实现年级隔离的localStorage存储
+  - 数据前缀格式：`math_g{grade}_`
+  - 自动保存学习进度、掌握度、错题本
+- **题目模板**：
+  - 支持变量随机生成（range, divisible, decimal）
+  - 支持约束条件（constraint）
+  - 支持多种题型（fillblank, choice）
+  - 支持LaTeX公式渲染
+- **年级主题**：
+  - G1-G2: 幼儿友好，大字体，鲜艳色彩
+  - G3-G4: 小学中年级，活泼但稍稳重
+  - G5-G6: 小学毕业，准备衔接初中
+  - G7-G9: 中学，学术感增强，中考模式
+- **Service Worker**：支持离线缓存，缓存静态资源和CDN资源
+
+### 14. 安全规范
 - **加密操作**：使用Web Crypto API，避免不安全的加密实现
 - **用户数据**：本地存储，不发送到服务器
 - **输入验证**：对用户输入进行适当验证

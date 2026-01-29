@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高三数学 - MathGrade</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="../shared/styles/global.css">
+    <link rel="stylesheet" href="../shared/styles/grade-themes.css">
+    <script type="importmap">
+    {
+        "imports": {
+            "katex": "https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.mjs",
+            "shared/": "../shared/",
+            "curriculum": "./curriculum.js",
+            "templates": "./templates.js"
+        }
+    }
+    </script>
+</head>
+<body data-grade="12">
+    <div id="app">
+        <header id="main-header"></header>
+        <aside id="sidebar"></aside>
+        <main id="content"></main>
+        <div id="scratch-paper" class="hidden"></div>
+    </div>
+    <script type="module">
+        import { GradeApp } from 'shared/core/GradeApp.js';
+        import { curriculum } from 'curriculum';
+        import { templates } from 'templates';
+
+        const app = new GradeApp({
+            grade: '12',
+            curriculum,
+            templates,
+            container: document.getElementById('app')
+        });
+        app.init();
+    </script>
+</body>
+</html>

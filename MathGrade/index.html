@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?7dec0a7b14ff3afbf830639ed6da0d5c";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+    <title>MathGrade - 数学学习系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .grade-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .grade-section {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .grade-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .grade-section h2 {
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .grade-section.primary-kid h2 { border-color: #ff6b6b; }
+        .grade-section.primary h2 { border-color: #4ecdc4; }
+        .grade-section.primary-grad h2 { border-color: #667eea; }
+        .grade-section.middle h2 { border-color: #2c3e50; }
+        .grade-section.middle-exam h2 { border-color: #c0392b; }
+        .grade-section.high h2 { border-color: #8e44ad; }
+        .grade-section.university h2 { border-color: #2c3e50; }
+
+        .grade-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .grade-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+
+        .grade-link:hover {
+            background: #e9ecef;
+            border-color: #667eea;
+            transform: translateX(5px);
+        }
+
+        .grade-link .name {
+            font-weight: 500;
+        }
+
+        .grade-link .arrow {
+            opacity: 0.5;
+            transition: opacity 0.2s;
+        }
+
+        .grade-link:hover .arrow {
+            opacity: 1;
+        }
+
+        .grade-link.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .grade-link.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #e9ecef;
+            border-radius: 2px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #667eea;
+            border-radius: 2px;
+            transition: width 0.3s;
+        }
+
+        .stats {
+            font-size: 0.75rem;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .grade-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎓 MathGrade</h1>
+        <p>分年级数学学习系统 - 从一年级到大学</p>
+    </div>
+
+    <div class="grade-container">
+        <div class="grade-section primary-kid">
+            <h2>🌱 小学低年级</h2>
+            <div class="grade-list">
+                <a href="./grade1/index.html" class="grade-link disabled">
+                    <span class="name">一年级</span>
+                    <span class="arrow">→</span>
+                </a>
+                <a href="./grade2/index.html" class="grade-link disabled">
+                    <span class="name">二年级</span>
+                    <span class="arrow">→</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="grade-section primary">
+            <h2>📚 小学中年级</h2>
+            <div class="grade-list">
+                <a href="./grade3/index.html" class="grade-link active">
+                    <span class="name">三年级</span>
+                    <span class="arrow">→</span>
+                </a>
+                <a href="./grade4/index.html" class="grade-link disabled">
+                    <span class="name">四年级</span>
+                    <span class="arrow">→</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="grade-section primary-grad">
+            <h2>🎯 小学高年级</h2>
+            <div class="grade-list">
+                <a href="./grade5/index.html" class="grade-link disabled">
+                    <span class="name">五年级</span>
+                    <span class="arrow">→</span>
+                </a>
+                <a href="./grade6/index.html" class="grade-link disabled">
+                    <span class="name">六年级</span>
+                    <span class="arrow">→</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="grade-section middle">
+            <h2>📖 初中</h2>
+            <div class="grade-list">
+                <a href="./grade7/index.html" class="grade-link disabled">
+                    <span class="name">七年级</span>
+                    <span class="arrow">→</span>
+                </a>
+                <a href="./grade8/index.html" class="grade-link disabled">
+                    <span class="name">八年级</span>
+                    <span class="arrow">→</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="grade-section middle-exam">
+            <h2>🔥 中考冲刺</h2>
+            <div class="grade-list">
+                <a href="./grade9/index.html" class="grade-link disabled">
+                    <span class="name">九年级</span>
+                    <span class="arrow">→</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="grade-section high">
+            <h2>🎓 高中</h2>
+            <div class="grade-list">
+                <a href="./grade10/index.html" class="grade-link disabled">
+                    <span class="name">高一</span>
+                    <span class="arrow">→</span>
+                </a>
+                <a href="./grade11/index.html" class="grade-link disabled">
+                    <span class="name">高二</span>
+                    <span class="arrow">→</span>
+                </a>
+                <a href="./grade12/index.html" class="grade-link disabled">
+                    <span class="name">高三</span>
+                    <span class="arrow">→</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="grade-section university">
+            <h2>🏛️ 大学</h2>
+            <div class="grade-list">
+                <a href="./university/index.html" class="grade-link disabled">
+                    <span class="name">高等数学</span>
+                    <span class="arrow">→</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>MathGrade - 纯前端数学学习系统 | 零构建工具 | ES Modules | 支持离线使用</p>
+        <p>当前可用：G1-G12全年级（小学到高中）</p>
+    </div>
+
+    <script>
+        // 检查各年级是否可用（检查localStorage中是否有进度数据或文件是否存在）
+        async function checkGradeAvailability() {
+            const grades = [
+                { id: '1', path: './grade1/index.html' },
+                { id: '2', path: './grade2/index.html' },
+                { id: '3', path: './grade3/index.html' },
+                { id: '4', path: './grade4/index.html' },
+                { id: '5', path: './grade5/index.html' },
+                { id: '6', path: './grade6/index.html' },
+                { id: '7', path: './grade7/index.html' },
+                { id: '8', path: './grade8/index.html' },
+                { id: '9', path: './grade9/index.html' },
+                { id: '10', path: './grade10/index.html' },
+                { id: '11', path: './grade11/index.html' },
+                { id: '12', path: './grade12/index.html' },
+                { id: 'university', path: './university/index.html' }
+            ];
+
+            for (const grade of grades) {
+                try {
+                    const response = await fetch(grade.path, { method: 'HEAD' });
+                    if (response.ok) {
+                        const link = document.querySelector(`a[href="${grade.path}"]`);
+                        if (link) {
+                            link.classList.remove('disabled');
+                            
+                            // 检查学习进度
+                            const masteryKey = `math_g${grade.id}_mastery`;
+                            const mastery = localStorage.getItem(masteryKey);
+                            if (mastery) {
+                                const data = JSON.parse(mastery);
+                                const total = Object.keys(data).length;
+                                const completed = Object.values(data).filter(m => m.status === 'mastered').length;
+                                const percentage = total > 0 ? (completed / total * 100).toFixed(0) : 0;
+                                
+                                // 添加进度显示
+                                const stats = document.createElement('div');
+                                stats.className = 'stats';
+                                stats.innerHTML = `
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: ${percentage}%"></div>
+                                    </div>
+                                    <span>${percentage}% 完成</span>
+                                `;
+                                link.appendChild(stats);
+                            }
+                        }
+                    }
+                } catch (e) {
+                    // 文件不存在，保持disabled状态
+                }
+            }
+        }
+
+        // 页面加载完成后检查
+        document.addEventListener('DOMContentLoaded', checkGradeAvailability);
+
+        // 注册Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then((registration) => {
+                        console.log('MathGrade: Service Worker 注册成功', registration.scope);
+                    })
+                    .catch((error) => {
+                        console.log('MathGrade: Service Worker 注册失败', error);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>
