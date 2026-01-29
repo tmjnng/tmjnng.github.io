@@ -36,7 +36,7 @@
     }
     
     #container {
-      max-width: 1200px;
+      max-width: 1400px;
       margin: 0 auto;
       padding: 0 20px;
     }
@@ -47,6 +47,7 @@
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
       padding: 20px;
       margin-top: 20px;
+      margin-bottom: 20px;
     }
     
     #header {
@@ -59,10 +60,12 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 20px;
+      padding: 10px 0;
     }
     
     #header-title {
-      flex: 1;
+      flex: 0 0 auto;
+      min-width: 200px;
     }
     
     #logo {
@@ -71,6 +74,7 @@
       color: #667eea;
       text-decoration: none;
       transition: all 0.3s ease;
+      white-space: nowrap;
     }
     
     #logo:hover {
@@ -79,27 +83,31 @@
     }
     
     #header-inner {
+      flex: 1;
       display: flex;
       align-items: center;
-      gap: 20px;
+      justify-content: flex-end;
+      gap: 15px;
       flex-wrap: wrap;
     }
     
     #main-nav {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       flex-wrap: wrap;
+      justify-content: flex-end;
     }
     
     .main-nav-link {
-      padding: 10px 20px;
+      padding: 8px 16px;
       background: #667eea;
       color: #fff;
       text-decoration: none;
       border-radius: 5px;
       font-weight: 500;
       transition: all 0.3s ease;
-      font-size: 14px;
+      font-size: 13px;
+      white-space: nowrap;
     }
     
     .main-nav-link:hover {
@@ -112,15 +120,17 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      flex-shrink: 0;
     }
     
     #language-selector {
-      padding: 8px 12px;
+      padding: 6px 10px;
       border: 1px solid #ddd;
       border-radius: 5px;
       background: #fff;
       cursor: pointer;
       transition: all 0.3s ease;
+      font-size: 13px;
     }
     
     #language-selector:hover {
@@ -128,8 +138,8 @@
     }
     
     .nav-icon {
-      width: 36px;
-      height: 36px;
+      width: 32px;
+      height: 32px;
       background: #fff;
       border-radius: 5px;
       display: flex;
@@ -137,6 +147,8 @@
       justify-content: center;
       cursor: pointer;
       transition: all 0.3s ease;
+      text-decoration: none;
+      font-size: 16px;
     }
     
     .nav-icon:hover {
@@ -198,6 +210,8 @@
       transition: all 0.3s ease;
       cursor: pointer;
       border: 2px solid transparent;
+      text-decoration: none;
+      display: block;
     }
     
     .tool-card:hover {
@@ -255,10 +269,26 @@
       text-decoration: underline;
     }
     
+    @media (max-width: 1200px) {
+      #main-nav {
+        justify-content: center;
+      }
+    }
+    
     @media (max-width: 768px) {
       #header-outer {
         flex-direction: column;
         text-align: center;
+      }
+      
+      #header-title {
+        width: 100%;
+        text-align: center;
+      }
+      
+      #header-inner {
+        width: 100%;
+        justify-content: center;
       }
       
       #main-nav {
@@ -271,6 +301,11 @@
       
       .hero h1 {
         font-size: 36px;
+      }
+      
+      .main-nav-link {
+        font-size: 12px;
+        padding: 6px 12px;
       }
     }
   </style>
@@ -398,5 +433,191 @@
   
   <script src="/js/jquery-3.4.1.min.js"></script>
   <script src="/js/script.js"></script>
+  
+  <script>
+    const translations = {
+      zh: {
+        title: '在线工具集合',
+        welcome: '欢迎使用在线工具集合',
+        description: '提供各种实用的在线工具，包括开发工具、编辑器、设计工具等，全部免费使用，无需注册',
+        devTools: '开发工具',
+        editors: '编辑器',
+        learningTools: '学习工具',
+        blog: '博客',
+        archives: '归档',
+        toolSet: '工具集',
+        dbDesigner: '数据库设计',
+        drawSystem: '抽奖系统',
+        exam: '日语刷题',
+        codeEditor: '代码编辑器',
+        imageEditor: '图片编辑器',
+        videoEditor: '视频编辑器',
+        photoEditor: 'Photo编辑器',
+        wechatEditor: '微信排版',
+        devToolsTitle: '开发工具集',
+        devToolsDesc: 'JSON格式化、XML格式化、MD5加密、AES加密解密、Base64编码、URL编码、时间戳转换、颜色转换、Unicode编码、正则表达式测试、二维码生成、倒计时器等',
+        dbDesignerTitle: '数据库设计工具',
+        dbDesignerDesc: '支持多种数据库类型，可视化设计表结构，自动生成SQL脚本，支持导出JSON和多种数据库格式',
+        codeEditorTitle: 'MiniPen 代码编辑器',
+        codeEditorDesc: '在线代码编辑器，支持HTML、CSS、JavaScript实时预览，类似CodePen功能',
+        snapPicEditTitle: 'SnapPicEdit 图片编辑器',
+        snapPicEditDesc: '在线图片编辑工具，支持图片上传、裁剪、滤镜、水印、压缩、格式转换等功能',
+        photoEditorTitle: 'MiniPhotoEdit 图片编辑器',
+        photoEditorDesc: '专业在线图片编辑器，类似Photoshop功能，支持图层、滤镜、调整、绘图等',
+        videoEditorTitle: 'MiniCut 视频编辑器',
+        videoEditorDesc: '在线视频编辑器，类似剪映功能，支持视频导入、时间轴编辑、特效添加、转场效果等',
+        wechatEditorTitle: '微信公众号图文排版',
+        wechatEditorDesc: '微信公众号图文排版工具，支持安全粘贴、样式模板、HTML清洗、一键复制、响应式预览等功能',
+        examTitle: 'JLPT 日语刷题',
+        examDesc: 'JLPT日语刷题系统，支持N5-N1级别，提供大量练习题目，帮助提升日语能力',
+        drawSystemTitle: '抽奖系统',
+        drawSystemDesc: '在线抽奖系统，支持名单导入、奖品设置、奖品级别管理，适合各种抽奖活动',
+        footer: '© 2026 在线工具集合 | Powered by Hexo'
+      },
+      en: {
+        title: 'Online Tools Collection',
+        welcome: 'Welcome to Online Tools Collection',
+        description: 'Providing various practical online tools, including development tools, editors, design tools, etc. All free to use, no registration required',
+        devTools: 'Development Tools',
+        editors: 'Editors',
+        learningTools: 'Learning Tools',
+        blog: 'Blog',
+        archives: 'Archives',
+        toolSet: 'Tool Set',
+        dbDesigner: 'DB Designer',
+        drawSystem: 'Lottery',
+        exam: 'JLPT Quiz',
+        codeEditor: 'Code Editor',
+        imageEditor: 'Image Editor',
+        videoEditor: 'Video Editor',
+        photoEditor: 'Photo Editor',
+        wechatEditor: 'WeChat Editor',
+        devToolsTitle: 'Development Tools Set',
+        devToolsDesc: 'JSON formatter, XML formatter, MD5 encryption, AES encryption/decryption, Base64 encoding, URL encoding, timestamp conversion, color conversion, Unicode encoding, regex testing, QR code generation, countdown timer, etc.',
+        dbDesignerTitle: 'Database Designer',
+        dbDesignerDesc: 'Support multiple database types, visual table structure design, automatic SQL script generation, support exporting JSON and various database formats',
+        codeEditorTitle: 'MiniPen Code Editor',
+        codeEditorDesc: 'Online code editor, supports HTML, CSS, JavaScript real-time preview, similar to CodePen',
+        snapPicEditTitle: 'SnapPicEdit Image Editor',
+        snapPicEditDesc: 'Online image editing tool, supports image upload, cropping, filters, watermarks, compression, format conversion, etc.',
+        photoEditorTitle: 'MiniPhotoEdit Image Editor',
+        photoEditorDesc: 'Professional online image editor, similar to Photoshop, supports layers, filters, adjustments, drawing, etc.',
+        videoEditorTitle: 'MiniCut Video Editor',
+        videoEditorDesc: 'Online video editor, similar to CapCut, supports video import, timeline editing, effects, transitions, etc.',
+        wechatEditorTitle: 'WeChat Article Editor',
+        wechatEditorDesc: 'WeChat public account article layout tool, supports safe paste, style templates, HTML cleaning, one-click copy, responsive preview, etc.',
+        examTitle: 'JLPT Japanese Quiz',
+        examDesc: 'JLPT Japanese quiz system, supports N5-N1 levels, provides many practice questions to help improve Japanese skills',
+        drawSystemTitle: 'Lottery System',
+        drawSystemDesc: 'Online lottery system, supports list import, prize settings, prize level management, suitable for various lottery activities',
+        footer: '© 2026 Online Tools Collection | Powered by Hexo'
+      },
+      ja: {
+        title: 'オンラインツールコレクション',
+        welcome: 'オンラインツールコレクションへようこそ',
+        description: '開発ツール、エディター、デザインツールなど、様々な実用的なオンラインツールを提供します。すべて無料で使用でき、登録は不要です',
+        devTools: '開発ツール',
+        editors: 'エディター',
+        learningTools: '学習ツール',
+        blog: 'ブログ',
+        archives: 'アーカイブ',
+        toolSet: 'ツールセット',
+        dbDesigner: 'DBデザイナー',
+        drawSystem: '抽選システム',
+        exam: 'JLPTクイズ',
+        codeEditor: 'コードエディター',
+        imageEditor: '画像エディター',
+        videoEditor: '動画エディター',
+        photoEditor: 'フォトエディター',
+        wechatEditor: 'WeChatエディター',
+        devToolsTitle: '開発ツールセット',
+        devToolsDesc: 'JSONフォーマット、XMLフォーマット、MD5暗号化、AES暗号化/復号化、Base64エンコード、URLエンコード、タイムスタンプ変換、色変換、Unicodeエンコード、正規表現テスト、QRコード生成、カウントダウンタイマーなど',
+        dbDesignerTitle: 'データベースデザイナー',
+        dbDesignerDesc: '複数のデータベースタイプをサポートし、視覚的なテーブル構造設計、自動SQLスクリプト生成、JSONおよび各種データベース形式のエクスポートをサポート',
+        codeEditorTitle: 'MiniPenコードエディター',
+        codeEditorDesc: 'オンラインコードエディター、HTML、CSS、JavaScriptのリアルタイムプレビューをサポート、CodePenに類似',
+        snapPicEditTitle: 'SnapPicEdit画像エディター',
+        snapPicEditDesc: 'オンライン画像編集ツール、画像アップロード、トリミング、フィルター、透かし、圧縮、フォーマット変換などをサポート',
+        photoEditorTitle: 'MiniPhotoEdit画像エディター',
+        photoEditorDesc: 'プロフェッショナルなオンライン画像エディター、Photoshopに類似、レイヤー、フィルター、調整、描画などをサポート',
+        videoEditorTitle: 'MiniCut動画エディター',
+        videoEditorDesc: 'オンライン動画エディター、CapCutに類似、動画インポート、タイムライン編集、エフェクト、トランジションなどをサポート',
+        wechatEditorTitle: 'WeChat記事エディター',
+        wechatEditorDesc: 'WeChat公式アカウント記事レイアウトツール、安全な貼り付け、スタイルテンプレート、HTMLクリーニング、ワンクリックコピー、レスポンシブプレビューなどをサポート',
+        examTitle: 'JLPT日本語クイズ',
+        examDesc: 'JLPT日本語クイズシステム、N5-N1レベルをサポート、多くの練習問題を提供し、日本語スキルの向上を支援',
+        drawSystemTitle: '抽選システム',
+        drawSystemDesc: 'オンライン抽選システム、リストインポート、賞品設定、賞品レベル管理をサポート、様々な抽選活動に適用',
+        footer: '© 2026 オンラインツールコレクション | Powered by Hexo'
+      }
+    };
+
+    function updateLanguage(lang) {
+      const t = translations[lang];
+      
+      document.title = t.title;
+      document.querySelector('#logo').textContent = t.title;
+      document.querySelector('.hero h1').textContent = t.welcome;
+      document.querySelector('.hero p').textContent = t.description;
+      
+      document.querySelectorAll('.main-nav-link')[0].textContent = t.blog;
+      document.querySelectorAll('.main-nav-link')[1].textContent = t.archives;
+      document.querySelectorAll('.main-nav-link')[2].textContent = t.toolSet;
+      document.querySelectorAll('.main-nav-link')[3].textContent = t.dbDesigner;
+      document.querySelectorAll('.main-nav-link')[4].textContent = t.drawSystem;
+      document.querySelectorAll('.main-nav-link')[5].textContent = t.exam;
+      document.querySelectorAll('.main-nav-link')[6].textContent = t.codeEditor;
+      document.querySelectorAll('.main-nav-link')[7].textContent = t.imageEditor;
+      document.querySelectorAll('.main-nav-link')[8].textContent = t.videoEditor;
+      document.querySelectorAll('.main-nav-link')[9].textContent = t.photoEditor;
+      document.querySelectorAll('.main-nav-link')[10].textContent = t.wechatEditor;
+      
+      document.querySelectorAll('.section-title')[0].textContent = t.devTools;
+      document.querySelectorAll('.section-title')[1].textContent = t.editors;
+      document.querySelectorAll('.section-title')[2].textContent = t.learningTools;
+      
+      document.querySelectorAll('.tool-card')[0].querySelector('h3').innerHTML = '<span class="icon">🛠️</span> ' + t.devToolsTitle;
+      document.querySelectorAll('.tool-card')[0].querySelector('p').textContent = t.devToolsDesc;
+      
+      document.querySelectorAll('.tool-card')[1].querySelector('h3').innerHTML = '<span class="icon">🗄️</span> ' + t.dbDesignerTitle;
+      document.querySelectorAll('.tool-card')[1].querySelector('p').textContent = t.dbDesignerDesc;
+      
+      document.querySelectorAll('.tool-card')[2].querySelector('h3').innerHTML = '<span class="icon">💻</span> ' + t.codeEditorTitle;
+      document.querySelectorAll('.tool-card')[2].querySelector('p').textContent = t.codeEditorDesc;
+      
+      document.querySelectorAll('.tool-card')[3].querySelector('h3').innerHTML = '<span class="icon">🖼️</span> ' + t.snapPicEditTitle;
+      document.querySelectorAll('.tool-card')[3].querySelector('p').textContent = t.snapPicEditDesc;
+      
+      document.querySelectorAll('.tool-card')[4].querySelector('h3').innerHTML = '<span class="icon">📷</span> ' + t.photoEditorTitle;
+      document.querySelectorAll('.tool-card')[4].querySelector('p').textContent = t.photoEditorDesc;
+      
+      document.querySelectorAll('.tool-card')[5].querySelector('h3').innerHTML = '<span class="icon">🎬</span> ' + t.videoEditorTitle;
+      document.querySelectorAll('.tool-card')[5].querySelector('p').textContent = t.videoEditorDesc;
+      
+      document.querySelectorAll('.tool-card')[6].querySelector('h3').innerHTML = '<span class="icon">📝</span> ' + t.wechatEditorTitle;
+      document.querySelectorAll('.tool-card')[6].querySelector('p').textContent = t.wechatEditorDesc;
+      
+      document.querySelectorAll('.tool-card')[7].querySelector('h3').innerHTML = '<span class="icon">📚</span> ' + t.examTitle;
+      document.querySelectorAll('.tool-card')[7].querySelector('p').textContent = t.examDesc;
+      
+      document.querySelectorAll('.tool-card')[8].querySelector('h3').innerHTML = '<span class="icon">🎁</span> ' + t.drawSystemTitle;
+      document.querySelectorAll('.tool-card')[8].querySelector('p').textContent = t.drawSystemDesc;
+      
+      document.querySelector('#footer p').innerHTML = t.footer;
+      
+      localStorage.setItem('language', lang);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const languageSelector = document.getElementById('language-selector');
+      const savedLang = localStorage.getItem('language') || 'zh';
+      languageSelector.value = savedLang;
+      updateLanguage(savedLang);
+      
+      languageSelector.addEventListener('change', function() {
+        updateLanguage(this.value);
+      });
+    });
+  </script>
 </body>
 </html>
