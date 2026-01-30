@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>微信公众号图文排版工具</title>
-    <link rel="stylesheet" href="css/style.css?v=2">
+    <link rel="stylesheet" href="css/style.css?v=4">
 <script>
 var _hmt = _hmt || [];
 (function() {
@@ -20,16 +20,49 @@ var _hmt = _hmt || [];
     <div class="editor-container">
         <!-- 顶部工具栏 -->
         <div class="toolbar">
-            <h1>微信公众号图文排版工具</h1>
-            <div class="template-buttons">
-                <button class="template-btn" data-template="h1">标题1</button>
-                <button class="template-btn" data-template="p">正文</button>
-                <button class="template-btn" data-template="blockquote">引用</button>
-                <button class="template-btn" data-template="hr">分割线</button>
-                <button class="template-btn" data-template="small">注释</button>
+            <div class="toolbar-left">
+                <h1 data-i18n="title">微信公众号图文排版工具</h1>
+                <div class="language-selector">
+                    <button class="lang-btn active" data-lang="zh">中文</button>
+                    <button class="lang-btn" data-lang="en">EN</button>
+                    <button class="lang-btn" data-lang="ja">日本語</button>
+                </div>
             </div>
-            <div class="action-buttons">
-                <button id="copy-btn">复制到剪贴板</button>
+            
+            <div class="template-buttons">
+                <button class="template-btn" data-template="h1" data-i18n="templateH1">标题1</button>
+                <button class="template-btn" data-template="h2" data-i18n="templateH2">标题2</button>
+                <button class="template-btn" data-template="h3" data-i18n="templateH3">标题3</button>
+                <button class="template-btn" data-template="p" data-i18n="templateP">正文</button>
+                <button class="template-btn" data-template="blockquote" data-i18n="templateBlockquote">引用</button>
+                <button class="template-btn" data-template="code" data-i18n="templateCode">代码</button>
+                <button class="template-btn" data-template="table" data-i18n="templateTable">表格</button>
+                <button class="template-btn" data-template="hr" data-i18n="templateHr">分割线</button>
+                <button class="template-btn" data-template="small" data-i18n="templateSmall">注释</button>
+            </div>
+            
+            <div class="toolbar-right">
+                <div class="action-buttons">
+                    <button id="templates-btn" data-i18n="templates" title="文章模板">🎨</button>
+                    <button id="undo-btn" data-i18n="undo" title="Ctrl+Z">↶</button>
+                    <button id="redo-btn" data-i18n="redo" title="Ctrl+Y">↷</button>
+                    <button id="clear-btn" data-i18n="clear" title="清空编辑器">🗑️</button>
+                    <button id="history-btn" data-i18n="history" title="历史记录">📜</button>
+                    <button id="image-btn" data-i18n="image" title="插入图片">🖼️</button>
+                    <button id="export-btn" data-i18n="export" title="导出HTML">📥</button>
+                    <button id="theme-btn" data-i18n="theme" title="切换主题">🌙</button>
+                    <button id="copy-btn" data-i18n="copy" title="复制到剪贴板">📋</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 状态栏 -->
+        <div class="status-bar">
+            <div class="word-count">
+                <span data-i18n="wordCount">字数</span>: <span id="word-count">0</span>
+            </div>
+            <div class="save-status">
+                <span id="save-status" data-i18n="autoSave">自动保存中...</span>
             </div>
         </div>
         
@@ -37,18 +70,168 @@ var _hmt = _hmt || [];
         <div class="main-content">
             <!-- 左侧编辑区 -->
             <div class="editor-section">
-                <h2>编辑区</h2>
+                <h2 data-i18n="editor">编辑区</h2>
                 <div id="editor" contenteditable="true" class="editor"></div>
             </div>
             
             <!-- 右侧预览区 -->
             <div class="preview-section">
-                <h2>预览区</h2>
+                <h2 data-i18n="preview">预览区</h2>
                 <div id="preview" class="preview"></div>
             </div>
         </div>
     </div>
     
-    <script src="js/app.js?v=6"></script>
+    <!-- 历史记录面板 -->
+    <div id="history-panel" class="history-panel hidden">
+        <div class="history-header">
+            <h3 data-i18n="historyTitle">历史记录</h3>
+            <button id="close-history" class="close-btn">×</button>
+        </div>
+        <div id="history-list" class="history-list"></div>
+    </div>
+    
+    <!-- 图片上传对话框 -->
+    <div id="image-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3 data-i18n="insertImage">插入图片</h3>
+            <input type="file" id="image-input" accept="image/*" multiple>
+            <div class="modal-buttons">
+                <button id="cancel-image" class="btn-secondary" data-i18n="cancel">取消</button>
+                <button id="insert-image" class="btn-primary" data-i18n="insert">插入</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 文章模板面板 -->
+    <div id="templates-panel" class="templates-panel hidden">
+        <div class="templates-header">
+            <h3 data-i18n="templatesTitle">文章模板</h3>
+            <button id="close-templates" class="close-btn">×</button>
+        </div>
+        <div id="templates-list" class="templates-list">
+            <!-- 模板1: 商务简报 -->
+            <div class="template-card" data-template-id="1">
+                <div class="template-preview">
+                    <h4 style="color:#1890ff; margin-bottom:8px;">商务简报</h4>
+                    <p style="font-size:12px; color:#666;">适合企业新闻、产品发布</p>
+                </div>
+                <div class="template-tags">
+                    <span class="tag">商务</span>
+                    <span class="tag">正式</span>
+                </div>
+            </div>
+            
+            <!-- 模板2: 科技资讯 -->
+            <div class="template-card" data-template-id="2">
+                <div class="template-preview">
+                    <h4 style="color:#722ed1; margin-bottom:8px;">科技资讯</h4>
+                    <p style="font-size:12px; color:#666;">适合科技新闻、技术分享</p>
+                </div>
+                <div class="template-tags">
+                    <span class="tag">科技</span>
+                    <span class="tag">现代</span>
+                </div>
+            </div>
+            
+            <!-- 模板3: 美食探店 -->
+            <div class="template-card" data-template-id="3">
+                <div class="template-preview">
+                    <h4 style="color:#fa541c; margin-bottom:8px;">美食探店</h4>
+                    <p style="font-size:12px; color:#666;">适合餐厅推荐、美食分享</p>
+                </div>
+                <div class="template-tags">
+                    <span class="tag">美食</span>
+                    <span class="tag">温馨</span>
+                </div>
+            </div>
+            
+            <!-- 模板4: 旅行游记 -->
+            <div class="template-card" data-template-id="4">
+                <div class="template-preview">
+                    <h4 style="color:#52c41a; margin-bottom:8px;">旅行游记</h4>
+                    <p style="font-size:12px; color:#666;">适合旅游攻略、风景分享</p>
+                </div>
+                <div class="template-tags">
+                    <span class="tag">旅行</span>
+                    <span class="tag">自然</span>
+                </div>
+            </div>
+            
+            <!-- 模板5: 读书笔记 -->
+            <div class="template-card" data-template-id="5">
+                <div class="template-preview">
+                    <h4 style="color:#fa8c16; margin-bottom:8px;">读书笔记</h4>
+                    <p style="font-size:12px; color:#666;">适合书评、阅读分享</p>
+                </div>
+                <div class="template-tags">
+                    <span class="tag">读书</span>
+                    <span class="tag">文艺</span>
+                </div>
+            </div>
+            
+            <!-- 模板6: 节日祝福 -->
+            <div class="template-card" data-template-id="6">
+                <div class="template-preview">
+                    <h4 style="color:#eb2f96; margin-bottom:8px;">节日祝福</h4>
+                    <p style="font-size:12px; color:#666;">适合节日祝福、活动邀请</p>
+                </div>
+                <div class="template-tags">
+                    <span class="tag">节日</span>
+                    <span class="tag">喜庆</span>
+                </div>
+            </div>
+            
+            <!-- 模板7: 健康生活 -->
+            <div class="template-card" data-template-id="7">
+                <div class="template-preview">
+                    <h4 style="color:#13c2c2; margin-bottom:8px;">健康生活</h4>
+                    <p style="font-size:12px; color:#666;">适合健康知识、运动分享</p>
+                </div>
+                <div class="template-tags">
+                    <span class="tag">健康</span>
+                    <span class="tag">清新</span>
+                </div>
+            </div>
+            
+            <!-- 模板8: 教育培训 -->
+            <div class="template-card" data-template-id="8">
+                <div class="template-preview">
+                    <h4 style="color:#2f54eb; margin-bottom:8px;">教育培训</h4>
+                    <p style="font-size:12px; color:#666;">适合课程介绍、学习资料</p>
+                </div>
+                <div class="template-tags">
+                    <span class="tag">教育</span>
+                    <span class="tag">专业</span>
+                </div>
+            </div>
+            
+            <!-- 模板9: 时尚穿搭 -->
+            <div class="template-card" data-template-id="9">
+                <div class="template-preview">
+                    <h4 style="color:#f5222d; margin-bottom:8px;">时尚穿搭</h4>
+                    <p style="font-size:12px; color:#666;">适合时尚分享、穿搭指南</p>
+                </div>
+                <div class="template-tags">
+                    <span class="tag">时尚</span>
+                    <span class="tag">潮流</span>
+                </div>
+            </div>
+            
+            <!-- 模板10: 个人随笔 -->
+            <div class="template-card" data-template-id="10">
+                <div class="template-preview">
+                    <h4 style="color:#595959; margin-bottom:8px;">个人随笔</h4>
+                    <p style="font-size:12px; color:#666;">适合生活感悟、心情分享</p>
+                </div>
+                <div class="template-tags">
+                    <span class="tag">随笔</span>
+                    <span class="tag">简约</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/app.js?v=8"></script>
 </body>
 </html>
