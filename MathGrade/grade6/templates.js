@@ -30,7 +30,7 @@ export const templates = [
             return {
                 question: "$\\frac{" + vars.a + "}{" + vars.b + "} \\times " + vars.c + " = $",
                 answer: answer,
-                explanation: "$\\frac{" + vars.a + "}{" + vars.b + "} \\times " + vars.c + " = \\frac{" + vars.a + " \\times " + vars.c + "}{" + vars.b + "} = \\frac{" + numerator + "}{" + vars.b + "} = " + answer + "$"
+                explanation: "$\\frac{" + vars.a + "}{" + vars.b + "} \\times " + vars.c + " = \\frac{(" + vars.a + " \\times " + vars.c + ")}{" + vars.b + "} = " + answer + "$"
             };
         },
         validation: 'exact'

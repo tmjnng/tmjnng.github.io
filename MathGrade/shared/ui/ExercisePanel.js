@@ -255,7 +255,7 @@ export class ExercisePanel {
                 <div class="feedback-icon">✗</div>
                 <div class="feedback-text">回答错误</div>
                 <div class="feedback-answer">正确答案：<span id="correct-answer"></span></div>
-                ${q.explanation ? `<div class="feedback-explanation">${q.explanation}</div>` : ''}
+                ${q.explanation ? `<div class="feedback-explanation"></div>` : ''}
             `;
             
             // 渲染正确答案中的LaTeX公式
@@ -263,6 +263,13 @@ export class ExercisePanel {
             if (answerSpan && q.answer) {
                 const renderedAnswer = FormulaRenderer.renderString(q.answer.toString());
                 answerSpan.appendChild(renderedAnswer);
+            }
+            
+            // 渲染解释中的LaTeX公式
+            const explanationDiv = feedback.querySelector('.feedback-explanation');
+            if (explanationDiv && q.explanation) {
+                const renderedExplanation = FormulaRenderer.renderString(q.explanation);
+                explanationDiv.appendChild(renderedExplanation);
             }
         }
 
