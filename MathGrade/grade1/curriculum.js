@@ -14,6 +14,14 @@ export const curriculum = {
                     title: '数一数',
                     type: 'concept',
                     content: '学习用点数的方法数出物体的个数，认识1-10的数字。数数时要按一定的顺序，一个一个地数，数到最后一个物体所对应的数，就是这种物体的总数。',
+                    visualizations: [
+                        {
+                            type: 'number-grid',
+                            title: '数字表',
+                            description: '1-10的数字排列，帮助认识数字顺序',
+                            config: { size: 10, highlight: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] }
+                        }
+                    ],
                     difficulty: 1,
                     estimatedTime: 10
                 },
@@ -21,7 +29,15 @@ export const curriculum = {
                     id: 'g1-1-2',
                     title: '比多少',
                     type: 'concept',
-                    content: '学习比较两种物体数量的多少。可以用一一对应的方法比较，也可以用数数的方法比较。',
+                    content: '学习比较两种物体数量的多少。可以用一一对应的方法比较，也可以用数数的方法比较。如果一种物体比另一种物体多，就说这种物体比另一种物体"多"；如果少，就说"少"。',
+                    visualizations: [
+                        {
+                            type: 'comparison',
+                            title: '数量比较',
+                            description: '比较两个数字的大小关系',
+                            config: { left: 5, right: 3, operator: '>' }
+                        }
+                    ],
                     difficulty: 1,
                     estimatedTime: 10
                 }
@@ -57,7 +73,21 @@ export const curriculum = {
                     id: 'g1-3-1',
                     title: '1-5的认识',
                     type: 'concept',
-                    content: '认识数字1、2、3、4、5，会读、会写，理解每个数字所表示的数量意义。',
+                    content: '认识数字1、2、3、4、5，会读、会写，理解每个数字所表示的数量意义。数字1表示一个物体，数字2表示两个物体，以此类推。',
+                    visualizations: [
+                        {
+                            type: 'number-grid',
+                            title: '数字1-5',
+                            description: '认识1-5的数字及其顺序',
+                            config: { size: 5, highlight: [1, 2, 3, 4, 5] }
+                        },
+                        {
+                            type: 'ten-frame',
+                            title: '十格阵',
+                            description: '用十格阵表示数字1-5',
+                            config: { filled: 5 }
+                        }
+                    ],
                     difficulty: 1,
                     estimatedTime: 10
                 },
@@ -82,7 +112,15 @@ export const curriculum = {
                     id: 'g1-3-4',
                     title: '分与合',
                     type: 'concept',
-                    content: '学习5以内数的分解与组成。如5可以分成1和4、2和3等。',
+                    content: '学习5以内数的分解与组成。如5可以分成1和4、2和3等。理解数的组成可以帮助我们更好地进行加减法计算。',
+                    visualizations: [
+                        {
+                            type: 'number-bonds',
+                            title: '数的分解',
+                            description: '5的分解方式',
+                            config: { number: 5, bonds: [[1, 4], [2, 3], [3, 2], [4, 1]] }
+                        }
+                    ],
                     difficulty: 1,
                     estimatedTime: 12
                 },
@@ -114,7 +152,15 @@ export const curriculum = {
                     id: 'g1-4-1',
                     title: '认识立体图形',
                     type: 'concept',
-                    content: '认识长方体、正方体、圆柱、球四种立体图形，能辨认这些图形。',
+                    content: '认识长方体、正方体、圆柱、球四种立体图形，能辨认这些图形。长方体有6个面，都是长方形；正方体有6个面，都是正方形；圆柱有两个圆形的底面和一个侧面；球是圆圆的，可以滚动。',
+                    visualizations: [
+                        {
+                            type: '3d-shape',
+                            title: '立体图形',
+                            description: '常见的立体图形示例',
+                            config: { shape: 'cube', size: 100 }
+                        }
+                    ],
                     difficulty: 1,
                     estimatedTime: 10
                 },
@@ -136,7 +182,21 @@ export const curriculum = {
                     id: 'g1-5-1',
                     title: '6和7的认识',
                     type: 'concept',
-                    content: '认识数字6和7，会读、会写，理解数的顺序和大小。',
+                    content: '认识数字6和7，会读、会写，理解数的顺序和大小。6比5大1，7比6大1。6和7都可以用实物来表示，如6个苹果、7只小鸟等。',
+                    visualizations: [
+                        {
+                            type: 'number-line',
+                            title: '数轴',
+                            description: '在数轴上表示6和7的位置',
+                            config: { min: 0, max: 10, highlight: [6, 7] }
+                        },
+                        {
+                            type: 'ten-frame',
+                            title: '十格阵',
+                            description: '用十格阵表示6和7',
+                            config: { filled: 7 }
+                        }
+                    ],
                     difficulty: 1,
                     estimatedTime: 10
                 },
@@ -153,7 +213,21 @@ export const curriculum = {
                     id: 'g1-5-3',
                     title: '8和9的认识',
                     type: 'concept',
-                    content: '认识数字8和9，会读、会写，理解数的顺序和大小。',
+                    content: '认识数字8和9，会读、会写，理解数的顺序和大小。8比7大1，9比8大1。8和9也可以用实物来表示，如8朵花、9只小猫等。',
+                    visualizations: [
+                        {
+                            type: 'number-line',
+                            title: '数轴',
+                            description: '在数轴上表示8和9的位置',
+                            config: { min: 0, max: 10, highlight: [8, 9] }
+                        },
+                        {
+                            type: 'ten-frame',
+                            title: '十格阵',
+                            description: '用十格阵表示8和9',
+                            config: { filled: 9 }
+                        }
+                    ],
                     difficulty: 1,
                     estimatedTime: 10
                 },
@@ -170,7 +244,27 @@ export const curriculum = {
                     id: 'g1-5-5',
                     title: '10的认识',
                     type: 'concept',
-                    content: '认识数字10，理解10是由1个十组成的。',
+                    content: '认识数字10，理解10是由1个十组成的。10是最小的两位数，也是我们日常生活中常用的数字，比如10个手指、10个脚趾。',
+                    visualizations: [
+                        {
+                            type: 'number-line',
+                            title: '数轴',
+                            description: '在数轴上表示10的位置',
+                            config: { min: 0, max: 10, highlight: [10] }
+                        },
+                        {
+                            type: 'ten-frame',
+                            title: '十格阵',
+                            description: '用十格阵表示10',
+                            config: { filled: 10 }
+                        },
+                        {
+                            type: 'base-ten-blocks',
+                            title: '位值表示',
+                            description: '用积木块表示10',
+                            config: { hundreds: 0, tens: 1, ones: 0 }
+                        }
+                    ],
                     difficulty: 1,
                     estimatedTime: 10
                 },
@@ -233,7 +327,15 @@ export const curriculum = {
                     id: 'g1-7-1',
                     title: '认识整时',
                     type: 'concept',
-                    content: '认识钟面，学会看整时。整时时，分针指向12，时针指向几就是几时。',
+                    content: '认识钟面，学会看整时。整时时，分针指向12，时针指向几就是几时。比如分针指向12，时针指向3，就是3时。',
+                    visualizations: [
+                        {
+                            type: 'clock',
+                            title: '钟表',
+                            description: '整时的表示方法',
+                            config: { hour: 3, minute: 0, type: 'hour' }
+                        }
+                    ],
                     difficulty: 1,
                     estimatedTime: 10
                 },
@@ -241,7 +343,15 @@ export const curriculum = {
                     id: 'g1-7-2',
                     title: '认识半时',
                     type: 'concept',
-                    content: '学会看半时。半时时，分针指向6，时针走过几就是几时半。',
+                    content: '学会看半时。半时时，分针指向6，时针走过几就是几时半。比如分针指向6，时针在3和4之间，就是3时半。',
+                    visualizations: [
+                        {
+                            type: 'clock',
+                            title: '钟表',
+                            description: '半时的表示方法',
+                            config: { hour: 3, minute: 30, type: 'hour' }
+                        }
+                    ],
                     difficulty: 2,
                     estimatedTime: 12
                 }

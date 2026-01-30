@@ -13,7 +13,15 @@ export const curriculum = {
                     id: 'g7-1-1',
                     title: '正数和负数',
                     type: 'concept',
-                    content: '认识正数和负数，理解相反意义的量。',
+                    content: '认识正数和负数，理解相反意义的量。正数是大于0的数，负数是小于0的数。正数和负数可以表示具有相反意义的量，如温度零上和零下、收入和支出等。',
+                    visualizations: [
+                        {
+                            type: 'number-line',
+                            title: '数轴',
+                            description: '正数和负数在数轴上的表示',
+                            config: { min: -5, max: 5, step: 1, highlight: [-3, 0, 3] }
+                        }
+                    ],
                     difficulty: 1,
                     estimatedTime: 10
                 },
@@ -29,7 +37,15 @@ export const curriculum = {
                     id: 'g7-1-3',
                     title: '数轴',
                     type: 'concept',
-                    content: '认识数轴，能用数轴上的点表示有理数。',
+                    content: '认识数轴，能用数轴上的点表示有理数。数轴是规定了原点、正方向和单位长度的直线。原点表示0，原点右边的点表示正数，左边的点表示负数。',
+                    visualizations: [
+                        {
+                            type: 'number-line',
+                            title: '数轴',
+                            description: '数轴的三要素：原点、正方向、单位长度',
+                            config: { min: -5, max: 5, step: 1 }
+                        }
+                    ],
                     difficulty: 1,
                     estimatedTime: 10
                 },
@@ -37,7 +53,15 @@ export const curriculum = {
                     id: 'g7-1-4',
                     title: '相反数',
                     type: 'concept',
-                    content: '理解相反数的概念，会求一个数的相反数。',
+                    content: '理解相反数的概念，会求一个数的相反数。只有符号不同的两个数叫做互为相反数，如5和-5。0的相反数是0。在数轴上，互为相反数的两个点位于原点两侧，且到原点的距离相等。',
+                    visualizations: [
+                        {
+                            type: 'number-line',
+                            title: '相反数',
+                            description: '相反数在数轴上的表示',
+                            config: { min: -5, max: 5, step: 1, highlight: [-3, 3] }
+                        }
+                    ],
                     difficulty: 1,
                     estimatedTime: 8
                 },
@@ -45,8 +69,16 @@ export const curriculum = {
                     id: 'g7-1-5',
                     title: '绝对值',
                     type: 'concept',
-                    content: '理解绝对值的概念，会求一个数的绝对值。',
+                    content: '理解绝对值的概念，会求一个数的绝对值。一个数的绝对值是数轴上表示这个数的点与原点的距离。正数的绝对值是它本身，负数的绝对值是它的相反数，0的绝对值是0。',
                     formulas: ['|a| = a (a > 0)', '|a| = 0 (a = 0)', '|a| = -a (a < 0)'],
+                    visualizations: [
+                        {
+                            type: 'number-line',
+                            title: '绝对值',
+                            description: '绝对值在数轴上的表示',
+                            config: { min: -5, max: 5, step: 1, highlight: [-3, 0, 3] }
+                        }
+                    ],
                     difficulty: 2,
                     estimatedTime: 12
                 },
@@ -155,7 +187,15 @@ export const curriculum = {
                     id: 'g7-3-1',
                     title: '一元一次方程',
                     type: 'concept',
-                    content: '理解一元一次方程的概念。',
+                    content: '理解一元一次方程的概念。只含有一个未知数，且未知数的次数是1的方程叫做一元一次方程。一般形式：ax + b = 0 (a≠0)。',
+                    visualizations: [
+                        {
+                            type: 'graph',
+                            title: '一元一次方程',
+                            description: '一元一次方程的图像是一条直线',
+                            config: { equation: 'y = 2x + 1', points: [[-2, -3], [-1, -1], [0, 1], [1, 3], [2, 5]] }
+                        }
+                    ],
                     difficulty: 1,
                     estimatedTime: 10
                 },
@@ -220,7 +260,15 @@ export const curriculum = {
                     id: 'g7-4-3',
                     title: '角',
                     type: 'concept',
-                    content: '理解角的概念，掌握角的度量。',
+                    content: '理解角的概念，掌握角的度量。角是由两条有公共端点的射线组成的图形。角的度量单位是度，用符号"°"表示。1周角=360°，1平角=180°，1直角=90°。',
+                    visualizations: [
+                        {
+                            type: 'angle',
+                            title: '角',
+                            description: '角的度量',
+                            config: { degrees: 45, type: 'acute' }
+                        }
+                    ],
                     difficulty: 1,
                     estimatedTime: 10
                 },

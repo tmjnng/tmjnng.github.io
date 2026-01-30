@@ -13,7 +13,15 @@ export const curriculum = {
                     id: 'g2-1-1',
                     title: '厘米的认识',
                     type: 'concept',
-                    content: '认识长度单位厘米，知道1厘米大约有多长。量比较短的物体，可以用厘米作单位。',
+                    content: '认识长度单位厘米，知道1厘米大约有多长。量比较短的物体，可以用厘米作单位。比如铅笔的长度、书本的宽度等可以用厘米来测量。',
+                    visualizations: [
+                        {
+                            type: 'number-line',
+                            title: '厘米刻度',
+                            description: '厘米尺的刻度表示',
+                            config: { min: 0, max: 10, step: 1 }
+                        }
+                    ],
                     difficulty: 1,
                     estimatedTime: 10
                 },
@@ -21,8 +29,16 @@ export const curriculum = {
                     id: 'g2-1-2',
                     title: '米的认识',
                     type: 'concept',
-                    content: '认识长度单位米，知道1米=100厘米。量比较长的物体，通常用米作单位。',
+                    content: '认识长度单位米，知道1米=100厘米。量比较长的物体，通常用米作单位。比如教室的长度、操场的宽度等可以用米来测量。',
                     formulas: ['1米 = 100厘米'],
+                    visualizations: [
+                        {
+                            type: 'number-line',
+                            title: '米和厘米的关系',
+                            description: '1米等于100厘米',
+                            config: { min: 0, max: 100, step: 10 }
+                        }
+                    ],
                     difficulty: 1,
                     estimatedTime: 10
                 },
@@ -96,7 +112,15 @@ export const curriculum = {
                     id: 'g2-3-1',
                     title: '认识角',
                     type: 'concept',
-                    content: '认识角，知道角的各部分名称：顶点、边。角的大小与边的长短无关，与两边张开的大小有关。',
+                    content: '认识角，知道角的各部分名称：顶点、边。角的大小与边的长短无关，与两边张开的大小有关。角是由一个顶点和两条边组成的图形。',
+                    visualizations: [
+                        {
+                            type: 'angle',
+                            title: '角',
+                            description: '角的组成：顶点和两条边',
+                            config: { degrees: 45, type: 'acute' }
+                        }
+                    ],
                     difficulty: 1,
                     estimatedTime: 10
                 },
@@ -104,7 +128,27 @@ export const curriculum = {
                     id: 'g2-3-2',
                     title: '认识直角、锐角、钝角',
                     type: 'concept',
-                    content: '认识直角、锐角和钝角。直角=90度，锐角<90度，钝角>90度。',
+                    content: '认识直角、锐角和钝角。直角=90度，锐角<90度，钝角>90度。直角可以用三角板的直角来比一比，锐角比直角小，钝角比直角大。',
+                    visualizations: [
+                        {
+                            type: 'angle',
+                            title: '直角',
+                            description: '直角=90度',
+                            config: { degrees: 90, type: 'right' }
+                        },
+                        {
+                            type: 'angle',
+                            title: '锐角',
+                            description: '锐角<90度',
+                            config: { degrees: 45, type: 'acute' }
+                        },
+                        {
+                            type: 'angle',
+                            title: '钝角',
+                            description: '钝角>90度',
+                            config: { degrees: 120, type: 'obtuse' }
+                        }
+                    ],
                     difficulty: 2,
                     estimatedTime: 12
                 }
@@ -118,7 +162,15 @@ export const curriculum = {
                     id: 'g2-4-1',
                     title: '乘法的初步认识',
                     type: 'concept',
-                    content: '认识乘法，理解乘法是求几个相同加数和的简便运算。',
+                    content: '认识乘法，理解乘法是求几个相同加数和的简便运算。比如3+3+3+3=12，可以写成3×4=12，表示4个3相加。',
+                    visualizations: [
+                        {
+                            type: 'multiplication',
+                            title: '乘法',
+                            description: '4个3相加等于12',
+                            config: { rows: 4, cols: 3 }
+                        }
+                    ],
                     difficulty: 1,
                     estimatedTime: 10
                 },
@@ -215,7 +267,15 @@ export const curriculum = {
                     id: 'g2-7-1',
                     title: '认识几时几分',
                     type: 'concept',
-                    content: '认识几时几分，能读写几时几分。分针走1小格是1分，走1圈是60分。',
+                    content: '认识几时几分，能读写几时几分。分针走1小格是1分，走1圈是60分。时针走1大格是1小时，走1圈是12小时。',
+                    visualizations: [
+                        {
+                            type: 'clock',
+                            title: '钟表',
+                            description: '几时几分的表示方法',
+                            config: { hour: 3, minute: 15, type: 'hour' }
+                        }
+                    ],
                     difficulty: 2,
                     estimatedTime: 12
                 },

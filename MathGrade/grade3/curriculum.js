@@ -13,8 +13,16 @@ export const curriculum = {
                     id: 'g3-1-1',
                     title: '秒的认识',
                     type: 'concept',
-                    content: '计量很短的时间，常用秒。秒是比分更小的时间单位。钟面上最长最细的针是秒针，秒针走1小格是1秒，走1圈是60秒。',
+                    content: '计量很短的时间，常用秒。秒是比分更小的时间单位。钟面上最长最细的针是秒针，秒针走1小格是1秒，走1圈是60秒。1分=60秒，1时=60分=3600秒。',
                     formulas: ['1分 = 60秒', '1时 = 60分', '1时 = 3600秒'],
+                    visualizations: [
+                        {
+                            type: 'clock',
+                            title: '钟表',
+                            description: '秒针、分针、时针的关系',
+                            config: { hour: 1, minute: 30, type: 'hour' }
+                        }
+                    ],
                     examples: [
                         {
                             problem: '小明跑50米用了10(    )',
@@ -77,8 +85,16 @@ export const curriculum = {
                     id: 'g3-3-1',
                     title: '毫米、分米的认识',
                     type: 'concept',
-                    content: '认识长度单位毫米和分米。1厘米=10毫米，1分米=10厘米。',
+                    content: '认识长度单位毫米和分米。1厘米=10毫米，1分米=10厘米。毫米是很小的长度单位，用来测量很薄的物体；分米是比厘米大的单位，用来测量较长的物体。',
                     formulas: ['1厘米 = 10毫米', '1分米 = 10厘米', '1米 = 10分米'],
+                    visualizations: [
+                        {
+                            type: 'number-line',
+                            title: '长度单位',
+                            description: '毫米、厘米、分米的关系',
+                            config: { min: 0, max: 10, step: 1 }
+                        }
+                    ],
                     difficulty: 1,
                     estimatedTime: 10
                 },
@@ -151,8 +167,16 @@ export const curriculum = {
                     id: 'g3-5-1',
                     title: '倍的概念',
                     type: 'concept',
-                    content: '一个数里面有几个另一个数，就说一个数是另一个数的几倍。',
+                    content: '一个数里面有几个另一个数，就说一个数是另一个数的几倍。比如6里面有3个2，就说6是2的3倍。求倍数用除法计算。',
                     formulas: ['A是B的几倍 = A ÷ B'],
+                    visualizations: [
+                        {
+                            type: 'multiplication',
+                            title: '倍数关系',
+                            description: '3个2组成6',
+                            config: { rows: 3, cols: 2 }
+                        }
+                    ],
                     difficulty: 1,
                     estimatedTime: 10
                 },
@@ -226,7 +250,21 @@ export const curriculum = {
                     id: 'g3-7-1',
                     title: '四边形',
                     type: 'concept',
-                    content: '有4条直的边和4个角的封闭图形叫四边形。长方形和正方形都是特殊的四边形。',
+                    content: '有4条直的边和4个角的封闭图形叫四边形。长方形和正方形都是特殊的四边形。长方形有4个直角，对边相等；正方形有4个直角，4条边都相等。',
+                    visualizations: [
+                        {
+                            type: 'geometry-shape',
+                            title: '四边形',
+                            description: '常见的四边形',
+                            config: { shape: 'rectangle', size: 100, label: '长方形' }
+                        },
+                        {
+                            type: 'geometry-shape',
+                            title: '正方形',
+                            description: '特殊的四边形',
+                            config: { shape: 'square', size: 100, label: '正方形' }
+                        }
+                    ],
                     difficulty: 1,
                     estimatedTime: 8
                 },
@@ -234,8 +272,22 @@ export const curriculum = {
                     id: 'g3-7-2',
                     title: '周长',
                     type: 'concept',
-                    content: '封闭图形一周的长度叫周长。',
+                    content: '封闭图形一周的长度叫周长。长方形的周长=（长+宽）×2，正方形的周长=边长×4。计算周长时，要把图形所有边的长度加起来。',
                     formulas: ['长方形周长 = (长 + 宽) × 2', '正方形周长 = 边长 × 4'],
+                    visualizations: [
+                        {
+                            type: 'rectangle',
+                            title: '长方形周长',
+                            description: '长方形的周长计算',
+                            config: { width: 8, height: 4, showLabels: true }
+                        },
+                        {
+                            type: 'geometry-shape',
+                            title: '正方形',
+                            description: '正方形的周长计算',
+                            config: { shape: 'square', size: 80, label: '边长=5' }
+                        }
+                    ],
                     difficulty: 1,
                     estimatedTime: 10
                 },
@@ -258,8 +310,28 @@ export const curriculum = {
                     id: 'g3-8-1',
                     title: '几分之一',
                     type: 'concept',
-                    content: '把一个物体或图形平均分成几份，每份就是它的几分之一。',
+                    content: '把一个物体或图形平均分成几份，每份就是它的几分之一。比如把一个圆平均分成4份，每份就是它的四分之一，写作1/4。',
                     formulas: ['\\frac{1}{n} 表示把整体平均分成n份，取其中1份'],
+                    visualizations: [
+                        {
+                            type: 'fraction',
+                            title: '分数表示',
+                            description: '用圆形表示1/4',
+                            config: { numerator: 1, denominator: 4, type: 'circle' }
+                        },
+                        {
+                            type: 'fraction',
+                            title: '分数表示',
+                            description: '用矩形表示1/4',
+                            config: { numerator: 1, denominator: 4, type: 'rectangle' }
+                        },
+                        {
+                            type: 'number-line-fraction',
+                            title: '数轴上的分数',
+                            description: '在数轴上表示1/4',
+                            config: { numerator: 1, denominator: 4 }
+                        }
+                    ],
                     difficulty: 1,
                     estimatedTime: 12
                 },
@@ -267,7 +339,21 @@ export const curriculum = {
                     id: 'g3-8-2',
                     title: '几分之几',
                     type: 'concept',
-                    content: '把一个物体或图形平均分成若干份，取其中的几份就是几分之几。',
+                    content: '把一个物体或图形平均分成若干份，取其中的几份就是几分之几。比如把一个圆平均分成8份，取其中的3份，就是八分之三，写作3/8。',
+                    visualizations: [
+                        {
+                            type: 'fraction',
+                            title: '分数表示',
+                            description: '用圆形表示3/8',
+                            config: { numerator: 3, denominator: 8, type: 'circle' }
+                        },
+                        {
+                            type: 'fraction',
+                            title: '分数表示',
+                            description: '用矩形表示3/8',
+                            config: { numerator: 3, denominator: 8, type: 'rectangle' }
+                        }
+                    ],
                     difficulty: 2,
                     estimatedTime: 12
                 },

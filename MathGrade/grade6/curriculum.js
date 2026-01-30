@@ -13,8 +13,16 @@ export const curriculum = {
                     id: 'g6-1-1',
                     title: '分数乘整数',
                     type: 'exercise',
-                    content: '学习分数乘整数的计算方法：分子与整数相乘，分母不变。',
+                    content: '学习分数乘整数的计算方法：分子与整数相乘，分母不变。比如1/2 × 3 = (1×3)/2 = 3/2。计算时可以先约分再相乘，使计算简便。',
                     formulas: ['\\frac{a}{b} \\times c = \\frac{a \\times c}{b}'],
+                    visualizations: [
+                        {
+                            type: 'fraction',
+                            title: '分数乘法',
+                            description: '1/2 × 3 的图示',
+                            config: { numerator: 3, denominator: 2, type: 'rectangle' }
+                        }
+                    ],
                     templateIds: ['g6-frac-mul-1'],
                     difficulty: 1,
                     estimatedTime: 10
@@ -23,8 +31,16 @@ export const curriculum = {
                     id: 'g6-1-2',
                     title: '分数乘分数',
                     type: 'exercise',
-                    content: '学习分数乘分数的计算方法：分子乘分子，分母乘分母。',
+                    content: '学习分数乘分数的计算方法：分子乘分子，分母乘分母。比如1/2 × 1/3 = (1×1)/(2×3) = 1/6。计算时可以先约分再相乘。',
                     formulas: ['\\frac{a}{b} \\times \\frac{c}{d} = \\frac{a \\times c}{b \\times d}'],
+                    visualizations: [
+                        {
+                            type: 'fraction',
+                            title: '分数乘分数',
+                            description: '1/2 × 1/3 = 1/6 的图示',
+                            config: { numerator: 1, denominator: 6, type: 'circle' }
+                        }
+                    ],
                     templateIds: ['g6-frac-mul-2'],
                     difficulty: 2,
                     estimatedTime: 12
@@ -70,8 +86,16 @@ export const curriculum = {
                     id: 'g6-3-1',
                     title: '倒数的认识',
                     type: 'concept',
-                    content: '认识倒数，乘积是1的两个数互为倒数。求倒数的方法：交换分子分母的位置。',
+                    content: '认识倒数，乘积是1的两个数互为倒数。求倒数的方法：交换分子分母的位置。比如2/3的倒数是3/2，5的倒数是1/5。注意：0没有倒数。',
                     formulas: ['a \\times \\frac{1}{a} = 1 (a \\neq 0)'],
+                    visualizations: [
+                        {
+                            type: 'fraction',
+                            title: '倒数关系',
+                            description: '2/3 和 3/2 互为倒数',
+                            config: { numerator: 1, denominator: 1, type: 'circle' }
+                        }
+                    ],
                     difficulty: 1,
                     estimatedTime: 10
                 },
@@ -114,8 +138,16 @@ export const curriculum = {
                     id: 'g6-4-1',
                     title: '比的意义',
                     type: 'concept',
-                    content: '认识比，两个数相除又叫做两个数的比。比由前项、比号、后项组成。',
+                    content: '认识比，两个数相除又叫做两个数的比。比由前项、比号、后项组成。比如3:2表示3除以2，比值是1.5。比可以表示两个数量的倍数关系。',
                     formulas: ['a : b = a \\div b = \\frac{a}{b}'],
+                    visualizations: [
+                        {
+                            type: 'comparison',
+                            title: '比的关系',
+                            description: '3:2 表示两个数量的关系',
+                            config: { left: 3, right: 2, operator: '>' }
+                        }
+                    ],
                     difficulty: 1,
                     estimatedTime: 10
                 },
@@ -147,8 +179,16 @@ export const curriculum = {
                     id: 'g6-5-1',
                     title: '圆的认识',
                     type: 'concept',
-                    content: '认识圆的各部分名称：圆心、半径、直径。圆心确定圆的位置，半径确定圆的大小。',
+                    content: '认识圆的各部分名称：圆心、半径、直径。圆心确定圆的位置，半径确定圆的大小。直径是通过圆心并且两端都在圆上的线段，直径是半径的2倍。',
                     formulas: ['d = 2r', 'r = \\frac{d}{2}'],
+                    visualizations: [
+                        {
+                            type: 'circle',
+                            title: '圆的各部分',
+                            description: '圆心、半径、直径',
+                            config: { radius: 5, showParts: ['radius', 'diameter', 'center'] }
+                        }
+                    ],
                     difficulty: 1,
                     estimatedTime: 10
                 },
@@ -156,8 +196,16 @@ export const curriculum = {
                     id: 'g6-5-2',
                     title: '圆的周长',
                     type: 'exercise',
-                    content: '学习圆的周长公式，认识圆周率π。',
+                    content: '学习圆的周长公式，认识圆周率π。圆的周长C = πd = 2πr，其中π≈3.14。圆周率是圆的周长与直径的比值，是一个无限不循环小数。',
                     formulas: ['C = \\pi d = 2\\pi r'],
+                    visualizations: [
+                        {
+                            type: 'circle',
+                            title: '圆的周长',
+                            description: '圆周长与直径的关系',
+                            config: { radius: 5, showParts: ['diameter'] }
+                        }
+                    ],
                     templateIds: ['g6-circle-c'],
                     difficulty: 2,
                     estimatedTime: 12
@@ -166,8 +214,16 @@ export const curriculum = {
                     id: 'g6-5-3',
                     title: '圆的面积',
                     type: 'exercise',
-                    content: '学习圆的面积公式。',
+                    content: '学习圆的面积公式。圆的面积S = πr²，其中r是圆的半径。计算时，先求半径的平方，再乘以π。',
                     formulas: ['S = \\pi r^2'],
+                    visualizations: [
+                        {
+                            type: 'circle',
+                            title: '圆的面积',
+                            description: '圆面积与半径的关系',
+                            config: { radius: 5, showParts: ['radius'] }
+                        }
+                    ],
                     templateIds: ['g6-circle-s'],
                     difficulty: 2,
                     estimatedTime: 15
@@ -192,8 +248,16 @@ export const curriculum = {
                     id: 'g6-6-1',
                     title: '百分数的意义',
                     type: 'concept',
-                    content: '认识百分数，表示一个数是另一个数的百分之几的数叫做百分数。',
+                    content: '认识百分数，表示一个数是另一个数的百分之几的数叫做百分数。百分数通常用"%"表示，比如50%表示百分之五十。百分数广泛应用于统计、折扣、增长率等方面。',
                     formulas: ['\\text{百分数} = \\frac{\\text{部分}}{\\text{整体}} \\times 100\\%'],
+                    visualizations: [
+                        {
+                            type: 'pie-chart',
+                            title: '百分数',
+                            description: '用饼图表示百分数',
+                            config: { data: [30, 50, 20], labels: ['A', 'B', 'C'], colors: ['#4CAF50', '#2196F3', '#FF9800'] }
+                        }
+                    ],
                     difficulty: 1,
                     estimatedTime: 10
                 },
@@ -225,7 +289,15 @@ export const curriculum = {
                     id: 'g6-7-1',
                     title: '扇形统计图的认识',
                     type: 'concept',
-                    content: '认识扇形统计图，用整个圆表示总数，用圆内各个扇形的大小表示各部分数量占总数的百分比。',
+                    content: '认识扇形统计图，用整个圆表示总数，用圆内各个扇形的大小表示各部分数量占总数的百分比。扇形统计图能清楚地看出各部分与总数之间的关系。',
+                    visualizations: [
+                        {
+                            type: 'pie-chart',
+                            title: '扇形统计图',
+                            description: '各部分占总数的百分比',
+                            config: { data: [25, 35, 20, 20], labels: ['A', 'B', 'C', 'D'], colors: ['#4CAF50', '#2196F3', '#FF9800', '#9C27B0'] }
+                        }
+                    ],
                     difficulty: 1,
                     estimatedTime: 10
                 },

@@ -281,6 +281,45 @@ body {
     margin: var(--space-lg) 0;
 }
 
+.visualizations {
+    margin: var(--space-lg) 0;
+}
+
+.visualization-wrapper {
+    margin-bottom: var(--space-xl);
+    padding: var(--space-lg);
+    background: #f8fafc;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+}
+
+.visualization-wrapper h3 {
+    font-size: 1.1rem;
+    margin-bottom: var(--space-sm);
+    color: var(--color-text);
+}
+
+.viz-description {
+    color: var(--color-text-light);
+    margin-bottom: var(--space-md);
+    font-size: 0.95rem;
+}
+
+.visualization {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: var(--space-md);
+    background: white;
+    border-radius: var(--radius-md);
+    overflow-x: auto;
+}
+
+.visualization svg {
+    max-width: 100%;
+    height: auto;
+}
+
 .examples {
     margin-top: var(--space-lg);
     padding-top: var(--space-lg);

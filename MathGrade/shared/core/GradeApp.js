@@ -8,6 +8,7 @@ import { Breadcrumb } from '../ui/Breadcrumb.js';
 import { CanvasBoard } from '../ui/CanvasBoard.js';
 import { ExercisePanel } from '../ui/ExercisePanel.js';
 import { FormulaRenderer } from '../ui/FormulaRenderer.js';
+import { ConceptVisualizer } from '../ui/ConceptVisualizer.js';
 
 export class GradeApp {
     constructor(config) {
@@ -27,6 +28,7 @@ export class GradeApp {
         this.treeNav = null;
         this.header = null;
         this.canvas = null;
+        this.visualizer = new ConceptVisualizer();
     }
 
     async init() {
@@ -130,6 +132,7 @@ export class GradeApp {
             </div>
             <div class="content">${node.content || ''}</div>
             <div class="formulas"></div>
+            <div class="visualizations"></div>
             <button class="btn-practice">开始练习</button>
         `;
 
@@ -138,6 +141,35 @@ export class GradeApp {
             const formulaContainer = card.querySelector('.formulas');
             node.formulas.forEach(latex => {
                 FormulaRenderer.render(formulaContainer, latex, true);
+            });
+        }
+
+        // 渲染图示
+        if (node.visualizations && node.visualizations.length > 0) {
+            const vizContainer = card.querySelector('.visualizations');
+            node.visualizations.forEach(viz => {
+                const vizWrapper = document.createElement('div');
+                vizWrapper.className = 'visualization-wrapper';
+                
+                if (viz.title) {
+                    const vizTitle = document.createElement('h3');
+                    vizTitle.textContent = viz.title;
+                    vizWrapper.appendChild(vizTitle);
+                }
+                
+                if (viz.description) {
+                    const vizDesc = document.createElement('p');
+                    vizDesc.className = 'viz-description';
+                    vizDesc.textContent = viz.description;
+                    vizWrapper.appendChild(vizDesc);
+                }
+                
+                const vizDiv = document.createElement('div');
+                vizDiv.className = 'visualization';
+                this.visualizer.render(vizDiv, viz.type, viz.config);
+                vizWrapper.appendChild(vizDiv);
+                
+                vizContainer.appendChild(vizWrapper);
             });
         }
 

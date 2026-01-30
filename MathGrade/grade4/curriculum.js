@@ -13,7 +13,15 @@ export const curriculum = {
                     id: 'g4-1-1',
                     title: '亿以内数的认识',
                     type: 'concept',
-                    content: '认识亿以内的数，理解数位、数级的概念。',
+                    content: '认识亿以内的数，理解数位、数级的概念。亿以内的数分为个级（个位、十位、百位、千位）和万级（万位、十万位、百万位、千万位）。',
+                    visualizations: [
+                        {
+                            type: 'place-value',
+                            title: '数位顺序表',
+                            description: '亿以内数的数位',
+                            config: { number: 12345678, showLabels: true }
+                        }
+                    ],
                     difficulty: 1,
                     estimatedTime: 12
                 },
@@ -45,8 +53,16 @@ export const curriculum = {
                     id: 'g4-2-1',
                     title: '认识公顷',
                     type: 'concept',
-                    content: '认识面积单位公顷，知道1公顷=10000平方米。',
+                    content: '认识面积单位公顷，知道1公顷=10000平方米。公顷是测量土地面积常用的单位，比如学校操场、公园的面积等。',
                     formulas: ['1公顷 = 10000平方米'],
+                    visualizations: [
+                        {
+                            type: 'rectangle',
+                            title: '公顷',
+                            description: '1公顷=10000平方米',
+                            config: { width: 100, height: 100, showLabels: true }
+                        }
+                    ],
                     difficulty: 1,
                     estimatedTime: 10
                 },
@@ -85,8 +101,34 @@ export const curriculum = {
                     id: 'g4-3-3',
                     title: '角的分类',
                     type: 'concept',
-                    content: '认识锐角、直角、钝角、平角、周角。',
+                    content: '认识锐角、直角、钝角、平角、周角。锐角<90°，直角=90°，钝角>90°且<180°，平角=180°，周角=360°。',
                     formulas: ['直角 = 90°', '平角 = 180°', '周角 = 360°'],
+                    visualizations: [
+                        {
+                            type: 'angle',
+                            title: '锐角',
+                            description: '锐角<90°',
+                            config: { degrees: 45, type: 'acute' }
+                        },
+                        {
+                            type: 'angle',
+                            title: '直角',
+                            description: '直角=90°',
+                            config: { degrees: 90, type: 'right' }
+                        },
+                        {
+                            type: 'angle',
+                            title: '钝角',
+                            description: '钝角>90°且<180°',
+                            config: { degrees: 120, type: 'obtuse' }
+                        },
+                        {
+                            type: 'angle',
+                            title: '平角',
+                            description: '平角=180°',
+                            config: { degrees: 180, type: 'straight' }
+                        }
+                    ],
                     difficulty: 2,
                     estimatedTime: 12
                 }
@@ -132,7 +174,15 @@ export const curriculum = {
                     id: 'g4-5-1',
                     title: '平行与垂直',
                     type: 'concept',
-                    content: '认识平行线和垂线，学习画平行线和垂线。',
+                    content: '认识平行线和垂线，学习画平行线和垂线。在同一平面内，不相交的两条直线叫做平行线；两条直线相交成直角时，这两条直线互相垂直。',
+                    visualizations: [
+                        {
+                            type: 'graph',
+                            title: '平行线',
+                            description: '两条不相交的直线',
+                            config: { equation: 'y = x', points: [[-2, -2], [-1, -1], [0, 0], [1, 1], [2, 2]] }
+                        }
+                    ],
                     difficulty: 2,
                     estimatedTime: 12
                 },
@@ -194,7 +244,15 @@ export const curriculum = {
                     id: 'g4-7-1',
                     title: '认识条形统计图',
                     type: 'concept',
-                    content: '认识条形统计图，了解其特点和作用。',
+                    content: '认识条形统计图，了解其特点和作用。条形统计图用直条的长短表示数量的多少，能清楚地看出各种数量的多少，便于比较。',
+                    visualizations: [
+                        {
+                            type: 'bar-chart',
+                            title: '条形统计图',
+                            description: '用条形图表示数据',
+                            config: { data: [15, 25, 20, 30], labels: ['A', 'B', 'C', 'D'] }
+                        }
+                    ],
                     difficulty: 1,
                     estimatedTime: 10
                 }
