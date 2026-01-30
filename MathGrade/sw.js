@@ -18,10 +18,8 @@ const STATIC_ASSETS = [
     './shared/ui/ExercisePanel.js',
     './shared/utils/storage.js',
     './shared/utils/grade-detector.js',
-    './shared/utils/mathEval.js',
-    // CDN资源
-    'https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css',
-    'https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.mjs'
+    './shared/utils/mathEval.js'
+    // 注意：CDN资源不缓存，直接从网络加载
 ];
 
 // 安装时缓存静态资源
