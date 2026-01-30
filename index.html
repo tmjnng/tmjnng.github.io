@@ -762,6 +762,8 @@ var _hmt = _hmt || [];
         wechatEditorDesc: '微信公众号图文排版工具，支持安全粘贴、样式模板、HTML清洗、一键复制、响应式预览等功能',
         examTitle: 'JLPT 日语刷题',
         examDesc: 'JLPT日语刷题系统，支持N5-N1级别，提供大量练习题目，帮助提升日语能力',
+        mathGradeTitle: 'MathGrade 数学学习',
+        mathGradeDesc: '分年级数学学习系统，覆盖小学到高中，包含知识点讲解、公式渲染、智能刷题、草稿板等功能',
         drawSystemTitle: '抽奖系统',
         drawSystemDesc: '在线抽奖系统，支持名单导入、奖品设置、奖品级别管理，适合各种抽奖活动',
         footer: '© 2026 在线工具集合 | Powered by Hexo',
@@ -804,6 +806,8 @@ var _hmt = _hmt || [];
         wechatEditorDesc: 'WeChat public account article layout tool, supports safe paste, style templates, HTML cleaning, one-click copy, responsive preview, etc.',
         examTitle: 'JLPT Japanese Quiz',
         examDesc: 'JLPT Japanese quiz system, supports N5-N1 levels, provides many practice questions to help improve Japanese skills',
+        mathGradeTitle: 'MathGrade Math Learning',
+        mathGradeDesc: 'Grade-based math learning system, covering elementary to high school, including knowledge points explanation, formula rendering, intelligent quiz, scratchpad, etc.',
         drawSystemTitle: 'Lottery System',
         drawSystemDesc: 'Online lottery system, supports list import, prize settings, prize level management, suitable for various lottery activities',
         footer: '© 2026 Online Tools Collection | Powered by Hexo',
@@ -846,6 +850,8 @@ var _hmt = _hmt || [];
         wechatEditorDesc: 'WeChat公式アカウント記事レイアウトツール、安全な貼り付け、スタイルテンプレート、HTMLクリーニング、ワンクリックコピー、レスポンシブプレビューなどをサポート',
         examTitle: 'JLPT日本語クイズ',
         examDesc: 'JLPT日本語クイズシステム、N5-N1レベルをサポート、多くの練習問題を提供し、日本語スキルの向上を支援',
+        mathGradeTitle: 'MathGrade数学学習',
+        mathGradeDesc: '学年別数学学習システム、小学校から高校までカバー、知識ポイントの説明、数式レンダリング、インテリジェントクイズ、スクラッチパッドなどの機能を含む',
         drawSystemTitle: '抽選システム',
         drawSystemDesc: 'オンライン抽選システム、リストインポート、賞品設定、賞品レベル管理をサポート、様々な抽選活動に適用',
         footer: '© 2026 オンラインツールコレクション | Powered by Hexo',
@@ -904,8 +910,11 @@ var _hmt = _hmt || [];
       document.querySelectorAll('.tool-card')[7].querySelector('h3').innerHTML = '<span class="icon">📚</span> ' + t.examTitle;
       document.querySelectorAll('.tool-card')[7].querySelector('p').textContent = t.examDesc;
       
-      document.querySelectorAll('.tool-card')[8].querySelector('h3').innerHTML = '<span class="icon">🎁</span> ' + t.drawSystemTitle;
-      document.querySelectorAll('.tool-card')[8].querySelector('p').textContent = t.drawSystemDesc;
+      document.querySelectorAll('.tool-card')[8].querySelector('h3').innerHTML = '<span class="icon">🎓</span> ' + t.mathGradeTitle;
+      document.querySelectorAll('.tool-card')[8].querySelector('p').textContent = t.mathGradeDesc;
+      
+      document.querySelectorAll('.tool-card')[9].querySelector('h3').innerHTML = '<span class="icon">🎁</span> ' + t.drawSystemTitle;
+      document.querySelectorAll('.tool-card')[9].querySelector('p').textContent = t.drawSystemDesc;
       
       document.querySelector('#footer p').innerHTML = t.footer;
       
