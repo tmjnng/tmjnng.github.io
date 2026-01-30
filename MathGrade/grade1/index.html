@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>一年级数学 - MathGrade</title>
-    <!-- 尝试加载本地KaTeX资源，失败则从CDN加载 -->
-    <link rel="stylesheet" href="../shared/libs/katex/katex.min.css" onerror="this.onerror=null;this.href='https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css';">
+    <!-- 本地KaTeX资源 -->
+    <link rel="stylesheet" href="../shared/libs/katex/katex.min.css">
     <link rel="stylesheet" href="../shared/styles/global.css">
     <link rel="stylesheet" href="../shared/styles/grade-themes.css">
     <script type="importmap">
@@ -17,31 +17,6 @@
             "templates": "./templates.js"
         }
     }
-    </script>
-    <!-- 添加fallback机制，当本地KaTeX不可用时，使用CDN -->
-    <script>
-        // 检查本地KaTeX是否可用
-        async function checkKaTeXAvailability() {
-            try {
-                // 尝试导入本地KaTeX
-                await import('../shared/libs/katex/katex.mjs');
-                console.log('MathGrade: 使用本地KaTeX资源');
-            } catch (error) {
-                console.log('MathGrade: 本地KaTeX不可用，尝试使用CDN');
-                // 修改importmap使用CDN
-                const importMap = document.querySelector('script[type="importmap"]');
-                if (importMap) {
-                    const importMapContent = JSON.parse(importMap.textContent);
-                    importMapContent.imports.katex = 'https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.mjs';
-                    importMap.textContent = JSON.stringify(importMapContent);
-                    // 重新加载模块
-                    location.reload();
-                }
-            }
-        }
-        
-        // 页面加载后检查
-        window.addEventListener('load', checkKaTeXAvailability);
     </script>
 </head>
 <body data-grade="1">
