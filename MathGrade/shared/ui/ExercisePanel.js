@@ -154,7 +154,7 @@ export class ExercisePanel {
                     optContent.appendChild(rendered);
                     optBtn.appendChild(optContent);
                     
-                    optBtn.addEventListener('click', () => this.checkAnswer(i));
+                    optBtn.addEventListener('click', () => this.checkAnswer(opt));
                     optionsDiv.appendChild(optBtn);
                 });
                 
