@@ -250,12 +250,20 @@ export class ExercisePanel {
                 <div class="feedback-text">回答正确！</div>
             `;
         } else {
+            // 创建反馈容器
             feedback.innerHTML = `
                 <div class="feedback-icon">✗</div>
                 <div class="feedback-text">回答错误</div>
-                <div class="feedback-answer">正确答案：${q.answer}</div>
+                <div class="feedback-answer">正确答案：<span id="correct-answer"></span></div>
                 ${q.explanation ? `<div class="feedback-explanation">${q.explanation}</div>` : ''}
             `;
+            
+            // 渲染正确答案中的LaTeX公式
+            const answerSpan = feedback.querySelector('#correct-answer');
+            if (answerSpan && q.answer) {
+                const renderedAnswer = FormulaRenderer.renderString(q.answer.toString());
+                answerSpan.appendChild(renderedAnswer);
+            }
         }
 
         // 替换当前内容显示反馈
