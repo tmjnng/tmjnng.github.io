@@ -1,0 +1,2429 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#FF6B6B">
+  <title>快乐学习</title>
+  <link rel="manifest" href="manifest.json">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #FF6B6B;
+      --secondary: #4ECDC4;
+      --accent: #45B7D1;
+      --success: #52C41A;
+      --error: #FF4D4F;
+      --warning: #FAAD14;
+      --bg: linear-gradient(135deg, #87CEEB 0%, #FFF9E6 100%);
+      --card-bg: #FFFFFF;
+      --text: #333333;
+      --text-light: #666666;
+      --white: #FFFFFF;
+      --shadow: rgba(0, 0, 0, 0.1);
+      --radius: 20px;
+      --spacing: 20px;
+      --touch-size: 100px;
+      --font-size-base: 24px;
+      --font-size-char: 150px;
+      --transition: 100ms ease;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: var(--font-size-base);
+      background: var(--bg);
+      background-attachment: fixed;
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    #app {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .btn {
+      min-height: var(--touch-size);
+      padding: 20px 40px;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 32px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform var(--transition), box-shadow var(--transition), background-color var(--transition);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      box-shadow: 0 6px 20px var(--shadow);
+    }
+
+    .btn:active {
+      transform: scale(0.95);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: var(--white);
+    }
+
+    .btn-secondary {
+      background: var(--secondary);
+      color: var(--white);
+    }
+
+    .btn-accent {
+      background: var(--accent);
+      color: var(--white);
+    }
+
+    .btn-success {
+      background: var(--success);
+      color: var(--white);
+    }
+
+    .btn-warning {
+      background: var(--warning);
+      color: var(--white);
+    }
+
+    .btn-option {
+      min-height: 120px;
+      font-size: 36px;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .screen {
+      flex: 1;
+      display: none;
+      flex-direction: column;
+      padding: var(--spacing);
+      gap: var(--spacing);
+    }
+
+    .screen.active {
+      display: flex;
+    }
+
+    .screen-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--spacing) 0;
+      min-height: 80px;
+    }
+
+    .screen-title {
+      font-size: 40px;
+      font-weight: 700;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .screen-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: var(--spacing);
+      box-shadow: 0 4px 16px var(--shadow);
+    }
+
+    .home-title {
+      text-align: center;
+      font-size: 56px;
+      font-weight: 700;
+      color: var(--primary);
+      margin: 40px 0;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .home-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      padding: 20px;
+      max-width: 600px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .home-btn {
+      min-height: 140px;
+      font-size: 40px;
+      border-radius: 24px;
+    }
+
+    .progress-bar {
+      height: 20px;
+      background: #E8E8E8;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--secondary), var(--accent));
+      border-radius: 10px;
+      transition: width 0.3s ease;
+    }
+
+    .progress-text {
+      text-align: center;
+      font-size: 28px;
+      color: var(--text-light);
+      margin-bottom: 20px;
+    }
+
+    .char-display {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      cursor: pointer;
+      padding: 20px;
+      border-radius: var(--radius);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .char-symbol {
+      font-size: var(--font-size-char);
+      font-family: "KaiTi", "STKaiti", "楷体", serif;
+      color: var(--text);
+      line-height: 1;
+    }
+
+    .char-pinyin {
+      font-size: 40px;
+      color: var(--text-light);
+      font-weight: 500;
+    }
+
+    .char-words {
+      font-size: 24px;
+      color: var(--text-light);
+      text-align: center;
+    }
+
+    .char-controls {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .char-controls .btn {
+      flex: 1;
+      max-width: 180px;
+      min-height: 70px;
+      font-size: 22px;
+    }
+
+    .stroke-controls {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 15px;
+      margin-bottom: 10px;
+      padding: 10px;
+      background: rgba(255,255,255,0.5);
+      border-radius: 15px;
+    }
+
+    .stroke-controls .btn {
+      min-height: 45px;
+      padding: 8px 16px;
+      font-size: 16px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+    }
+
+    .stroke-svg {
+      width: 200px;
+      height: 200px;
+      border: 3px solid #ddd;
+      border-radius: 10px;
+      background: white;
+    }
+
+    .stroke-path {
+      fill: none;
+      stroke: var(--primary);
+      stroke-width: 5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .stroke-anim {
+      stroke-dasharray: 500;
+      stroke-dashoffset: 0;
+    }
+
+    .stroke-anim.playing {
+      animation: drawStroke 1.5s ease forwards;
+    }
+
+    @keyframes drawStroke {
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    .math-question {
+      text-align: center;
+      font-size: 60px;
+      font-weight: 700;
+      color: var(--text);
+      margin: 10px 0;
+    }
+
+    .math-symbol {
+      font-size: 48px;
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .math-visual {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      min-height: 200px;
+      padding: 20px;
+    }
+
+    .visual-container {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .visual-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      padding: 15px;
+      background: rgba(255,255,255,0.5);
+      border-radius: 15px;
+      min-width: 100px;
+    }
+
+    .visual-group-label {
+      font-size: 20px;
+      color: var(--text-light);
+      font-weight: 500;
+    }
+
+    .visual-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 36px;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 280px;
+    }
+
+    .visual-item {
+      transition: transform 1s ease-out, opacity 1s ease-out;
+      cursor: default;
+    }
+
+    .visual-item.moving {
+      transform: translateX(-100px);
+    }
+
+    .visual-item.fading {
+      opacity: 0;
+      transform: translateX(100px) scale(0.5);
+    }
+
+    .visual-item.highlight {
+      animation: itemHighlight 0.5s ease;
+    }
+
+    @keyframes itemHighlight {
+      0%, 100% { transform: scale(1); filter: brightness(1); }
+      50% { transform: scale(1.2); filter: brightness(1.3); }
+    }
+
+    .visual-number {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-top: 5px;
+    }
+
+    .math-options {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+      padding: 0 20px;
+    }
+
+    .math-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background: rgba(255,255,255,0.7);
+      border-radius: 15px;
+      margin: 0 20px;
+    }
+
+    .combo-display {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--warning);
+    }
+
+    .combo-display.active {
+      animation: comboPulse 0.5s ease;
+    }
+
+    @keyframes comboPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+
+    .coins-display {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 24px;
+      font-weight: 700;
+      color: #FFD700;
+    }
+
+    .help-btn {
+      background: linear-gradient(135deg, #FFD700, #FFA500);
+      color: white;
+      min-height: 50px;
+      padding: 10px 20px;
+      font-size: 20px;
+    }
+
+    .help-btn:disabled {
+      background: #ccc;
+      opacity: 0.6;
+    }
+
+    .btn.correct {
+      background: var(--success);
+      animation: bounce 0.5s ease;
+    }
+
+    .btn.wrong {
+      background: var(--error);
+      animation: shake 0.3s ease;
+    }
+
+    .btn.removed {
+      opacity: 0.3;
+      pointer-events: none;
+      transform: scale(0.9);
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      75% { transform: translateX(10px); }
+    }
+
+    /* 进度报告页面样式 */
+    .progress-report {
+      padding: 20px;
+    }
+
+    .report-section {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 16px var(--shadow);
+    }
+
+    .report-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .progress-ring {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: conic-gradient(var(--secondary) var(--progress, 0%), #e0e0e0 0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      position: relative;
+    }
+
+    .progress-ring::before {
+      content: '';
+      width: 120px;
+      height: 120px;
+      background: white;
+      border-radius: 50%;
+      position: absolute;
+    }
+
+    .progress-ring-text {
+      position: relative;
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--secondary);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+
+    .stat-item {
+      background: rgba(78, 205, 196, 0.1);
+      padding: 15px;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--secondary);
+    }
+
+    .stat-label {
+      font-size: 18px;
+      color: var(--text-light);
+      margin-top: 5px;
+    }
+
+    .weak-points {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .weak-point-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 15px;
+      background: rgba(255, 77, 79, 0.1);
+      border-radius: 10px;
+      border-left: 4px solid var(--error);
+    }
+
+    .weak-point-q {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .weak-point-count {
+      font-size: 18px;
+      color: var(--error);
+      font-weight: 500;
+    }
+
+    .heatmap {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 5px;
+      margin-top: 15px;
+    }
+
+    .heatmap-day {
+      aspect-ratio: 1;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: white;
+      font-weight: 500;
+    }
+
+    .heatmap-day.level-0 { background: #e0e0e0; }
+    .heatmap-day.level-1 { background: #9be9a8; }
+    .heatmap-day.level-2 { background: #40c463; }
+    .heatmap-day.level-3 { background: #30a14e; }
+    .heatmap-day.level-4 { background: #216e39; }
+
+    .toast {
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: rgba(0,0,0,0.8);
+      color: white;
+      padding: 20px 40px;
+      border-radius: 50px;
+      font-size: 28px;
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 10000;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .celebration {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.5);
+      z-index: 9998;
+    }
+
+    .celebration.show {
+      display: flex;
+    }
+
+    .celebration-content {
+      background: var(--card-bg);
+      padding: 50px;
+      border-radius: 30px;
+      text-align: center;
+      animation: popIn 0.5s ease;
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .celebration-icon {
+      font-size: 80px;
+      margin-bottom: 20px;
+    }
+
+    .celebration-text {
+      font-size: 40px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 30px;
+    }
+
+    .back-btn {
+      min-height: 50px;
+      padding: 10px 20px;
+      font-size: 20px;
+    }
+
+    .level-map {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding: 10px;
+    }
+
+    .level-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 15px;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: 0 4px 16px var(--shadow);
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .level-item:active {
+      transform: scale(0.98);
+    }
+
+    .level-item.locked {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .level-icon {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      background: var(--secondary);
+    }
+
+    .level-item.locked .level-icon {
+      background: #ccc;
+    }
+
+    .level-info {
+      flex: 1;
+    }
+
+    .level-name {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .level-progress {
+      font-size: 20px;
+      color: var(--text-light);
+      margin-top: 5px;
+    }
+
+    .level-status {
+      font-size: 30px;
+    }
+
+    .game-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .game-image {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 120px;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      min-height: 180px;
+    }
+
+    .game-options {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+
+    .game-options.four {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .game-option-btn {
+      min-height: 100px;
+      font-size: 40px;
+      border-radius: var(--radius);
+      background: var(--card-bg);
+      border: 3px solid transparent;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .game-option-btn:active {
+      transform: scale(0.95);
+    }
+
+    .stars-container {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9997;
+      overflow: hidden;
+    }
+
+    .star {
+      position: absolute;
+      font-size: 30px;
+      animation: fall 2s ease-out forwards;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-100px) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    .rest-modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.7);
+      z-index: 10001;
+    }
+
+    .rest-modal.show {
+      display: flex;
+    }
+
+    .rest-content {
+      background: var(--card-bg);
+      padding: 40px;
+      border-radius: 30px;
+      text-align: center;
+      max-width: 450px;
+    }
+
+    .rest-icon {
+      font-size: 70px;
+      margin-bottom: 20px;
+    }
+
+    .rest-text {
+      font-size: 28px;
+      color: var(--text);
+      margin-bottom: 25px;
+    }
+
+    .swipe-hint {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 36px;
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    .swipe-hint.left {
+      left: 15px;
+    }
+
+    .swipe-hint.right {
+      right: 15px;
+    }
+
+    .game-select-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      padding: 15px;
+    }
+
+    .game-select-btn {
+      min-height: 130px;
+      font-size: 24px;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .game-select-btn .icon {
+      font-size: 40px;
+    }
+
+    @media (orientation: portrait) {
+      .orientation-tip {
+        display: flex !important;
+      }
+      #app {
+        display: none;
+      }
+    }
+
+    .orientation-tip {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: var(--spacing);
+      padding: var(--spacing);
+      text-align: center;
+    }
+
+    .orientation-tip .icon {
+      font-size: 80px;
+      animation: rotate 2s ease-in-out infinite;
+    }
+
+    @keyframes rotate {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(90deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="orientation-tip">
+    <div class="icon">📱</div>
+    <h2>请横屏使用</h2>
+    <p>请将设备旋转至横屏以获得最佳体验</p>
+  </div>
+
+  <div class="stars-container" id="stars-container"></div>
+  <div class="toast" id="toast"></div>
+
+  <div class="celebration" id="celebration">
+    <div class="celebration-content">
+      <div class="celebration-icon">🎉</div>
+      <div class="celebration-text">太棒了！</div>
+      <button class="btn btn-primary" id="celebration-btn">继续学习</button>
+    </div>
+  </div>
+
+  <div class="rest-modal" id="rest-modal">
+    <div class="rest-content">
+      <div class="rest-icon">😴</div>
+      <div class="rest-text">宝宝累了，休息一下吧！</div>
+      <button class="btn btn-primary" id="rest-continue">继续学习</button>
+      <button class="btn btn-secondary" id="rest-exit" style="margin-top: 10px;">退出</button>
+    </div>
+  </div>
+
+  <div id="app">
+    <div id="screen-home" class="screen active">
+      <div class="screen-content">
+        <h1 class="home-title">🌟 快乐学习</h1>
+        <div class="home-buttons">
+          <button class="btn btn-primary home-btn" data-route="chinese-map" data-voice="我们来学汉字吧！">📚 学汉字</button>
+          <button class="btn btn-secondary home-btn" data-route="math-add" data-voice="我们来学加法吧！">➕ 学加法</button>
+          <button class="btn btn-accent home-btn" data-route="math-sub" data-voice="我们来学减法吧！">➖ 学减法</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="screen-chinese-map" class="screen">
+      <div class="screen-header">
+        <button class="btn btn-accent back-btn" data-back>← 返回</button>
+        <div class="screen-title">📚 汉字关卡</div>
+        <div style="width: 80px;"></div>
+      </div>
+      <div class="screen-content">
+        <div class="level-map" id="level-map"></div>
+      </div>
+    </div>
+
+    <div id="screen-chinese" class="screen">
+      <div class="screen-header">
+        <button class="btn btn-accent back-btn" data-back>← 返回</button>
+        <div class="screen-title">📚 学汉字</div>
+        <button class="btn btn-warning back-btn" id="btn-games">🎮 游戏</button>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="char-progress-bar" style="width: 0%"></div>
+      </div>
+      <div class="progress-text" id="char-progress-text">0 / 100</div>
+      <div class="screen-content">
+        <div class="char-display" id="char-display">
+          <div class="swipe-hint left">◀</div>
+          <div class="swipe-hint right">▶</div>
+          <svg class="stroke-svg" id="stroke-svg" viewBox="0 0 120 140" preserveAspectRatio="xMidYMid meet">
+            <path class="stroke-path stroke-anim" id="stroke-path" d=""></path>
+          </svg>
+          <div class="char-symbol" id="current-char">人</div>
+          <div class="char-pinyin" id="current-pinyin">rén</div>
+          <div class="char-words" id="current-words"></div>
+          <div class="stroke-controls">
+            <button class="btn btn-secondary" id="btn-play">▶ 播放</button>
+            <button class="btn btn-accent" id="btn-pause">⏸ 暂停</button>
+            <button class="btn btn-primary" id="btn-replay">🔄 重播</button>
+          </div>
+        </div>
+        <div class="char-controls">
+          <button class="btn btn-success" id="btn-learned">学会了 ✓</button>
+          <button class="btn btn-accent" id="btn-repeat">再听 🔊</button>
+          <button class="btn btn-secondary" id="btn-prev">上一个</button>
+          <button class="btn btn-secondary" id="btn-next">下一个</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="screen-games" class="screen">
+      <div class="screen-header">
+        <button class="btn btn-accent back-btn" data-route="chinese">← 返回</button>
+        <div class="screen-title">🎮 游戏模式</div>
+        <div style="width: 80px;"></div>
+      </div>
+      <div class="screen-content">
+        <div class="game-select-grid">
+          <button class="btn btn-primary game-select-btn" data-game="match">
+            <span class="icon">🖼️</span>
+            <span>看图识字</span>
+          </button>
+          <button class="btn btn-secondary game-select-btn" data-game="listen">
+            <span class="icon">👂</span>
+            <span>听音选图</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="screen-game-match" class="screen">
+      <div class="screen-header">
+        <button class="btn btn-accent back-btn" data-route="games">← 返回</button>
+        <div class="screen-title">🖼️ 看图识字</div>
+        <div style="width: 80px;"></div>
+      </div>
+      <div class="screen-content">
+        <div class="game-container">
+          <div class="game-image" id="match-image">🐴</div>
+          <div class="game-options" id="match-options"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="screen-game-listen" class="screen">
+      <div class="screen-header">
+        <button class="btn btn-accent back-btn" data-route="games">← 返回</button>
+        <div class="screen-title">👂 听音选图</div>
+        <button class="btn btn-primary back-btn" id="btn-play-audio">🔊 播放</button>
+      </div>
+      <div class="screen-content">
+        <div class="game-container">
+          <div class="game-options four" id="listen-options"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="screen-math-add" class="screen">
+      <div class="screen-header">
+        <button class="btn btn-accent back-btn" data-back>← 返回</button>
+        <div class="screen-title">➕ 学加法</div>
+        <button class="btn btn-warning back-btn" data-route="progress">📊 进度</button>
+      </div>
+      <div class="math-meta">
+        <div class="combo-display" id="add-combo">🔥 Combo x0</div>
+        <div class="coins-display" id="add-coins">💰 0</div>
+        <button class="btn help-btn" id="add-help">💡 求助 (5💰)</button>
+      </div>
+      <div class="screen-content">
+        <div class="math-question" id="add-question">1 + 2 = ?</div>
+        <div class="math-visual" id="add-visual">
+          <div class="visual-container">
+            <div class="visual-group">
+              <div class="visual-group-label" id="add-label-a"></div>
+              <div class="visual-row" id="visual-left"></div>
+              <div class="visual-number" id="add-num-a"></div>
+            </div>
+            <div class="math-symbol">➕</div>
+            <div class="visual-group">
+              <div class="visual-group-label" id="add-label-b"></div>
+              <div class="visual-row" id="visual-right"></div>
+              <div class="visual-number" id="add-num-b"></div>
+            </div>
+            <div class="math-symbol">=</div>
+            <div class="visual-group">
+              <div class="visual-group-label">结果</div>
+              <div class="visual-row" id="visual-result"></div>
+              <div class="visual-number" id="add-num-result">?</div>
+            </div>
+          </div>
+        </div>
+        <div class="math-options" id="add-options"></div>
+      </div>
+    </div>
+
+    <div id="screen-math-sub" class="screen">
+      <div class="screen-header">
+        <button class="btn btn-accent back-btn" data-back>← 返回</button>
+        <div class="screen-title">➖ 学减法</div>
+        <button class="btn btn-warning back-btn" data-route="progress">📊 进度</button>
+      </div>
+      <div class="math-meta">
+        <div class="combo-display" id="sub-combo">🔥 Combo x0</div>
+        <div class="coins-display" id="sub-coins">💰 0</div>
+        <button class="btn help-btn" id="sub-help">💡 求助 (5💰)</button>
+      </div>
+      <div class="screen-content">
+        <div class="math-question" id="sub-question">5 - 2 = ?</div>
+        <div class="math-visual" id="sub-visual">
+          <div class="visual-container">
+            <div class="visual-group">
+              <div class="visual-group-label">原来有</div>
+              <div class="visual-row" id="sub-visual-total"></div>
+              <div class="visual-number" id="sub-num-total"></div>
+            </div>
+            <div class="math-symbol">➖</div>
+            <div class="visual-group">
+              <div class="visual-group-label">拿走</div>
+              <div class="visual-row" id="sub-visual-remove"></div>
+              <div class="visual-number" id="sub-num-remove"></div>
+            </div>
+            <div class="math-symbol">=</div>
+            <div class="visual-group">
+              <div class="visual-group-label">还剩</div>
+              <div class="visual-row" id="sub-visual-result"></div>
+              <div class="visual-number" id="sub-num-result">?</div>
+            </div>
+          </div>
+        </div>
+        <div class="math-options" id="sub-options"></div>
+      </div>
+    </div>
+
+    <div id="screen-progress" class="screen">
+      <div class="screen-header">
+        <button class="btn btn-accent back-btn" data-back>← 返回</button>
+        <div class="screen-title">📊 我的进度</div>
+        <div style="width: 80px;"></div>
+      </div>
+      <div class="screen-content progress-report">
+        <div class="report-section">
+          <div class="report-title">📚 汉字学习</div>
+          <div class="progress-ring" id="char-progress-ring">
+            <div class="progress-ring-text" id="char-progress-percent">0%</div>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-item">
+              <div class="stat-value" id="char-learned-count">0</div>
+              <div class="stat-label">已学汉字</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value" id="char-total-count">200</div>
+              <div class="stat-label">总汉字数</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="report-section">
+          <div class="report-title">🧮 数学学习</div>
+          <div class="stats-grid">
+            <div class="stat-item">
+              <div class="stat-value" id="math-accuracy">0%</div>
+              <div class="stat-label">正确率</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value" id="math-coins">0</div>
+              <div class="stat-label">金币</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value" id="math-max-combo">0</div>
+              <div class="stat-label">最高连击</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value" id="math-study-time">0h</div>
+              <div class="stat-label">学习时长</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="report-section">
+          <div class="report-title">⚠️ 薄弱点</div>
+          <div class="weak-points" id="weak-points-list">
+            <div class="weak-point-item">
+              <span class="weak-point-q">暂无记录</span>
+              <span class="weak-point-count">-</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="report-section">
+          <div class="report-title">📅 学习热力图</div>
+          <div class="heatmap" id="study-heatmap"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="application/json" id="char-data">
+  [
+    {"char":"人","pinyin":"rén","level":1,"audio":"人，人类，大人","words":["人们","人口","大人"],"svgPath":"M50,40 Q60,60 70,80 M50,40 Q40,60 30,80 M50,40 L50,120","emoji":"👤"},
+    {"char":"口","pinyin":"kǒu","level":1,"audio":"口，口水，入口","words":["口水","入口","出口"],"svgPath":"M40,50 L40,90 Q40,100 50,100 L70,100 Q80,100 80,90 L80,50 Q80,40 70,40 L50,40 Q40,40 40,50","emoji":"👄"},
+    {"char":"手","pinyin":"shǒu","level":1,"audio":"手，手指，小手","words":["手指","小手","大手"],"svgPath":"M30,60 L30,100 M40,50 L40,100 M50,45 L50,100 M60,50 L60,100 M70,60 L70,100 M30,60 Q50,40 70,60","emoji":"✋"},
+    {"char":"足","pinyin":"zú","level":1,"audio":"足，足球，手足","words":["足球","手足","满足"],"svgPath":"M40,40 L40,80 M50,40 L50,90 M60,40 L60,80 M40,80 Q50,100 60,80 M45,90 L55,110","emoji":"🦶"},
+    {"char":"上","pinyin":"shàng","level":1,"audio":"上，上面，上学","words":["上面","上学","上下"],"svgPath":"M50,40 L50,100 M30,60 L70,60","emoji":"⬆️"},
+    {"char":"下","pinyin":"xià","level":1,"audio":"下，下面，下班","words":["下面","下班","上下"],"svgPath":"M30,50 L70,50 M50,50 L50,100 M40,90 L60,90","emoji":"⬇️"},
+    {"char":"大","pinyin":"dà","level":1,"audio":"大，大小，大人","words":["大小","大人","大家"],"svgPath":"M50,30 L50,100 M30,50 L50,30 L70,50 M30,100 Q50,80 70,100","emoji":"👍"},
+    {"char":"小","pinyin":"xiǎo","level":1,"audio":"小，小孩，小手","words":["小孩","小手","大小"],"svgPath":"M50,30 L50,80 M40,90 L50,80 L60,90 M30,60 L40,50 M70,60 L60,50","emoji":"👌"},
+    {"char":"日","pinyin":"rì","level":1,"audio":"日，日子，太阳","words":["日子","太阳","日本"],"svgPath":"M40,40 L40,90 Q40,100 50,100 L70,100 Q80,100 80,90 L80,40 Q80,30 70,30 L50,30 Q40,30 40,40 M40,60 L80,60","emoji":"☀️"},
+    {"char":"月","pinyin":"yuè","level":1,"audio":"月，月亮，月份","words":["月亮","月份","明月"],"svgPath":"M35,30 L35,100 Q35,110 45,110 L75,110 Q85,110 85,100 L85,30 M35,50 Q60,40 85,50","emoji":"🌙"},
+    {"char":"水","pinyin":"shuǐ","level":1,"audio":"水，水果，喝水","words":["水果","喝水","水平"],"svgPath":"M50,30 L50,80 M30,50 Q50,70 70,50 M35,70 Q50,90 65,70 M40,90 Q50,100 60,90","emoji":"💧"},
+    {"char":"火","pinyin":"huǒ","level":1,"audio":"火，火车，大火","words":["火车","大火","火苗"],"svgPath":"M50,40 Q40,60 45,80 M50,40 Q60,60 55,80 M40,90 Q50,70 60,90 M35,70 L30,60 M65,70 L70,60","emoji":"🔥"},
+    {"char":"木","pinyin":"mù","level":1,"audio":"木，木头，树木","words":["木头","树木","木材"],"svgPath":"M50,30 L50,100 M30,50 L70,50 M35,80 L50,65 L65,80","emoji":"🌳"},
+    {"char":"土","pinyin":"tǔ","level":1,"audio":"土，土地，泥土","words":["土地","泥土","土壤"],"svgPath":"M30,50 L70,50 M50,50 L50,100 M35,90 L65,90","emoji":"🌍"},
+    {"char":"山","pinyin":"shān","level":1,"audio":"山，山上，大山","words":["山上","大山","山水"],"svgPath":"M20,100 L40,40 L60,70 L80,30 L100,100","emoji":"⛰️"},
+    {"char":"石","pinyin":"shí","level":1,"audio":"石，石头，石子","words":["石头","石子","宝石"],"svgPath":"M30,40 L30,100 L70,100 L70,40 Z M30,60 L70,60","emoji":"🪨"},
+    {"char":"田","pinyin":"tián","level":1,"audio":"田，田地，农田","words":["田地","农田","田野"],"svgPath":"M30,30 L30,100 L90,100 L90,30 Z M30,55 L90,55 M60,30 L60,100","emoji":"🌾"},
+    {"char":"禾","pinyin":"hé","level":1,"audio":"禾，禾苗，禾田","words":["禾苗","禾田","禾草"],"svgPath":"M50,20 L50,100 M30,40 L70,40 M40,60 L60,60 M35,80 L50,70 L65,80","emoji":"🌱"},
+    {"char":"目","pinyin":"mù","level":1,"audio":"目，目光，耳目","words":["目光","耳目","目的"],"svgPath":"M35,35 L35,95 Q35,105 45,105 L75,105 Q85,105 85,95 L85,35 Q85,25 75,25 L45,25 Q35,25 35,35 M35,50 L85,50 M35,70 L85,70","emoji":"👁️"},
+    {"char":"耳","pinyin":"ěr","level":1,"audio":"耳，耳朵，耳目","words":["耳朵","耳目","耳机"],"svgPath":"M40,30 L40,100 Q40,110 50,110 L70,110 Q80,110 80,100 L80,30 Q80,20 70,20 L50,20 Q40,20 40,30 M40,45 L80,45 M40,65 L80,65","emoji":"👂"},
+    {"char":"头","pinyin":"tóu","level":1,"audio":"头，头发，头脑","words":["头发","头脑","石头"],"svgPath":"M50,30 Q30,40 30,60 Q30,80 50,80 Q70,80 70,60 Q70,40 50,30 M40,85 L40,110 M60,85 L60,110 M35,110 L65,110","emoji":"🦲"},
+    {"char":"马","pinyin":"mǎ","level":1,"audio":"马，小马，马上","words":["小马","马上","马车"],"svgPath":"M40,35 L35,20 M60,35 L65,20 M45,35 Q55,30 65,35 Q75,45 65,60 Q55,70 45,60 Q35,45 45,35 M65,50 L80,45 M45,60 L40,85 M60,60 L65,85 M35,85 L70,85","emoji":"🐴"},
+    {"char":"鸟","pinyin":"niǎo","level":1,"audio":"鸟，小鸟，鸟儿","words":["小鸟","鸟儿","飞鸟"],"svgPath":"M35,50 Q50,30 65,50 Q75,60 65,70 Q50,80 35,70 Q25,60 35,50 M65,50 L75,40 M65,60 L80,55 M50,70 L50,90 M40,90 L60,90","emoji":"🐦"},
+    {"char":"鱼","pinyin":"yú","level":1,"audio":"鱼，鱼儿，金鱼","words":["鱼儿","金鱼","小鱼"],"svgPath":"M30,50 Q50,30 70,50 Q80,60 70,70 Q50,80 30,70 Q20,60 30,50 M70,50 L85,40 M70,60 L90,55 M40,55 L45,55 M55,55 L60,55 M50,70 L50,85 M40,85 L60,85","emoji":"🐟"},
+    {"char":"狗","pinyin":"gǒu","level":1,"audio":"狗，小狗，狗狗","words":["小狗","狗狗","黄狗"],"svgPath":"M35,45 Q50,30 65,45 Q75,55 65,70 Q50,80 35,70 Q25,55 35,45 M65,50 L80,45 M40,70 L40,90 M60,70 L60,90 M35,90 L65,90","emoji":"🐕"},
+    {"char":"猫","pinyin":"māo","level":1,"audio":"猫，小猫，猫咪","words":["小猫","猫咪","花猫"],"svgPath":"M35,40 L30,25 M65,40 L70,25 M40,40 Q50,35 60,40 Q70,50 60,65 Q50,75 40,65 Q30,50 40,40 M35,65 L30,80 M65,65 L70,80","emoji":"🐱"},
+    {"char":"牛","pinyin":"niú","level":1,"audio":"牛，小牛，牛奶","words":["小牛","牛奶","水牛"],"svgPath":"M35,30 L30,15 M65,30 L70,15 M40,30 Q50,25 60,30 Q70,40 60,55 Q50,65 40,55 Q30,40 40,30 M60,45 L80,40 M40,55 L35,85 M60,55 L65,85 M30,85 L70,85","emoji":"🐄"},
+    {"char":"羊","pinyin":"yáng","level":1,"audio":"羊，小羊，山羊","words":["小羊","山羊","绵羊"],"svgPath":"M40,25 L35,10 M50,25 L50,10 M60,25 L65,10 M45,30 Q55,25 65,30 Q75,40 65,55 Q55,65 45,55 Q35,40 45,30 M65,50 L85,45 M40,55 L35,85 M60,55 L65,85 M30,85 L70,85","emoji":"🐑"},
+    {"char":"爸","pinyin":"bà","level":2,"audio":"爸，爸爸，老爸","words":["爸爸","老爸","爸妈"],"svgPath":"M40,30 L35,15 M60,30 L65,15 M45,30 Q55,25 65,35 Q70,50 60,65 M35,45 L25,40 M65,55 L75,65 M40,70 L40,100 L70,100 L70,70 Z","emoji":"👨"},
+    {"char":"妈","pinyin":"mā","level":2,"audio":"妈，妈妈，老妈","words":["妈妈","老妈","爸妈"],"svgPath":"M40,30 L35,15 M60,30 L65,15 M45,30 Q55,25 65,35 Q70,50 60,65 M35,45 L25,40 M65,55 L75,65 M40,70 L40,100 L70,100 L70,70 Z M50,70 L50,100","emoji":"👩"},
+    {"char":"哥","pinyin":"gē","level":2,"audio":"哥，哥哥，大哥","words":["哥哥","大哥","表哥"],"svgPath":"M40,30 L40,60 L30,60 L30,100 L50,100 L50,60 M60,30 L60,60 L50,60 L50,100 L70,100 L70,60 M35,75 L45,75 M55,75 L65,75","emoji":"👦"},
+    {"char":"姐","pinyin":"jiě","level":2,"audio":"姐，姐姐，大姐","words":["姐姐","大姐","表姐"],"svgPath":"M40,30 L35,15 M60,30 L65,15 M45,30 Q55,25 65,35 M35,45 L25,40 M40,55 L40,100 L70,100 L70,55 Z M40,70 L70,70 M40,85 L70,85","emoji":"👧"},
+    {"char":"弟","pinyin":"dì","level":2,"audio":"弟，弟弟，兄弟","words":["弟弟","兄弟","表弟"],"svgPath":"M40,30 L40,50 L30,50 L30,100 L50,100 L50,50 M60,30 L60,50 L50,50 M35,65 L45,65 M55,65 L65,65 M35,85 L45,85 M55,85 L65,85","emoji":"👶"},
+    {"char":"妹","pinyin":"mèi","level":2,"audio":"妹，妹妹，姐妹","words":["妹妹","姐妹","表妹"],"svgPath":"M40,30 L35,15 M60,30 L65,15 M45,30 Q55,25 65,35 M35,45 L25,40 M40,55 L40,100 L70,100 L70,55 Z M50,55 L50,100","emoji":"🧒"},
+    {"char":"爷","pinyin":"yé","level":2,"audio":"爷，爷爷，老爷","words":["爷爷","老爷","大爷"],"svgPath":"M40,30 L35,15 M60,30 L65,15 M45,30 Q55,25 65,35 Q70,50 60,65 M35,45 L25,40 M65,55 L75,65 M40,70 L40,100 L70,100 L70,70 Z M50,70 L50,100","emoji":"👴"},
+    {"char":"奶","pinyin":"nǎi","level":2,"audio":"奶，奶奶，牛奶","words":["奶奶","牛奶","酸奶"],"svgPath":"M40,30 L35,15 M60,30 L65,15 M45,30 Q55,25 65,35 Q70,50 60,65 M35,45 L25,40 M65,55 L75,65 M40,70 L40,100 L70,100 L70,70 Z M50,70 L50,100","emoji":"👵"},
+    {"char":"家","pinyin":"jiā","level":2,"audio":"家，家庭，回家","words":["家庭","回家","大家"],"svgPath":"M30,35 L80,35 L80,50 L30,50 Z M40,50 L40,100 L70,100 L70,50 Z M50,50 L50,100","emoji":"🏠"},
+    {"char":"里","pinyin":"lǐ","level":2,"audio":"里，里面，家里","words":["里面","家里","这里"],"svgPath":"M30,30 L80,30 L80,100 L30,100 Z M30,50 L80,50 M30,75 L80,75 M55,30 L55,100","emoji":"📍"}
+  ]
+  </script>
+
+  <script type="module">
+    // StorageManager
+    class StorageManager {
+      constructor() {
+        this.prefix = 'kids_';
+        this.memoryStorage = new Map();
+        this.available = this.checkAvailability();
+      }
+
+      checkAvailability() {
+        try {
+          const test = '__test__';
+          localStorage.setItem(test, test);
+          localStorage.removeItem(test);
+          return true;
+        } catch (e) {
+          console.warn('localStorage 不可用，已降级到内存存储');
+          return false;
+        }
+      }
+
+      get(key) {
+        const fullKey = this.prefix + key;
+        try {
+          const value = this.available ? localStorage.getItem(fullKey) : this.memoryStorage.get(fullKey);
+          return value ? JSON.parse(value) : null;
+        } catch (e) {
+          return null;
+        }
+      }
+
+      set(key, value) {
+        const fullKey = this.prefix + key;
+        try {
+          const serialized = JSON.stringify(value);
+          if (this.available) {
+            localStorage.setItem(fullKey, serialized);
+          } else {
+            this.memoryStorage.set(fullKey, serialized);
+          }
+          return true;
+        } catch (e) {
+          return false;
+        }
+      }
+
+      getProgress() {
+        return this.get('progress') || {
+          currentLevel: 1,
+          unlockedLevels: [1],
+          learnedChars: [],
+          lastVisit: Date.now(),
+          studyTime: 0
+        };
+      }
+
+      saveProgress(progress) {
+        progress.lastVisit = Date.now();
+        return this.set('progress', progress);
+      }
+    }
+
+    // AudioManager
+    class AudioManager {
+      constructor() {
+        this.synth = window.speechSynthesis;
+        this.enabled = true;
+        this.voice = null;
+        this.audioContext = null;
+        this.initialized = false;
+        this.init();
+      }
+
+      init() {
+        if (!this.synth) {
+          this.enabled = false;
+          return;
+        }
+        this.loadVoice();
+        document.addEventListener('click', () => this.initAudioContext(), { once: true });
+        document.addEventListener('touchstart', () => this.initAudioContext(), { once: true });
+      }
+
+      initAudioContext() {
+        if (this.initialized) return;
+        try {
+          this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+          this.initialized = true;
+        } catch (e) {}
+      }
+
+      loadVoice() {
+        const voices = this.synth.getVoices();
+        this.voice = voices.find(v => v.lang.includes('zh')) || voices[0];
+        if (!this.voice && this.synth.addEventListener) {
+          this.synth.addEventListener('voiceschanged', () => {
+            const voices = this.synth.getVoices();
+            this.voice = voices.find(v => v.lang.includes('zh')) || voices[0];
+          });
+        }
+      }
+
+      speak(text) {
+        if (!this.enabled || !this.synth) return;
+        this.synth.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.voice = this.voice;
+        utterance.lang = 'zh-CN';
+        utterance.rate = 0.9;
+        utterance.pitch = 1.0;
+        this.synth.speak(utterance);
+      }
+
+      correctSound() {
+        this.playTone(880, 0.1, 'sine');
+      }
+
+      wrongSound() {
+        this.playTone(150, 0.2, 'sawtooth');
+      }
+
+      playTone(frequency, duration, type = 'sine') {
+        if (!this.audioContext) this.initAudioContext();
+        if (!this.audioContext) return;
+        const oscillator = this.audioContext.createOscillator();
+        const gainNode = this.audioContext.createGain();
+        oscillator.connect(gainNode);
+        gainNode.connect(this.audioContext.destination);
+        oscillator.frequency.value = frequency;
+        oscillator.type = type;
+        gainNode.gain.setValueAtTime(0.3, this.audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + duration);
+        oscillator.start(this.audioContext.currentTime);
+        oscillator.stop(this.audioContext.currentTime + duration);
+      }
+    }
+
+    // CharacterService
+    class CharacterService {
+      constructor() {
+        this.characters = [];
+        this.currentIndex = 0;
+        this.currentLevel = 1;
+        this.learnedChars = new Set();
+        this.loadData();
+      }
+
+      loadData() {
+        const dataEl = document.getElementById('char-data');
+        if (dataEl) {
+          this.characters = JSON.parse(dataEl.textContent).filter(c => c && c.char);
+        }
+      }
+
+      getByLevel(level) {
+        return this.characters.filter(c => c.level === level);
+      }
+
+      getCurrentChar() {
+        const levelChars = this.getByLevel(this.currentLevel);
+        return levelChars[this.currentIndex] || levelChars[0];
+      }
+
+      nextChar() {
+        const levelChars = this.getByLevel(this.currentLevel);
+        const unlearned = levelChars.filter((c, i) => i > this.currentIndex && !this.learnedChars.has(c.char));
+        if (unlearned.length > 0) {
+          this.currentIndex = levelChars.indexOf(unlearned[0]);
+          return this.getCurrentChar();
+        }
+        return null;
+      }
+
+      prevChar() {
+        if (this.currentIndex > 0) {
+          this.currentIndex--;
+          return this.getCurrentChar();
+        }
+        return null;
+      }
+
+      markLearned(char) {
+        this.learnedChars.add(char);
+        return this.learnedChars.size;
+      }
+
+      setLearnedChars(chars) {
+        this.learnedChars = new Set(chars);
+      }
+
+      getProgress(level) {
+        const levelChars = this.getByLevel(level);
+        const learnedInLevel = levelChars.filter(c => this.learnedChars.has(c.char)).length;
+        return {
+          current: learnedInLevel,
+          total: levelChars.length
+        };
+      }
+
+      setLevel(level) {
+        this.currentLevel = level;
+        this.currentIndex = 0;
+      }
+    }
+
+    // MathEngine - 升级数学引擎
+    class MathEngine {
+      constructor(storage) {
+        this.currentQuestion = null;
+        this.storage = storage;
+        this.combo = 0;
+        this.coins = this.loadCoins();
+        this.currentLevel = 1;
+        this.wrongRecords = this.loadWrongRecords();
+        this.emoji = '🍎';
+      }
+
+      loadCoins() {
+        const data = this.storage.get('math_coins');
+        return data || 0;
+      }
+
+      saveCoins() {
+        this.storage.set('math_coins', this.coins);
+      }
+
+      loadWrongRecords() {
+        const data = this.storage.get('math_wrong');
+        return data || [];
+      }
+
+      saveWrongRecords() {
+        this.storage.set('math_wrong', this.wrongRecords);
+      }
+
+      addCoins(amount) {
+        this.coins += amount;
+        this.saveCoins();
+        return this.coins;
+      }
+
+      spendCoins(amount) {
+        if (this.coins >= amount) {
+          this.coins -= amount;
+          this.saveCoins();
+          return true;
+        }
+        return false;
+      }
+
+      addCombo() {
+        this.combo++;
+        let bonus = 0;
+        if (this.combo >= 10) bonus = 10;
+        else if (this.combo >= 5) bonus = 5;
+        else if (this.combo >= 3) bonus = 3;
+        
+        if (bonus > 0) {
+          this.addCoins(bonus);
+        }
+        return { combo: this.combo, bonus };
+      }
+
+      resetCombo() {
+        this.combo = 0;
+      }
+
+      recordWrong(question, errorType) {
+        this.wrongRecords.push({
+          question: `${question.a}${question.type === 'add' ? '+' : '-'}${question.b}`,
+          errorType,
+          timestamp: Date.now()
+        });
+        if (this.wrongRecords.length > 50) {
+          this.wrongRecords = this.wrongRecords.slice(-50);
+        }
+        this.saveWrongRecords();
+      }
+
+      getWeakPoints() {
+        const counts = {};
+        this.wrongRecords.forEach(r => {
+          counts[r.question] = (counts[r.question] || 0) + 1;
+        });
+        return Object.entries(counts)
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 5)
+          .map(([q, count]) => ({ question: q, count }));
+      }
+
+      // 升级加法生成器
+      generateAdd(level = 1) {
+        let a, b, sum;
+        
+        if (level === 1) {
+          sum = Math.floor(Math.random() * 6);
+          a = Math.floor(Math.random() * (sum + 1));
+          b = sum - a;
+        } else if (level === 2) {
+          sum = 6 + Math.floor(Math.random() * 5);
+          a = Math.floor(Math.random() * (sum - 1)) + 1;
+          b = sum - a;
+        } else {
+          sum = 11 + Math.floor(Math.random() * 10);
+          a = Math.floor(Math.random() * (sum - 2)) + 2;
+          b = sum - a;
+        }
+        
+        this.currentQuestion = { type: 'add', a, b, answer: sum, level };
+        return this.currentQuestion;
+      }
+
+      // 升级减法生成器
+      generateSub(level = 1) {
+        let a, b, result;
+        
+        if (level === 1) {
+          a = Math.floor(Math.random() * 6);
+          b = Math.floor(Math.random() * (a + 1));
+        } else if (level === 2) {
+          a = 6 + Math.floor(Math.random() * 5);
+          b = Math.floor(Math.random() * (a + 1));
+        } else {
+          a = 11 + Math.floor(Math.random() * 10);
+          b = Math.floor(Math.random() * (a + 1));
+        }
+        
+        result = a - b;
+        this.currentQuestion = { type: 'sub', a, b, answer: result, level };
+        return this.currentQuestion;
+      }
+
+      // 升级干扰项生成
+      generateOptions(correctAnswer, count = 4) {
+        const options = new Set([correctAnswer]);
+        
+        while (options.size < count) {
+          const diff = Math.random() > 0.5 ? 1 : (Math.random() > 0.5 ? 2 : 3);
+          const wrong = Math.random() > 0.5 ? correctAnswer + diff : correctAnswer - diff;
+          if (wrong >= 0 && wrong <= 20 && wrong !== correctAnswer) {
+            options.add(wrong);
+          }
+        }
+        
+        return Array.from(options).sort(() => Math.random() - 0.5);
+      }
+
+      // 获取错误选项（用于求助功能）
+      getWrongOptions(correctAnswer, allOptions) {
+        return allOptions.filter(opt => opt !== correctAnswer);
+      }
+
+      checkAnswer(answer) {
+        return this.currentQuestion && this.currentQuestion.answer === answer;
+      }
+
+      // 获取可视化配置
+      getVisualConfig() {
+        const q = this.currentQuestion;
+        if (!q) return null;
+        
+        const level = q.level || 1;
+        
+        if (level === 1) {
+          return { type: 'emoji', emoji: this.emoji, showNumber: false };
+        } else if (level === 2) {
+          return { type: 'mixed', emoji: this.emoji, showNumber: true };
+        } else {
+          return { type: 'abstract', emoji: this.emoji, showNumber: true, rows: 2 };
+        }
+      }
+    }
+
+    // App
+    class App {
+      constructor() {
+        this.state = {
+          level: 1,
+          learned: [],
+          currentScreen: 'home',
+          studyStartTime: Date.now()
+        };
+        this.storage = new StorageManager();
+        this.audio = new AudioManager();
+        this.characters = new CharacterService();
+        this.math = new MathEngine(this.storage);
+        this.currentMathLevel = 1;
+        this.mathType = 'add';
+        this.clickDebounce = false;
+        this.touchStartX = 0;
+        this.strokeAnimating = false;
+        this.currentGame = null;
+        this.init();
+      }
+
+      init() {
+        this.loadProgress();
+        this.bindEvents();
+        this.startStudyTimer();
+        this.showToast('欢迎来到快乐学习！');
+      }
+
+      loadProgress() {
+        const progress = this.storage.getProgress();
+        this.state.learned = progress.learnedChars || [];
+        this.state.level = progress.currentLevel || 1;
+        this.characters.setLearnedChars(this.state.learned);
+        if (progress.unlockedLevels) {
+          this.unlockedLevels = progress.unlockedLevels;
+        } else {
+          this.unlockedLevels = [1];
+        }
+      }
+
+      saveProgress() {
+        const progress = this.storage.getProgress();
+        progress.learnedChars = Array.from(this.characters.learnedChars);
+        progress.currentLevel = this.state.level;
+        progress.unlockedLevels = this.unlockedLevels;
+        progress.studyTime = (progress.studyTime || 0) + (Date.now() - this.state.studyStartTime);
+        this.storage.saveProgress(progress);
+      }
+
+      startStudyTimer() {
+        setInterval(() => {
+          const elapsed = Date.now() - this.state.studyStartTime;
+          if (elapsed > 15 * 60 * 1000) {
+            this.showRestModal();
+          }
+        }, 60000);
+      }
+
+      showRestModal() {
+        document.getElementById('rest-modal').classList.add('show');
+      }
+
+      bindEvents() {
+        document.addEventListener('click', (e) => {
+          if (this.clickDebounce) return;
+          
+          const routeBtn = e.target.closest('[data-route]');
+          if (routeBtn) {
+            this.handleRouteClick(routeBtn);
+          }
+
+          const backBtn = e.target.closest('[data-back]');
+          if (backBtn) {
+            this.navigate('home');
+          }
+        });
+
+        document.getElementById('char-display').addEventListener('click', (e) => {
+          if (e.target.closest('.stroke-controls')) return;
+          const char = this.characters.getCurrentChar();
+          if (char) {
+            this.audio.speak(`${char.pinyin}，${char.audio}`);
+          }
+        });
+
+        document.getElementById('btn-learned').addEventListener('click', () => {
+          this.handleCharLearned();
+        });
+
+        document.getElementById('btn-repeat').addEventListener('click', () => {
+          const char = this.characters.getCurrentChar();
+          if (char) {
+            this.audio.speak(`${char.pinyin}，${char.audio}`);
+          }
+        });
+
+        document.getElementById('btn-prev').addEventListener('click', () => {
+          this.prevChar();
+        });
+
+        document.getElementById('btn-next').addEventListener('click', () => {
+          this.nextChar();
+        });
+
+        document.getElementById('btn-games').addEventListener('click', () => {
+          this.navigate('games');
+        });
+
+        document.getElementById('celebration-btn').addEventListener('click', () => {
+          document.getElementById('celebration').classList.remove('show');
+          this.navigate('home');
+        });
+
+        document.getElementById('rest-continue').addEventListener('click', () => {
+          document.getElementById('rest-modal').classList.remove('show');
+          this.state.studyStartTime = Date.now();
+        });
+
+        document.getElementById('rest-exit').addEventListener('click', () => {
+          document.getElementById('rest-modal').classList.remove('show');
+          this.navigate('home');
+        });
+
+        document.getElementById('btn-play').addEventListener('click', () => {
+          this.playStrokeAnim();
+        });
+
+        document.getElementById('btn-pause').addEventListener('click', () => {
+          this.pauseStrokeAnim();
+        });
+
+        document.getElementById('btn-replay').addEventListener('click', () => {
+          this.replayStrokeAnim();
+        });
+
+        document.querySelectorAll('.game-select-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const game = btn.dataset.game;
+            this.startGame(game);
+          });
+        });
+
+        document.getElementById('match-options').addEventListener('click', (e) => {
+          const btn = e.target.closest('.game-option-btn');
+          if (btn) {
+            this.handleMatchAnswer(btn);
+          }
+        });
+
+        document.getElementById('listen-options').addEventListener('click', (e) => {
+          const btn = e.target.closest('.game-option-btn');
+          if (btn) {
+            this.handleListenAnswer(btn);
+          }
+        });
+
+        document.getElementById('btn-play-audio').addEventListener('click', () => {
+          this.playCurrentGameAudio();
+        });
+
+        document.getElementById('add-options').addEventListener('click', (e) => {
+          const btn = e.target.closest('.btn-option');
+          if (btn && !btn.classList.contains('removed')) {
+            this.handleMathAnswer(btn, 'add');
+          }
+        });
+
+        document.getElementById('sub-options').addEventListener('click', (e) => {
+          const btn = e.target.closest('.btn-option');
+          if (btn && !btn.classList.contains('removed')) {
+            this.handleMathAnswer(btn, 'sub');
+          }
+        });
+
+        document.getElementById('add-help').addEventListener('click', () => {
+          this.useHelp('add');
+        });
+
+        document.getElementById('sub-help').addEventListener('click', () => {
+          this.useHelp('sub');
+        });
+
+        this.bindSwipeEvents();
+      }
+
+      bindSwipeEvents() {
+        const charDisplay = document.getElementById('char-display');
+        
+        charDisplay.addEventListener('touchstart', (e) => {
+          this.touchStartX = e.touches[0].clientX;
+        }, { passive: true });
+
+        charDisplay.addEventListener('touchend', (e) => {
+          const touchEndX = e.changedTouches[0].clientX;
+          const diff = this.touchStartX - touchEndX;
+          
+          if (Math.abs(diff) > 50) {
+            if (diff > 0) {
+              this.nextChar();
+            } else {
+              this.prevChar();
+            }
+          }
+        }, { passive: true });
+      }
+
+      handleRouteClick(btn) {
+        const route = btn.dataset.route;
+        const voice = btn.dataset.voice;
+        
+        this.clickDebounce = true;
+        if (voice) {
+          this.audio.speak(voice);
+        }
+        
+        setTimeout(() => {
+          this.clickDebounce = false;
+          if (route === 'chinese-map') {
+            this.initLevelMap();
+          } else if (route === 'math-add') {
+            this.initMathAddScreen();
+          } else if (route === 'math-sub') {
+            this.initMathSubScreen();
+          } else if (route === 'progress') {
+            this.initProgressScreen();
+          }
+          this.navigate(route);
+        }, 500);
+      }
+
+      navigate(screen) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        const target = document.getElementById(`screen-${screen}`);
+        if (target) {
+          target.classList.add('active');
+          this.state.currentScreen = screen;
+        }
+      }
+
+      initLevelMap() {
+        const mapEl = document.getElementById('level-map');
+        const levels = [
+          { level: 1, name: 'Level 1', icon: '🌱', desc: '基础汉字' },
+          { level: 2, name: 'Level 2', icon: '🌿', desc: '家庭汉字' }
+        ];
+
+        mapEl.innerHTML = levels.map(l => {
+          const isLocked = !this.unlockedLevels.includes(l.level);
+          const progress = this.characters.getProgress(l.level);
+          return `
+            <div class="level-item ${isLocked ? 'locked' : ''}" data-level="${l.level}">
+              <div class="level-icon">${isLocked ? '🔒' : l.icon}</div>
+              <div class="level-info">
+                <div class="level-name">${l.name}</div>
+                <div class="level-progress">${progress.current} / ${progress.total} ${l.desc}</div>
+              </div>
+              <div class="level-status">${isLocked ? '' : '▶️'}</div>
+            </div>
+          `;
+        }).join('');
+
+        mapEl.querySelectorAll('.level-item:not(.locked)').forEach(item => {
+          item.addEventListener('click', () => {
+            const level = parseInt(item.dataset.level, 10);
+            this.startLevel(level);
+          });
+        });
+      }
+
+      startLevel(level) {
+        this.characters.setLevel(level);
+        this.initChineseScreen();
+        this.navigate('chinese');
+      }
+
+      initChineseScreen() {
+        this.updateCharProgress();
+        this.showCurrentChar();
+      }
+
+      showCurrentChar() {
+        const char = this.characters.getCurrentChar();
+        if (char) {
+          document.getElementById('current-char').textContent = char.char;
+          document.getElementById('current-pinyin').textContent = char.pinyin;
+          document.getElementById('current-words').textContent = char.words ? char.words.join('、') : '';
+          
+          const pathEl = document.getElementById('stroke-path');
+          if (char.svgPath) {
+            pathEl.setAttribute('d', char.svgPath);
+            pathEl.classList.remove('playing');
+            void pathEl.offsetWidth;
+          }
+          
+          setTimeout(() => {
+            this.audio.speak(`${char.pinyin}，${char.audio}`);
+          }, 300);
+        }
+      }
+
+      playStrokeAnim() {
+        const pathEl = document.getElementById('stroke-path');
+        pathEl.classList.remove('playing');
+        void pathEl.offsetWidth;
+        pathEl.classList.add('playing');
+      }
+
+      pauseStrokeAnim() {
+        const pathEl = document.getElementById('stroke-path');
+        pathEl.classList.remove('playing');
+      }
+
+      replayStrokeAnim() {
+        this.playStrokeAnim();
+      }
+
+      prevChar() {
+        const prev = this.characters.prevChar();
+        if (prev) {
+          this.showCurrentChar();
+        }
+      }
+
+      nextChar() {
+        const next = this.characters.nextChar();
+        if (next) {
+          this.showCurrentChar();
+        }
+      }
+
+      handleCharLearned() {
+        const char = this.characters.getCurrentChar();
+        if (!char) return;
+
+        this.audio.correctSound();
+        const count = this.characters.markLearned(char.char);
+        this.saveProgress();
+        this.updateCharProgress();
+
+        if (count % 10 === 0) {
+          this.showStarRain();
+        }
+
+        if (count % 5 === 0) {
+          this.showCelebration();
+        } else {
+          const next = this.characters.nextChar();
+          if (next) {
+            setTimeout(() => this.showCurrentChar(), 300);
+          } else {
+            this.unlockNextLevel();
+            this.showCelebration();
+          }
+        }
+      }
+
+      unlockNextLevel() {
+        const currentLevel = this.characters.currentLevel;
+        if (!this.unlockedLevels.includes(currentLevel + 1)) {
+          this.unlockedLevels.push(currentLevel + 1);
+          this.saveProgress();
+        }
+      }
+
+      updateCharProgress() {
+        const progress = this.characters.getProgress(this.characters.currentLevel);
+        const percentage = (progress.current / progress.total) * 100;
+        document.getElementById('char-progress-bar').style.width = `${percentage}%`;
+        document.getElementById('char-progress-text').textContent = `${progress.current} / ${progress.total}`;
+      }
+
+      showCelebration() {
+        document.getElementById('celebration').classList.add('show');
+        this.audio.speak('太棒了！你真聪明！');
+      }
+
+      showStarRain() {
+        const container = document.getElementById('stars-container');
+        for (let i = 0; i < 20; i++) {
+          setTimeout(() => {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.textContent = '⭐';
+            star.style.left = `${Math.random() * 100}%`;
+            star.style.animationDelay = `${Math.random() * 0.5}s`;
+            container.appendChild(star);
+            setTimeout(() => star.remove(), 2000);
+          }, i * 100);
+        }
+      }
+
+      startGame(gameType) {
+        this.currentGame = gameType;
+        if (gameType === 'match') {
+          this.initMatchGame();
+          this.navigate('game-match');
+        } else if (gameType === 'listen') {
+          this.initListenGame();
+          this.navigate('game-listen');
+        }
+      }
+
+      initMatchGame() {
+        const chars = this.characters.getByLevel(this.characters.currentLevel);
+        const targetChar = chars[Math.floor(Math.random() * chars.length)];
+        const options = [targetChar];
+        
+        while (options.length < 3) {
+          const randomChar = chars[Math.floor(Math.random() * chars.length)];
+          if (!options.find(c => c.char === randomChar.char)) {
+            options.push(randomChar);
+          }
+        }
+
+        this.currentGameData = {
+          target: targetChar,
+          options: options.sort(() => Math.random() - 0.5)
+        };
+
+        document.getElementById('match-image').textContent = targetChar.emoji || targetChar.char;
+        document.getElementById('match-options').innerHTML = this.currentGameData.options.map(c => 
+          `<button class="game-option-btn" data-value="${c.char}">${c.char}</button>`
+        ).join('');
+      }
+
+      handleMatchAnswer(btn) {
+        const value = btn.dataset.value;
+        const isCorrect = value === this.currentGameData.target.char;
+        
+        if (isCorrect) {
+          btn.style.background = 'var(--success)';
+          this.audio.correctSound();
+          this.audio.speak('答对了！');
+          setTimeout(() => this.initMatchGame(), 1500);
+        } else {
+          btn.style.background = 'var(--error)';
+          this.audio.wrongSound();
+          this.audio.speak('再试一次！');
+          setTimeout(() => {
+            btn.style.background = '';
+          }, 1000);
+        }
+      }
+
+      initListenGame() {
+        const chars = this.characters.getByLevel(this.characters.currentLevel);
+        const targetChar = chars[Math.floor(Math.random() * chars.length)];
+        const options = [targetChar];
+        
+        while (options.length < 4) {
+          const randomChar = chars[Math.floor(Math.random() * chars.length)];
+          if (!options.find(c => c.char === randomChar.char)) {
+            options.push(randomChar);
+          }
+        }
+
+        this.currentGameData = {
+          target: targetChar,
+          options: options.sort(() => Math.random() - 0.5)
+        };
+
+        document.getElementById('listen-options').innerHTML = this.currentGameData.options.map(c => 
+          `<button class="game-option-btn" data-value="${c.char}">${c.emoji || c.char}</button>`
+        ).join('');
+        
+        setTimeout(() => this.playCurrentGameAudio(), 500);
+      }
+
+      playCurrentGameAudio() {
+        if (this.currentGameData && this.currentGameData.target) {
+          const char = this.currentGameData.target;
+          this.audio.speak(`${char.pinyin}，${char.audio}`);
+        }
+      }
+
+      handleListenAnswer(btn) {
+        const value = btn.dataset.value;
+        const isCorrect = value === this.currentGameData.target.char;
+        
+        if (isCorrect) {
+          btn.style.background = 'var(--success)';
+          this.audio.correctSound();
+          this.audio.speak('答对了！');
+          setTimeout(() => this.initListenGame(), 1500);
+        } else {
+          btn.style.background = 'var(--error)';
+          this.audio.wrongSound();
+          this.audio.speak('再试一次！');
+          setTimeout(() => {
+            btn.style.background = '';
+          }, 1000);
+        }
+      }
+
+      initMathAddScreen() {
+        this.mathType = 'add';
+        this.updateMathMeta('add');
+        this.generateAddQuestion();
+      }
+
+      generateAddQuestion() {
+        const q = this.math.generateAdd(this.currentMathLevel);
+        document.getElementById('add-question').textContent = `${q.a} + ${q.b} = ?`;
+        
+        // 更新标签
+        document.getElementById('add-label-a').textContent = q.a;
+        document.getElementById('add-label-b').textContent = q.b;
+        document.getElementById('add-num-a').textContent = q.a;
+        document.getElementById('add-num-b').textContent = q.b;
+        document.getElementById('add-num-result').textContent = '?';
+        
+        // 根据级别显示不同可视化
+        const config = this.math.getVisualConfig();
+        if (config.type === 'emoji') {
+          document.getElementById('visual-left').innerHTML = this.createEmojiItems(q.a);
+          document.getElementById('visual-right').innerHTML = this.createEmojiItems(q.b);
+          document.getElementById('add-num-a').style.display = 'none';
+          document.getElementById('add-num-b').style.display = 'none';
+        } else if (config.type === 'mixed') {
+          document.getElementById('visual-left').innerHTML = this.createEmojiItems(q.a);
+          document.getElementById('visual-right').innerHTML = this.createEmojiItems(q.b);
+          document.getElementById('add-num-a').style.display = 'block';
+          document.getElementById('add-num-b').style.display = 'block';
+        } else {
+          // 抽象级别：显示两行辅助线
+          document.getElementById('visual-left').innerHTML = this.createTenFrame(q.a);
+          document.getElementById('visual-right').innerHTML = this.createTenFrame(q.b);
+          document.getElementById('add-num-a').style.display = 'block';
+          document.getElementById('add-num-b').style.display = 'block';
+        }
+        
+        document.getElementById('visual-result').innerHTML = '';
+        
+        const options = this.math.generateOptions(q.answer, 4);
+        document.getElementById('add-options').innerHTML = options.map(opt => 
+          `<button class="btn btn-primary btn-option" data-value="${opt}">${opt}</button>`
+        ).join('');
+        
+        // 播放题目语音
+        setTimeout(() => {
+          this.audio.speak(`${q.a}加${q.b}等于多少？`);
+        }, 300);
+      }
+
+      initMathSubScreen() {
+        this.mathType = 'sub';
+        this.updateMathMeta('sub');
+        this.generateSubQuestion();
+      }
+
+      generateSubQuestion() {
+        const q = this.math.generateSub(this.currentMathLevel);
+        document.getElementById('sub-question').textContent = `${q.a} - ${q.b} = ?`;
+        
+        // 更新数字显示
+        document.getElementById('sub-num-total').textContent = q.a;
+        document.getElementById('sub-num-remove').textContent = q.b;
+        document.getElementById('sub-num-result').textContent = '?';
+        
+        // 根据级别显示不同可视化
+        const config = this.math.getVisualConfig();
+        if (config.type === 'emoji') {
+          document.getElementById('sub-visual-total').innerHTML = this.createEmojiItems(q.a);
+          document.getElementById('sub-visual-remove').innerHTML = this.createEmojiItems(q.b, true);
+        } else {
+          document.getElementById('sub-visual-total').innerHTML = this.createEmojiItems(q.a);
+          document.getElementById('sub-visual-remove').innerHTML = this.createEmojiItems(q.b, true);
+        }
+        
+        document.getElementById('sub-visual-result').innerHTML = '';
+        
+        const options = this.math.generateOptions(q.answer, 4);
+        document.getElementById('sub-options').innerHTML = options.map(opt => 
+          `<button class="btn btn-primary btn-option" data-value="${opt}">${opt}</button>`
+        ).join('');
+        
+        // 播放题目语音
+        setTimeout(() => {
+          this.audio.speak(`原来有${q.a}个，拿走${q.b}个，还剩多少？`);
+        }, 300);
+      }
+
+      createEmojiItems(count, isRemove = false) {
+        return Array(count).fill(0).map((_, i) => 
+          `<span class="visual-item ${isRemove ? 'to-remove' : ''}" style="animation-delay: ${i * 0.1}s">🍎</span>`
+        ).join('');
+      }
+
+      createTenFrame(count) {
+        // 创建十格框表示
+        const fullRows = Math.floor(count / 10);
+        const remainder = count % 10;
+        let html = '';
+        
+        for (let r = 0; r < fullRows; r++) {
+          html += '<div class="visual-row">' + Array(10).fill('🍎').join('') + '</div>';
+        }
+        if (remainder > 0) {
+          html += '<div class="visual-row">' + Array(remainder).fill('🍎').join('') + '</div>';
+        }
+        return html;
+      }
+
+      updateMathMeta(type) {
+        const comboEl = document.getElementById(`${type}-combo`);
+        const coinsEl = document.getElementById(`${type}-coins`);
+        
+        comboEl.textContent = `🔥 Combo x${this.math.combo}`;
+        coinsEl.textContent = `💰 ${this.math.coins}`;
+        
+        // 更新求助按钮状态
+        const helpBtn = document.getElementById(`${type}-help`);
+        helpBtn.disabled = this.math.coins < 5;
+      }
+
+      useHelp(type) {
+        if (!this.math.spendCoins(5)) {
+          this.showToast('金币不足！');
+          return;
+        }
+        
+        const optionsContainer = document.getElementById(`${type}-options`);
+        const buttons = optionsContainer.querySelectorAll('.btn-option:not(.removed)');
+        const currentQ = this.math.currentQuestion;
+        
+        // 找到错误选项并移除一个
+        const wrongButtons = Array.from(buttons).filter(btn => 
+          parseInt(btn.dataset.value, 10) !== currentQ.answer
+        );
+        
+        if (wrongButtons.length > 0) {
+          const toRemove = wrongButtons[Math.floor(Math.random() * wrongButtons.length)];
+          toRemove.classList.add('removed');
+          this.showToast('已去掉一个错误选项！');
+          this.updateMathMeta(type);
+        }
+      }
+
+      animateAddResult() {
+        // 加法动画：右侧物品移动到左侧
+        const rightItems = document.querySelectorAll('#visual-right .visual-item');
+        rightItems.forEach((item, i) => {
+          setTimeout(() => {
+            item.classList.add('moving');
+          }, i * 100);
+        });
+        
+        // 显示结果
+        setTimeout(() => {
+          const q = this.math.currentQuestion;
+          document.getElementById('visual-result').innerHTML = this.createEmojiItems(q.answer);
+          document.getElementById('add-num-result').textContent = q.answer;
+        }, 1000);
+      }
+
+      animateSubResult() {
+        // 减法动画：标记的物品飞走
+        const removeItems = document.querySelectorAll('#sub-visual-total .to-remove');
+        removeItems.forEach((item, i) => {
+          setTimeout(() => {
+            item.classList.add('fading');
+          }, i * 100);
+        });
+        
+        // 显示结果
+        setTimeout(() => {
+          const q = this.math.currentQuestion;
+          const resultContainer = document.getElementById('sub-visual-result');
+          resultContainer.innerHTML = this.createEmojiItems(q.answer);
+          document.getElementById('sub-num-result').textContent = q.answer;
+          
+          // 高亮剩余物品
+          const remaining = resultContainer.querySelectorAll('.visual-item');
+          remaining.forEach((item, i) => {
+            setTimeout(() => item.classList.add('highlight'), i * 200);
+          });
+        }, 1000);
+      }
+
+      handleMathAnswer(btn, type) {
+        const value = parseInt(btn.dataset.value, 10);
+        const isCorrect = this.math.checkAnswer(value);
+        
+        if (isCorrect) {
+          btn.classList.add('correct');
+          this.audio.correctSound();
+          
+          // 连击系统
+          const comboResult = this.math.addCombo();
+          if (comboResult.bonus > 0) {
+            this.showToast(`🔥 Combo x${comboResult.combo}! +${comboResult.bonus}金币`);
+            const comboEl = document.getElementById(`${type}-combo`);
+            comboEl.classList.add('active');
+            setTimeout(() => comboEl.classList.remove('active'), 500);
+          }
+          
+          this.audio.speak('答对了！你真棒！');
+          
+          // 播放动画
+          if (type === 'add') {
+            this.animateAddResult();
+          } else {
+            this.animateSubResult();
+          }
+          
+          this.updateMathMeta(type);
+          
+          setTimeout(() => {
+            if (type === 'add') {
+              this.generateAddQuestion();
+            } else {
+              this.generateSubQuestion();
+            }
+          }, 2500);
+        } else {
+          btn.classList.add('wrong');
+          this.audio.wrongSound();
+          
+          // 记录错误
+          const errorType = this.detectErrorType(type, value);
+          this.math.recordWrong(this.math.currentQuestion, errorType);
+          this.math.resetCombo();
+          
+          this.updateMathMeta(type);
+          this.audio.speak('再试一次！');
+          setTimeout(() => btn.classList.remove('wrong'), 1000);
+        }
+      }
+
+      detectErrorType(type, userAnswer) {
+        const q = this.math.currentQuestion;
+        const correctAnswer = q.answer;
+        
+        // 检测相反数错误（如 3+5=8 但选了 2）
+        if (type === 'add' && userAnswer === Math.abs(q.a - q.b)) {
+          return 'opposite';
+        }
+        // 检测符号混淆
+        if (Math.abs(userAnswer - correctAnswer) > 3) {
+          return 'symbol_confusion';
+        }
+        // 默认为计算错误
+        return 'calculation';
+      }
+
+      initProgressScreen() {
+        // 汉字进度
+        const totalChars = this.characters.characters.length;
+        const learnedCount = this.characters.learnedChars.size;
+        const progressPercent = Math.round((learnedCount / totalChars) * 100);
+        
+        document.getElementById('char-learned-count').textContent = learnedCount;
+        document.getElementById('char-total-count').textContent = totalChars;
+        document.getElementById('char-progress-percent').textContent = `${progressPercent}%`;
+        document.getElementById('char-progress-ring').style.setProperty('--progress', `${progressPercent * 3.6}deg`);
+        
+        // 数学统计
+        const wrongCount = this.math.wrongRecords.length;
+        const totalAttempts = wrongCount + this.math.combo + 10; // 估算
+        const accuracy = totalAttempts > 0 ? Math.round(((totalAttempts - wrongCount) / totalAttempts) * 100) : 0;
+        
+        document.getElementById('math-accuracy').textContent = `${accuracy}%`;
+        document.getElementById('math-coins').textContent = this.math.coins;
+        document.getElementById('math-max-combo').textContent = this.storage.get('math_max_combo') || 0;
+        
+        const studyTime = this.storage.getProgress().studyTime || 0;
+        const hours = Math.round(studyTime / 3600000 * 10) / 10;
+        document.getElementById('math-study-time').textContent = `${hours}h`;
+        
+        // 薄弱点
+        const weakPoints = this.math.getWeakPoints();
+        const weakPointsList = document.getElementById('weak-points-list');
+        
+        if (weakPoints.length === 0) {
+          weakPointsList.innerHTML = `
+            <div class="weak-point-item">
+              <span class="weak-point-q">暂无记录</span>
+              <span class="weak-point-count">-</span>
+            </div>
+          `;
+        } else {
+          weakPointsList.innerHTML = weakPoints.map(wp => `
+            <div class="weak-point-item">
+              <span class="weak-point-q">${wp.question}</span>
+              <span class="weak-point-count">错 ${wp.count} 次</span>
+            </div>
+          `).join('');
+        }
+        
+        // 学习热力图（最近7天）
+        this.renderHeatmap();
+      }
+
+      renderHeatmap() {
+        const heatmap = document.getElementById('study-heatmap');
+        const days = ['日', '一', '二', '三', '四', '五', '六'];
+        const today = new Date();
+        
+        let html = '';
+        for (let i = 6; i >= 0; i--) {
+          const date = new Date(today);
+          date.setDate(date.getDate() - i);
+          const dayName = days[date.getDay()];
+          
+          // 模拟学习时长数据（实际应从存储中读取）
+          const studyMinutes = Math.floor(Math.random() * 60);
+          let level = 0;
+          if (studyMinutes > 45) level = 4;
+          else if (studyMinutes > 30) level = 3;
+          else if (studyMinutes > 15) level = 2;
+          else if (studyMinutes > 0) level = 1;
+          
+          html += `<div class="heatmap-day level-${level}" title="${studyMinutes}分钟">${dayName}</div>`;
+        }
+        heatmap.innerHTML = html;
+      }
+
+      showToast(message) {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3000);
+      }
+    }
+
+    const app = new App();
+  </script>
+</body>
+</html>
