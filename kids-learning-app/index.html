@@ -156,6 +156,7 @@
       gap: var(--spacing);
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
+      min-height: 0;
     }
 
     .card {
@@ -213,17 +214,27 @@
     }
 
     .char-display {
-      flex: 1;
+      flex: 0 0 auto;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 20px;
+      gap: 10px;
       cursor: pointer;
-      padding: 20px;
+      padding: 15px;
       border-radius: var(--radius);
       position: relative;
       overflow: hidden;
+    }
+
+    .char-display .stroke-svg {
+      position: relative;
+      z-index: 1;
+    }
+
+    .char-display .char-symbol {
+      z-index: 1;
+      opacity: 1;
     }
 
     .char-symbol {
@@ -263,23 +274,24 @@
       display: flex;
       gap: 10px;
       justify-content: center;
-      margin-top: 15px;
-      margin-bottom: 10px;
+      margin: 10px 0;
       padding: 10px;
-      background: rgba(255,255,255,0.5);
+      background: rgba(255,255,255,0.7);
       border-radius: 15px;
+      border: 2px solid var(--primary);
+      flex-shrink: 0;
     }
 
     .stroke-controls .btn {
-      min-height: 45px;
-      padding: 8px 16px;
-      font-size: 16px;
+      min-height: 50px;
+      padding: 10px 20px;
+      font-size: 18px;
       box-shadow: 0 3px 10px rgba(0,0,0,0.15);
     }
 
     .stroke-svg {
-      width: 200px;
-      height: 200px;
+      width: 120px;
+      height: 120px;
       border: 3px solid #ddd;
       border-radius: 10px;
       background: white;
@@ -288,18 +300,19 @@
     .stroke-path {
       fill: none;
       stroke: var(--primary);
-      stroke-width: 5;
+      stroke-width: 8;
       stroke-linecap: round;
       stroke-linejoin: round;
+      opacity: 1;
     }
 
     .stroke-anim {
-      stroke-dasharray: 500;
+      stroke-dasharray: 0;
       stroke-dashoffset: 0;
     }
 
     .stroke-anim.playing {
-      animation: drawStroke 1.5s ease forwards;
+      animation: drawStroke 2s ease forwards;
     }
 
     @keyframes drawStroke {
@@ -875,12 +888,45 @@
       font-size: 40px;
     }
 
-    @media (orientation: portrait) {
-      .orientation-tip {
-        display: flex !important;
+    /* PC端响应式适配 */
+    @media (min-width: 768px) {
+      :root {
+        --font-size-char: 140px;
       }
+      
       #app {
-        display: none;
+        max-width: 600px;
+        margin: 0 auto;
+        min-height: 100vh;
+        box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      }
+      
+      .screen-content {
+        padding: 20px;
+        gap: 15px;
+      }
+      
+      .char-display {
+        padding: 20px;
+        min-height: 300px;
+      }
+      
+      .stroke-svg {
+        max-height: 200px;
+      }
+      
+      .stroke-controls {
+        margin: 15px 0;
+        padding: 15px;
+      }
+      
+      .char-controls {
+        gap: 10px;
+      }
+      
+      .char-controls .btn {
+        min-height: 60px;
+        font-size: 20px;
       }
     }
 
@@ -973,17 +1019,17 @@
         <div class="char-display" id="char-display">
           <div class="swipe-hint left">◀</div>
           <div class="swipe-hint right">▶</div>
-          <svg class="stroke-svg" id="stroke-svg" viewBox="0 0 120 140" preserveAspectRatio="xMidYMid meet">
+          <svg class="stroke-svg" id="stroke-svg" viewBox="0 0 100 160" preserveAspectRatio="xMidYMid meet">
             <path class="stroke-path stroke-anim" id="stroke-path" d=""></path>
           </svg>
           <div class="char-symbol" id="current-char">人</div>
           <div class="char-pinyin" id="current-pinyin">rén</div>
           <div class="char-words" id="current-words"></div>
-          <div class="stroke-controls">
-            <button class="btn btn-secondary" id="btn-play">▶ 播放</button>
-            <button class="btn btn-accent" id="btn-pause">⏸ 暂停</button>
-            <button class="btn btn-primary" id="btn-replay">🔄 重播</button>
-          </div>
+        </div>
+        <div class="stroke-controls">
+          <button class="btn btn-secondary" id="btn-play">▶ 播放</button>
+          <button class="btn btn-accent" id="btn-pause">⏸ 暂停</button>
+          <button class="btn btn-primary" id="btn-replay">🔄 重播</button>
         </div>
         <div class="char-controls">
           <button class="btn btn-success" id="btn-learned">学会了 ✓</button>
@@ -1676,7 +1722,6 @@
         });
 
         document.getElementById('char-display').addEventListener('click', (e) => {
-          if (e.target.closest('.stroke-controls')) return;
           const char = this.characters.getCurrentChar();
           if (char) {
             this.audio.speak(`${char.pinyin}，${char.audio}`);
@@ -1889,6 +1934,23 @@
           if (char.svgPath) {
             pathEl.setAttribute('d', char.svgPath);
             pathEl.classList.remove('playing');
+            // 初始化路径为隐藏状态
+            const length = pathEl.getTotalLength();
+            console.log('显示字符，路径长度:', length, '路径数据:', char.svgPath);
+            console.log('strokeDasharray:', pathEl.style.strokeDasharray);
+            console.log('strokeDashoffset:', pathEl.style.strokeDashoffset);
+            console.log('stroke:', pathEl.style.stroke);
+            console.log('strokeWidth:', pathEl.style.strokeWidth);
+            console.log('opacity:', pathEl.style.opacity);
+            console.log('computed stroke:', window.getComputedStyle(pathEl).stroke);
+            console.log('computed strokeWidth:', window.getComputedStyle(pathEl).strokeWidth);
+            console.log('computed fill:', window.getComputedStyle(pathEl).fill);
+            // 添加内联样式测试
+            pathEl.style.stroke = '#FF6B6B';
+            pathEl.style.strokeWidth = '8px';
+            pathEl.style.fill = 'none';
+            pathEl.style.strokeDasharray = length;
+            pathEl.style.strokeDashoffset = length;
             void pathEl.offsetWidth;
           }
           
@@ -1900,9 +1962,35 @@
 
       playStrokeAnim() {
         const pathEl = document.getElementById('stroke-path');
+        const length = pathEl.getTotalLength();
+        console.log('播放动画，路径长度:', length);
+        console.log('当前路径数据:', pathEl.getAttribute('d'));
+        console.log('播放前 strokeDasharray:', pathEl.style.strokeDasharray);
+        console.log('播放前 strokeDashoffset:', pathEl.style.strokeDashoffset);
+        console.log('播放前 classList:', pathEl.classList.toString());
+        console.log('播放前 computed strokeDasharray:', window.getComputedStyle(pathEl).strokeDasharray);
+        console.log('播放前 computed strokeDashoffset:', window.getComputedStyle(pathEl).strokeDashoffset);
+        pathEl.style.strokeDasharray = length;
+        pathEl.style.strokeDashoffset = length;
+        console.log('设置后 strokeDasharray:', pathEl.style.strokeDasharray);
+        console.log('设置后 strokeDashoffset:', pathEl.style.strokeDashoffset);
         pathEl.classList.remove('playing');
         void pathEl.offsetWidth;
         pathEl.classList.add('playing');
+        console.log('添加 playing 后 classList:', pathEl.classList.toString());
+        console.log('添加 playing 后 computed strokeDasharray:', window.getComputedStyle(pathEl).strokeDasharray);
+        console.log('添加 playing 后 computed strokeDashoffset:', window.getComputedStyle(pathEl).strokeDashoffset);
+        
+        // 检查动画过程中的状态
+        setTimeout(() => {
+          console.log('动画进行中 (0.5s) computed strokeDashoffset:', window.getComputedStyle(pathEl).strokeDashoffset);
+        }, 500);
+        setTimeout(() => {
+          console.log('动画进行中 (1s) computed strokeDashoffset:', window.getComputedStyle(pathEl).strokeDashoffset);
+        }, 1000);
+        setTimeout(() => {
+          console.log('动画结束 (2s) computed strokeDashoffset:', window.getComputedStyle(pathEl).strokeDashoffset);
+        }, 2000);
       }
 
       pauseStrokeAnim() {
