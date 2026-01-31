@@ -84,6 +84,14 @@ tmjnng.github.io/
 │   ├── index.html     # 主页面（单文件应用）
 │   ├── manifest.json  # PWA配置
 │   └── assets/        # 资源文件
+├── ai-docs/           # AI 工作区（重要：维护规则见下方）
+│   ├── README.md      # ai-docs 使用规则
+│   ├── prompts/       # AI 提示词模板
+│   ├── context/       # 项目上下文文档
+│   ├── designs/       # 工具设计文档
+│   └── skills/        # AI Skill 定义
+├── current/           # 当前工作区
+├── archive/           # 归档目录
 ├── .trae/             # Trae相关配置
 │   └── rules/         # 规则文件
 ├── user.rules.md      # 个人规则文件
@@ -253,6 +261,67 @@ tmjnng.github.io/
 - **加密操作**：使用Web Crypto API，避免不安全的加密实现
 - **用户数据**：本地存储，不发送到服务器
 - **输入验证**：对用户输入进行适当验证
+
+### 15. AI-Docs 文档维护规范（重要）
+**ai-docs/ 目录用于存放 AI 相关的文档、提示词和设计资料，必须遵循以下维护规则：**
+
+#### 目录结构
+```
+ai-docs/
+├── README.md          # ai-docs 总说明和存放规则
+├── prompts/           # AI 提示词模板
+│   ├── README.md
+│   ├── feature-dev.md
+│   ├── bug-fix.md
+│   ├── code-review.md
+│   └── refact.md
+├── context/           # 项目上下文
+│   ├── README.md
+│   ├── architecture.md
+│   ├── tech-stack.md
+│   └── conventions.md
+├── designs/           # 工具设计文档
+│   ├── dbdesigner/README.md
+│   ├── drawsystem/README.md
+│   ├── minipen/README.md
+│   ├── snappicedit/README.md
+│   ├── miniphotoedit/README.md
+│   ├── minicut/README.md
+│   ├── weedit/README.md
+│   ├── sudoku/README.md
+│   ├── gobang/README.md
+│   ├── MathGrade/README.md
+│   ├── kids-learning-app/README.md
+│   ├── exam/README.md
+│   └── tool/README.md
+└── skills/            # AI Skill 定义
+    └── exam-skill/SKILL.md
+```
+
+#### 文件存放规则
+| 目录 | 存放内容 | 命名规范 | 更新时机 |
+|-----|---------|---------|---------|
+| `prompts/` | 可复用的 AI 提示词模板 | `{用途}.md` | 新增提示词类型时 |
+| `context/` | 项目背景信息 | `{主题}.md` | 架构/技术栈/规范变更时 |
+| `designs/` | 各工具的设计文档 | `{工具名}/README.md` | 工具功能变更时 |
+| `skills/` | AI Skill 定义 | `{skill-name}-skill/SKILL.md` | Skill 变更时 |
+
+#### 强制维护规则
+**当进行以下操作时，必须同步更新 ai-docs/ 中的相关文档：**
+
+1. **新增工具/功能** → 创建 `ai-docs/designs/{工具名}/README.md`
+2. **修改工具架构** → 更新 `ai-docs/designs/{工具名}/README.md` 和 `ai-docs/context/architecture.md`
+3. **变更技术栈** → 更新 `ai-docs/context/tech-stack.md`
+4. **修改编码规范** → 更新 `ai-docs/context/conventions.md`
+5. **新增提示词类型** → 创建 `ai-docs/prompts/{用途}.md`
+6. **新增 Skill** → 创建 `ai-docs/skills/{skill-name}-skill/SKILL.md`
+
+#### 更新检查清单
+每次修改项目后，检查以下文档是否需要更新：
+- [ ] `ai-docs/designs/` 下对应工具的设计文档
+- [ ] `ai-docs/context/architecture.md`（如涉及架构变更）
+- [ ] `ai-docs/context/tech-stack.md`（如涉及技术变更）
+- [ ] `ai-docs/context/conventions.md`（如涉及规范变更）
 
 ## 工作流程
 1. **需求分析**：明确功能需求和实现方案
