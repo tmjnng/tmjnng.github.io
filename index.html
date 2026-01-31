@@ -773,6 +773,12 @@ var _hmt = _hmt || [];
         examDesc: 'JLPT日语刷题系统，支持N5-N1级别，提供大量练习题目，帮助提升日语能力',
         mathGradeTitle: 'MathGrade 数学学习',
         mathGradeDesc: '分年级数学学习系统，覆盖小学到高中，包含知识点讲解、公式渲染、智能刷题、草稿板等功能',
+        kidsLearningTitle: '快乐学习',
+        kidsLearningDesc: '儿童启蒙学习应用，包含汉字学习、笔顺动画、数学加减法、游戏化学习等功能，适合3-6岁幼儿',
+        sudokuTitle: '数独游戏',
+        sudokuDesc: '经典数独游戏，支持多种难度等级，包含笔记模式、提示功能、撤销重做等',
+        gobangTitle: '五子棋',
+        gobangDesc: '经典五子棋游戏，支持双人对战，包含落子提示、胜负判定等功能',
         drawSystemTitle: '抽奖系统',
         drawSystemDesc: '在线抽奖系统，支持名单导入、奖品设置、奖品级别管理，适合各种抽奖活动',
         footer: '© 2026 在线工具集合 | 联系邮箱：<a href="mailto:tmjnng@foxmail.com">tmjnng@foxmail.com</a> | 公众号：JLPT日语阅读 | Powered by Hexo',
@@ -817,6 +823,12 @@ var _hmt = _hmt || [];
         examDesc: 'JLPT Japanese quiz system, supports N5-N1 levels, provides many practice questions to help improve Japanese skills',
         mathGradeTitle: 'MathGrade Math Learning',
         mathGradeDesc: 'Grade-based math learning system, covering elementary to high school, including knowledge points explanation, formula rendering, intelligent quiz, scratchpad, etc.',
+        kidsLearningTitle: 'Happy Learning',
+        kidsLearningDesc: 'Children\'s early education app with Chinese character learning, stroke animations, math addition/subtraction, and gamified learning for ages 3-6',
+        sudokuTitle: 'Sudoku',
+        sudokuDesc: 'Classic Sudoku game with multiple difficulty levels, featuring note mode, hints, undo/redo, and more',
+        gobangTitle: 'Gobang',
+        gobangDesc: 'Classic Gobang game supporting two-player mode with move hints and win/loss detection',
         drawSystemTitle: 'Lottery System',
         drawSystemDesc: 'Online lottery system, supports list import, prize settings, prize level management, suitable for various lottery activities',
         footer: '© 2026 Online Tools Collection | Email: <a href="mailto:tmjnng@foxmail.com">tmjnng@foxmail.com</a> | WeChat: JLPT日语阅读 | Powered by Hexo',
@@ -861,6 +873,12 @@ var _hmt = _hmt || [];
         examDesc: 'JLPT日本語クイズシステム、N5-N1レベルをサポート、多くの練習問題を提供し、日本語スキルの向上を支援',
         mathGradeTitle: 'MathGrade数学学習',
         mathGradeDesc: '学年別数学学習システム、小学校から高校までカバー、知識ポイントの説明、数式レンダリング、インテリジェントクイズ、スクラッチパッドなどの機能を含む',
+        kidsLearningTitle: '楽しい学習',
+        kidsLearningDesc: '子供向け教育アプリ、漢字学習、筆順アニメーション、足し算引き算、ゲーム化学習機能を含み、3-6歳向け',
+        sudokuTitle: '数独ゲーム',
+        sudokuDesc: 'クラシックな数独ゲーム、複数の難易度レベルをサポート、メモモード、ヒント機能、元に戻す/やり直しなど',
+        gobangTitle: '五目並べ',
+        gobangDesc: 'クラシックな五目並べゲーム、二人対戦をサポート、着手ヒント、勝敗判定機能を含む',
         drawSystemTitle: '抽選システム',
         drawSystemDesc: 'オンライン抽選システム、リストインポート、賞品設定、賞品レベル管理をサポート、様々な抽選活動に適用',
         footer: '© 2026 オンラインツールコレクション | メール：<a href="mailto:tmjnng@foxmail.com">tmjnng@foxmail.com</a> | 公衆号：JLPT日语阅读 | Powered by Hexo',
@@ -922,8 +940,17 @@ var _hmt = _hmt || [];
       document.querySelectorAll('.tool-card')[8].querySelector('h3').innerHTML = '<span class="icon">🎓</span> ' + t.mathGradeTitle;
       document.querySelectorAll('.tool-card')[8].querySelector('p').textContent = t.mathGradeDesc;
       
-      document.querySelectorAll('.tool-card')[9].querySelector('h3').innerHTML = '<span class="icon">🎁</span> ' + t.drawSystemTitle;
-      document.querySelectorAll('.tool-card')[9].querySelector('p').textContent = t.drawSystemDesc;
+      document.querySelectorAll('.tool-card')[9].querySelector('h3').innerHTML = '<span class="icon">👶</span> ' + t.kidsLearningTitle;
+      document.querySelectorAll('.tool-card')[9].querySelector('p').textContent = t.kidsLearningDesc;
+      
+      document.querySelectorAll('.tool-card')[10].querySelector('h3').innerHTML = '<span class="icon">🎁</span> ' + t.drawSystemTitle;
+      document.querySelectorAll('.tool-card')[10].querySelector('p').textContent = t.drawSystemDesc;
+      
+      document.querySelectorAll('.tool-card')[11].querySelector('h3').innerHTML = '<span class="icon">🎮</span> ' + t.sudokuTitle;
+      document.querySelectorAll('.tool-card')[11].querySelector('p').textContent = t.sudokuDesc;
+      
+      document.querySelectorAll('.tool-card')[12].querySelector('h3').innerHTML = '<span class="icon">⚪⚫</span> ' + t.gobangTitle;
+      document.querySelectorAll('.tool-card')[12].querySelector('p').textContent = t.gobangDesc;
       
       document.querySelector('#footer p').innerHTML = t.footer;
       
