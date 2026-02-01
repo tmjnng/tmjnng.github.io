@@ -1825,12 +1825,12 @@
       // 根据消息长度计算语音播放等待时间（毫秒）
       getSpeechWaitTime(message) {
         if (!message) return 1500;
-        // 根据实际测试：11个字约800ms，每个字约73ms
+        // 根据实际测试调整：每个字约100ms，加上缓冲
         // 只计算中文字符和字母数字，排除标点符号
         const readableChars = message.replace(/[，。？！、：；""''（）【】\s]/g, '');
         const charCount = readableChars.length;
-        const waitTime = Math.max(1500, charCount * 80 + 500);
-        return Math.min(waitTime, 4000); // 最多4秒
+        const waitTime = Math.max(1500, charCount * 100 + 800);
+        return Math.min(waitTime, 5000); // 最多5秒
       }
 
       loadProgress() {
