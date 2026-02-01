@@ -1718,11 +1718,16 @@
       async loadNicknameMessages() {
         try {
           const response = await fetch('nickname-messages.json');
+          console.log('加载配置文件状态:', response.status, response.ok);
           if (response.ok) {
             this.nicknameMessages = await response.json();
+            console.log('配置文件加载成功:', Object.keys(this.nicknameMessages));
+          } else {
+            console.log('配置文件加载失败，状态码:', response.status);
+            this.nicknameMessages = null;
           }
         } catch (e) {
-          console.log('无法加载昵称消息配置，使用默认消息');
+          console.log('无法加载昵称消息配置，错误:', e.message);
           this.nicknameMessages = null;
         }
       }
@@ -1745,11 +1750,6 @@
             console.log('使用昵称定制消息:', msg);
             return msg;
           }
-        }
-        
-        // 返回默认消息
-        if (this.nicknameMessages && this.nicknameMessages._default) {
-          return this.nicknameMessages._default[key];
         }
         
         // 硬编码默认消息（语音播报时不包含识别码）
