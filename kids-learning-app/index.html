@@ -1822,6 +1822,17 @@
         return this.nickname ? `亲爱的小朋友${this.nickname}，` : '';
       }
 
+      // 根据消息长度计算语音播放等待时间（毫秒）
+      getSpeechWaitTime(message) {
+        if (!message) return 1500;
+        // 根据实际测试：11个字约800ms，每个字约73ms
+        // 只计算中文字符和字母数字，排除标点符号
+        const readableChars = message.replace(/[，。？！、：；""''（）【】\s]/g, '');
+        const charCount = readableChars.length;
+        const waitTime = Math.max(1500, charCount * 80 + 500);
+        return Math.min(waitTime, 4000); // 最多4秒
+      }
+
       loadProgress() {
         const progress = this.storage.getProgress();
         this.state.learned = progress.learnedChars || [];
@@ -2204,10 +2215,12 @@
           this.showCelebration();
         } else {
           // 普通学会，播放简单提示
-          this.audio.speak(this.getMessage('correct'));
+          const message = this.getMessage('correct');
+          this.audio.speak(message);
+          const waitTime = this.getSpeechWaitTime(message);
           const next = this.characters.nextChar();
           if (next) {
-            setTimeout(() => this.showCurrentChar(), 800);
+            setTimeout(() => this.showCurrentChar(), waitTime);
           } else {
             this.unlockNextLevel();
             this.showCelebration();
@@ -2291,8 +2304,10 @@
         if (isCorrect) {
           btn.style.background = 'var(--success)';
           this.audio.correctSound();
-          this.audio.speak(this.getMessage('correct'));
-          setTimeout(() => this.initMatchGame(), 1500);
+          const message = this.getMessage('correct');
+          this.audio.speak(message);
+          const waitTime = this.getSpeechWaitTime(message);
+          setTimeout(() => this.initMatchGame(), waitTime);
         } else {
           btn.style.background = 'var(--error)';
           this.audio.wrongSound();
@@ -2341,8 +2356,10 @@
         if (isCorrect) {
           btn.style.background = 'var(--success)';
           this.audio.correctSound();
-          this.audio.speak(this.getMessage('correct'));
-          setTimeout(() => this.initListenGame(), 1500);
+          const message = this.getMessage('correct');
+          this.audio.speak(message);
+          const waitTime = this.getSpeechWaitTime(message);
+          setTimeout(() => this.initListenGame(), waitTime);
         } else {
           btn.style.background = 'var(--error)';
           this.audio.wrongSound();
@@ -2555,7 +2572,9 @@
             setTimeout(() => comboEl.classList.remove('active'), 500);
           }
           
-          this.audio.speak(this.getMessage('correctWithPraise'));
+          const message = this.getMessage('correctWithPraise');
+          this.audio.speak(message);
+          const waitTime = this.getSpeechWaitTime(message);
           
           // 播放动画
           if (type === 'add') {
@@ -2572,7 +2591,7 @@
             } else {
               this.generateSubQuestion();
             }
-          }, 2500);
+          }, waitTime);
         } else {
           btn.classList.add('wrong');
           this.audio.wrongSound();
