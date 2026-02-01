@@ -151,6 +151,20 @@
       gap: 12px;
     }
 
+    .user-nickname {
+      font-size: 18px;
+      color: var(--primary);
+      background: rgba(255, 107, 107, 0.1);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .user-nickname:empty {
+      display: none;
+    }
+
     .screen-content {
       flex: 1;
       display: flex;
@@ -1013,7 +1027,7 @@
         </div>
         <div class="custom-message-notice" style="margin-top: 40px; text-align: center; padding: 0 20px;">
           <p style="font-size: 14px; color: #999; line-height: 1.6;">
-            💡 想要为孩子定制专属的提示语音？我们提供个性化消息定制服务（收取少量费用）<br>
+            💡 想要为孩子定制专属的提示语音？我们提供个性化消息定制服务<br>
             邮箱：<a href="mailto:tmjnng@foxmail.com" style="color: #FF6B6B; text-decoration: none;">tmjnng@foxmail.com</a><br>
             微信：<span style="color: #FF6B6B;">tmjnng</span>
           </p>
@@ -1025,7 +1039,7 @@
       <div class="screen-header">
         <button class="btn btn-accent back-btn" data-back>← 返回</button>
         <div class="screen-title">📚 汉字关卡</div>
-        <div style="width: 80px;"></div>
+        <div class="user-nickname" data-nickname-display></div>
       </div>
       <div class="screen-content">
         <div class="level-map" id="level-map"></div>
@@ -1036,7 +1050,10 @@
       <div class="screen-header">
         <button class="btn btn-accent back-btn" data-back>← 返回</button>
         <div class="screen-title">📚 学汉字</div>
-        <button class="btn btn-warning back-btn" id="btn-games">🎮 游戏</button>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div class="user-nickname" data-nickname-display></div>
+          <button class="btn btn-warning back-btn" id="btn-games">🎮 游戏</button>
+        </div>
       </div>
       <div class="progress-bar">
         <div class="progress-fill" id="char-progress-bar" style="width: 0%"></div>
@@ -1071,7 +1088,7 @@
       <div class="screen-header">
         <button class="btn btn-accent back-btn" data-route="chinese">← 返回</button>
         <div class="screen-title">🎮 游戏模式</div>
-        <div style="width: 80px;"></div>
+        <div class="user-nickname" data-nickname-display></div>
       </div>
       <div class="screen-content">
         <div class="game-select-grid">
@@ -1091,7 +1108,7 @@
       <div class="screen-header">
         <button class="btn btn-accent back-btn" data-route="games">← 返回</button>
         <div class="screen-title">🖼️ 看图识字</div>
-        <div style="width: 80px;"></div>
+        <div class="user-nickname" data-nickname-display></div>
       </div>
       <div class="screen-content">
         <div class="game-container">
@@ -1105,7 +1122,10 @@
       <div class="screen-header">
         <button class="btn btn-accent back-btn" data-route="games">← 返回</button>
         <div class="screen-title">👂 听音选图</div>
-        <button class="btn btn-primary back-btn" id="btn-play-audio">🔊 播放</button>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div class="user-nickname" data-nickname-display></div>
+          <button class="btn btn-primary back-btn" id="btn-play-audio">🔊 播放</button>
+        </div>
       </div>
       <div class="screen-content">
         <div class="game-container">
@@ -1118,7 +1138,10 @@
       <div class="screen-header">
         <button class="btn btn-accent back-btn" data-back>← 返回</button>
         <div class="screen-title">➕ 学加法</div>
-        <button class="btn btn-warning back-btn" data-route="progress">📊 进度</button>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div class="user-nickname" data-nickname-display></div>
+          <button class="btn btn-warning back-btn" data-route="progress">📊 进度</button>
+        </div>
       </div>
       <div class="math-meta">
         <div class="combo-display" id="add-combo">🔥 Combo x0</div>
@@ -1156,7 +1179,10 @@
       <div class="screen-header">
         <button class="btn btn-accent back-btn" data-back>← 返回</button>
         <div class="screen-title">➖ 学减法</div>
-        <button class="btn btn-warning back-btn" data-route="progress">📊 进度</button>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div class="user-nickname" data-nickname-display></div>
+          <button class="btn btn-warning back-btn" data-route="progress">📊 进度</button>
+        </div>
       </div>
       <div class="math-meta">
         <div class="combo-display" id="sub-combo">🔥 Combo x0</div>
@@ -1194,7 +1220,7 @@
       <div class="screen-header">
         <button class="btn btn-accent back-btn" data-back>← 返回</button>
         <div class="screen-title">📊 我的进度</div>
-        <div style="width: 80px;"></div>
+        <div class="user-nickname" data-nickname-display></div>
       </div>
       <div class="screen-content progress-report">
         <div class="report-section">
@@ -1682,6 +1708,7 @@
         await this.characters.loadData();
         this.loadProgress();
         this.initNickname();
+        this.updateNicknameDisplay();
         this.bindEvents();
         this.startStudyTimer();
         const welcomeMsg = this.getMessage('welcome');
@@ -1735,25 +1762,37 @@
       initNickname() {
         const nicknameInput = document.getElementById('nickname-input');
         const codeInput = document.getElementById('nickname-code-input');
-        
+
         if (nicknameInput) {
           nicknameInput.value = this.nickname;
-          nicknameInput.addEventListener('change', (e) => {
+          // 实时保存输入
+          nicknameInput.addEventListener('input', (e) => {
             this.nickname = e.target.value.trim();
             this.storage.set('nickname', this.nickname);
+            this.updateNicknameDisplay();
           });
+          // 回车键播放问候
+          nicknameInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+              this.nickname = e.target.value.trim();
+              this.storage.set('nickname', this.nickname);
+              if (this.nickname) {
+                this.audio.speak(this.getMessage('greeting'));
+              }
+              e.target.blur();
+            }
+          });
+          // 失去焦点时保存并问候
           nicknameInput.addEventListener('blur', (e) => {
             this.nickname = e.target.value.trim();
             this.storage.set('nickname', this.nickname);
-            if (this.nickname) {
-              this.audio.speak(this.getMessage('greeting'));
-            }
           });
         }
-        
+
         if (codeInput) {
           codeInput.value = this.nicknameCode;
-          codeInput.addEventListener('change', (e) => {
+          // 实时保存输入
+          codeInput.addEventListener('input', (e) => {
             this.nicknameCode = e.target.value.trim();
             this.storage.set('nickname_code', this.nicknameCode);
           });
@@ -1983,7 +2022,15 @@
         if (target) {
           target.classList.add('active');
           this.state.currentScreen = screen;
+          this.updateNicknameDisplay();
         }
+      }
+
+      updateNicknameDisplay() {
+        // 更新所有页面的昵称显示
+        document.querySelectorAll('[data-nickname-display]').forEach(el => {
+          el.textContent = this.nickname || '';
+        });
       }
 
       initLevelMap() {
@@ -2149,9 +2196,11 @@
         if (count % 5 === 0) {
           this.showCelebration();
         } else {
+          // 普通学会，播放简单提示
+          this.audio.speak(this.getMessage('correct'));
           const next = this.characters.nextChar();
           if (next) {
-            setTimeout(() => this.showCurrentChar(), 300);
+            setTimeout(() => this.showCurrentChar(), 800);
           } else {
             this.unlockNextLevel();
             this.showCelebration();
