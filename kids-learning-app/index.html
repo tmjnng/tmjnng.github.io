@@ -998,6 +998,10 @@
     <div id="screen-home" class="screen active">
       <div class="screen-content">
         <h1 class="home-title">🌟 快乐学习</h1>
+        <div class="nickname-setting" style="margin-bottom: 20px; text-align: center;">
+          <label style="font-size: 18px; color: #666; display: block; margin-bottom: 8px;">小朋友，你叫什么名字呀？</label>
+          <input type="text" id="nickname-input" placeholder="输入昵称" maxlength="10" style="padding: 12px 20px; font-size: 20px; border: 2px solid #FF6B6B; border-radius: 25px; text-align: center; width: 200px; outline: none;">
+        </div>
         <div class="home-buttons">
           <button class="btn btn-primary home-btn" data-route="chinese-map" data-voice="我们来学汉字吧！">📚 学汉字</button>
           <button class="btn btn-secondary home-btn" data-route="math-add" data-voice="我们来学加法吧！">➕ 学加法</button>
@@ -1332,11 +1336,18 @@
 
       loadVoice() {
         const voices = this.synth.getVoices();
-        this.voice = voices.find(v => v.lang.includes('zh')) || voices[0];
+        // 优先选择中文女声
+        this.voice = voices.find(v => v.lang.includes('zh') && v.name.includes('女')) ||
+                     voices.find(v => v.lang.includes('zh-CN')) ||
+                     voices.find(v => v.lang.includes('zh')) ||
+                     voices[0];
         if (!this.voice && this.synth.addEventListener) {
           this.synth.addEventListener('voiceschanged', () => {
             const voices = this.synth.getVoices();
-            this.voice = voices.find(v => v.lang.includes('zh')) || voices[0];
+            this.voice = voices.find(v => v.lang.includes('zh') && v.name.includes('女')) ||
+                         voices.find(v => v.lang.includes('zh-CN')) ||
+                         voices.find(v => v.lang.includes('zh')) ||
+                         voices[0];
           });
         }
       }
@@ -1348,7 +1359,7 @@
         utterance.voice = this.voice;
         utterance.lang = 'zh-CN';
         utterance.rate = 0.9;
-        utterance.pitch = 1.0;
+        utterance.pitch = 1.3; // 提高音调，更像女声
         this.synth.speak(utterance);
       }
 
@@ -1647,6 +1658,7 @@
         this.touchStartX = 0;
         this.strokeAnimating = false;
         this.currentGame = null;
+        this.nickname = this.storage.get('nickname') || '';
         this.init();
       }
 
@@ -1654,9 +1666,33 @@
         // 等待汉字数据加载完成
         await this.characters.loadData();
         this.loadProgress();
+        this.initNickname();
         this.bindEvents();
         this.startStudyTimer();
-        this.showToast('欢迎来到快乐学习！');
+        const welcomeMsg = this.nickname ? `欢迎${this.nickname}来到快乐学习！` : '欢迎来到快乐学习！';
+        this.showToast(welcomeMsg);
+      }
+
+      initNickname() {
+        const nicknameInput = document.getElementById('nickname-input');
+        if (nicknameInput) {
+          nicknameInput.value = this.nickname;
+          nicknameInput.addEventListener('change', (e) => {
+            this.nickname = e.target.value.trim();
+            this.storage.set('nickname', this.nickname);
+          });
+          nicknameInput.addEventListener('blur', (e) => {
+            this.nickname = e.target.value.trim();
+            this.storage.set('nickname', this.nickname);
+            if (this.nickname) {
+              this.audio.speak(`你好，${this.nickname}！`);
+            }
+          });
+        }
+      }
+
+      getNicknamePrefix() {
+        return this.nickname ? `亲爱的小朋友${this.nickname}，` : '';
       }
 
       loadProgress() {
@@ -2059,7 +2095,8 @@
 
       showCelebration() {
         document.getElementById('celebration').classList.add('show');
-        this.audio.speak('太棒了！你真聪明！');
+        const msg = this.nickname ? `${this.nickname}，太棒了！你真聪明！` : '太棒了！你真聪明！';
+        this.audio.speak(msg);
       }
 
       showStarRain() {
@@ -2114,11 +2151,12 @@
       handleMatchAnswer(btn) {
         const value = btn.dataset.value;
         const isCorrect = value === this.currentGameData.target.char;
-        
+
         if (isCorrect) {
           btn.style.background = 'var(--success)';
           this.audio.correctSound();
-          this.audio.speak('答对了！');
+          const msg = this.nickname ? `${this.nickname}，答对了！` : '答对了！';
+          this.audio.speak(msg);
           setTimeout(() => this.initMatchGame(), 1500);
         } else {
           btn.style.background = 'var(--error)';
@@ -2164,11 +2202,12 @@
       handleListenAnswer(btn) {
         const value = btn.dataset.value;
         const isCorrect = value === this.currentGameData.target.char;
-        
+
         if (isCorrect) {
           btn.style.background = 'var(--success)';
           this.audio.correctSound();
-          this.audio.speak('答对了！');
+          const msg = this.nickname ? `${this.nickname}，答对了！` : '答对了！';
+          this.audio.speak(msg);
           setTimeout(() => this.initListenGame(), 1500);
         } else {
           btn.style.background = 'var(--error)';
@@ -2382,7 +2421,8 @@
             setTimeout(() => comboEl.classList.remove('active'), 500);
           }
           
-          this.audio.speak('答对了！你真棒！');
+          const msg = this.nickname ? `${this.nickname}，答对了！你真棒！` : '答对了！你真棒！';
+          this.audio.speak(msg);
           
           // 播放动画
           if (type === 'add') {
