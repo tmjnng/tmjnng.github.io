@@ -1729,16 +1729,21 @@
 
       getMessage(key) {
         const nicknameKey = this.getNicknameKey();
+        console.log('getMessage:', key, 'nickname:', this.nickname, 'nicknameKey:', nicknameKey);
         
         // 如果有定制消息配置
         if (this.nicknameMessages && nicknameKey) {
           // 优先查找带识别码的昵称（如 "小明#123"）
           if (this.nicknameMessages[nicknameKey]) {
-            return this.nicknameMessages[nicknameKey][key] || this.nicknameMessages._default[key];
+            const msg = this.nicknameMessages[nicknameKey][key] || this.nicknameMessages._default[key];
+            console.log('使用定制消息:', msg);
+            return msg;
           }
           // 再查找不带识别码的昵称（如 "小明"）
           if (this.nicknameMessages[this.nickname]) {
-            return this.nicknameMessages[this.nickname][key] || this.nicknameMessages._default[key];
+            const msg = this.nicknameMessages[this.nickname][key] || this.nicknameMessages._default[key];
+            console.log('使用昵称定制消息:', msg);
+            return msg;
           }
         }
         
@@ -1750,13 +1755,15 @@
         // 硬编码默认消息（语音播报时不包含识别码）
         const displayName = this.nickname;
         const defaults = {
-          welcome: displayName ? `欢迎${displayName}来到快乐学习！` : '欢迎来到快乐学习！',
-          correct: displayName ? `${displayName}，答对了！` : '答对了！',
-          correctWithPraise: displayName ? `${displayName}，答对了！你真棒！` : '答对了！你真棒！',
-          celebration: displayName ? `${displayName}，太棒了！你真聪明！` : '太棒了！你真聪明！',
-          greeting: displayName ? `你好，${displayName}！` : '你好！'
+          welcome: displayName ? `欢迎亲爱的${displayName}小朋友来到快乐学习！` : '欢迎来到快乐学习！',
+          correct: displayName ? `亲爱的${displayName}小朋友，答对了！` : '答对了！',
+          correctWithPraise: displayName ? `亲爱的${displayName}小朋友，答对了！你真棒！` : '答对了！你真棒！',
+          celebration: displayName ? `亲爱的${displayName}小朋友，太棒了！你真聪明！` : '太棒了！你真聪明！',
+          greeting: displayName ? `你好，亲爱的${displayName}小朋友！` : '你好！'
         };
-        return defaults[key] || '';
+        const result = defaults[key] || '';
+        console.log('使用默认消息:', result);
+        return result;
       }
 
       initNickname() {
