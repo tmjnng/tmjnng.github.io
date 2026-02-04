@@ -27,7 +27,7 @@
       --spacing: 20px;
       --touch-size: 100px;
       --font-size-base: 24px;
-      --font-size-char: 150px;
+      --font-size-char: 120px;
       --transition: 100ms ease;
     }
 
@@ -234,23 +234,28 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      gap: 10px;
+      justify-content: flex-start;
+      gap: 30px;
       cursor: pointer;
       padding: 15px;
       border-radius: var(--radius);
       position: relative;
       overflow: hidden;
+      min-height: 750px;
     }
-
     .char-display .stroke-svg {
       position: relative;
       z-index: 1;
+      order: -1;
+      margin-bottom: 20px;
     }
 
     .char-display .char-symbol {
-      z-index: 1;
+      position: relative;
+      z-index: 2;
       opacity: 1;
+      margin-top: 0;
+      order: 0;
     }
 
     .char-symbol {
@@ -258,6 +263,8 @@
       font-family: "KaiTi", "STKaiti", "楷体", serif;
       color: var(--text);
       line-height: 1;
+      position: relative;
+      z-index: 2;
     }
 
     .char-pinyin {
@@ -306,11 +313,12 @@
     }
 
     .stroke-svg {
-      width: 120px;
-      height: 120px;
+      width: 180px;
+      height: 180px;
       border: 3px solid #ddd;
       border-radius: 10px;
       background: white;
+      transform: scale(1, -1) translate(0, -100%);
     }
 
     .stroke-path {
@@ -332,6 +340,9 @@
     }
 
     @keyframes drawStroke {
+      0% {
+        stroke-dashoffset: var(--stroke-length);
+      }
       to {
         stroke-dashoffset: 0;
       }
@@ -909,7 +920,7 @@
     /* PC端响应式适配 */
     @media (min-width: 768px) {
       :root {
-        --font-size-char: 140px;
+        --font-size-char: 110px;
       }
 
       html, body {
@@ -1063,7 +1074,7 @@
         <div class="char-display" id="char-display">
           <div class="swipe-hint left">◀</div>
           <div class="swipe-hint right">▶</div>
-          <svg class="stroke-svg" id="stroke-svg" viewBox="0 0 100 160" preserveAspectRatio="xMidYMid meet">
+          <svg class="stroke-svg" id="stroke-svg" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet">
             <path class="stroke-path stroke-anim" id="stroke-path" d=""></path>
           </svg>
           <div class="char-symbol" id="current-char">人</div>
@@ -2154,8 +2165,10 @@
         console.log('播放前 computed strokeDashoffset:', window.getComputedStyle(pathEl).strokeDashoffset);
         pathEl.style.strokeDasharray = length;
         pathEl.style.strokeDashoffset = length;
+        pathEl.style.setProperty('--stroke-length', length);
         console.log('设置后 strokeDasharray:', pathEl.style.strokeDasharray);
         console.log('设置后 strokeDashoffset:', pathEl.style.strokeDashoffset);
+        console.log('设置后 --stroke-length:', pathEl.style.getPropertyValue('--stroke-length'));
         pathEl.classList.remove('playing');
         void pathEl.offsetWidth;
         pathEl.classList.add('playing');
