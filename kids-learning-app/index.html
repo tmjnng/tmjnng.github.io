@@ -2163,13 +2163,17 @@
         console.log('播放前 classList:', pathEl.classList.toString());
         console.log('播放前 computed strokeDasharray:', window.getComputedStyle(pathEl).strokeDasharray);
         console.log('播放前 computed strokeDashoffset:', window.getComputedStyle(pathEl).strokeDashoffset);
+        
+        pathEl.classList.remove('playing');
+        void pathEl.offsetWidth;
+        
         pathEl.style.strokeDasharray = length;
         pathEl.style.strokeDashoffset = length;
         pathEl.style.setProperty('--stroke-length', length);
         console.log('设置后 strokeDasharray:', pathEl.style.strokeDasharray);
         console.log('设置后 strokeDashoffset:', pathEl.style.strokeDashoffset);
         console.log('设置后 --stroke-length:', pathEl.style.getPropertyValue('--stroke-length'));
-        pathEl.classList.remove('playing');
+        
         void pathEl.offsetWidth;
         pathEl.classList.add('playing');
         console.log('添加 playing 后 classList:', pathEl.classList.toString());
