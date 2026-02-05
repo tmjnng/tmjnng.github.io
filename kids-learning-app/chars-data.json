@@ -4,7 +4,7 @@
       "char": "人",
       "pinyin": "rén",
       "level": 1,
-      "audio": "人，人类，大人",
+      "audio": "人，人类，大人，英语读作 people",
       "words": [
         "人们",
         "人口",
@@ -17,7 +17,7 @@
       "char": "口",
       "pinyin": "kǒu",
       "level": 1,
-      "audio": "口，口水，入口",
+      "audio": "口，口水，入口，英语读作 mouth",
       "words": [
         "口水",
         "入口",
@@ -30,7 +30,7 @@
       "char": "手",
       "pinyin": "shǒu",
       "level": 1,
-      "audio": "手，手指，小手",
+      "audio": "手，手指，小手，英语读作 hand",
       "words": [
         "手指",
         "小手",
@@ -43,7 +43,7 @@
       "char": "足",
       "pinyin": "zú",
       "level": 1,
-      "audio": "足，足球，手足",
+      "audio": "足，足球，手足，英语读作 foot",
       "words": [
         "足球",
         "手足",
@@ -56,7 +56,7 @@
       "char": "上",
       "pinyin": "shàng",
       "level": 1,
-      "audio": "上，上面，上学",
+      "audio": "上，上面，上学，英语读作 up",
       "words": [
         "上面",
         "上学",
@@ -69,7 +69,7 @@
       "char": "下",
       "pinyin": "xià",
       "level": 1,
-      "audio": "下，下面，下班",
+      "audio": "下，下面，下班，英语读作 down",
       "words": [
         "下面",
         "下班",
@@ -82,7 +82,7 @@
       "char": "大",
       "pinyin": "dà",
       "level": 1,
-      "audio": "大，大小，大人",
+      "audio": "大，大小，大人，英语读作 big",
       "words": [
         "大小",
         "大人",
@@ -95,7 +95,7 @@
       "char": "小",
       "pinyin": "xiǎo",
       "level": 1,
-      "audio": "小，小孩，小手",
+      "audio": "小，小孩，小手，英语读作 small",
       "words": [
         "小孩",
         "小手",
@@ -108,7 +108,7 @@
       "char": "日",
       "pinyin": "rì",
       "level": 1,
-      "audio": "日，日子，太阳",
+      "audio": "日，日子，太阳，英语读作 sun",
       "words": [
         "日子",
         "太阳",
@@ -121,7 +121,7 @@
       "char": "月",
       "pinyin": "yuè",
       "level": 1,
-      "audio": "月，月亮，月份",
+      "audio": "月，月亮，月份，英语读作 moon",
       "words": [
         "月亮",
         "月份",
@@ -134,7 +134,7 @@
       "char": "水",
       "pinyin": "shuǐ",
       "level": 1,
-      "audio": "水，水果，喝水",
+      "audio": "水，水果，喝水，英语读作 water",
       "words": [
         "水果",
         "喝水",
@@ -147,7 +147,7 @@
       "char": "火",
       "pinyin": "huǒ",
       "level": 1,
-      "audio": "火，火车，大火",
+      "audio": "火，火车，大火，英语读作 fire",
       "words": [
         "火车",
         "大火",
@@ -160,7 +160,7 @@
       "char": "木",
       "pinyin": "mù",
       "level": 1,
-      "audio": "木，木头，树木",
+      "audio": "木，木头，树木，英语读作 wood",
       "words": [
         "木头",
         "树木",
@@ -173,7 +173,7 @@
       "char": "土",
       "pinyin": "tǔ",
       "level": 1,
-      "audio": "土，土地，泥土",
+      "audio": "土，土地，泥土，英语读作 earth",
       "words": [
         "土地",
         "泥土",
@@ -186,7 +186,7 @@
       "char": "山",
       "pinyin": "shān",
       "level": 1,
-      "audio": "山，山上，大山",
+      "audio": "山，山上，大山，英语读作 mountain",
       "words": [
         "山上",
         "大山",
@@ -199,7 +199,7 @@
       "char": "石",
       "pinyin": "shí",
       "level": 1,
-      "audio": "石，石头，石子",
+      "audio": "石，石头，石子，英语读作 stone",
       "words": [
         "石头",
         "石子",
@@ -212,7 +212,7 @@
       "char": "田",
       "pinyin": "tián",
       "level": 1,
-      "audio": "田，田地，农田",
+      "audio": "田，田地，农田，英语读作 field",
       "words": [
         "田地",
         "农田",
@@ -225,7 +225,7 @@
       "char": "禾",
       "pinyin": "hé",
       "level": 1,
-      "audio": "禾，禾苗，禾田",
+      "audio": "禾，禾苗，禾田，英语读作 grain",
       "words": [
         "禾苗",
         "禾田",
@@ -238,7 +238,7 @@
       "char": "目",
       "pinyin": "mù",
       "level": 1,
-      "audio": "目，目光，耳目",
+      "audio": "目，目光，耳目，英语读作 eye",
       "words": [
         "目光",
         "耳目",
@@ -251,7 +251,7 @@
       "char": "耳",
       "pinyin": "ěr",
       "level": 1,
-      "audio": "耳，耳朵，耳目",
+      "audio": "耳，耳朵，耳目，英语读作 ear",
       "words": [
         "耳朵",
         "耳目",
@@ -264,7 +264,7 @@
       "char": "头",
       "pinyin": "tóu",
       "level": 1,
-      "audio": "头，头发，头脑",
+      "audio": "头，头发，头脑，英语读作 head",
       "words": [
         "头发",
         "头脑",
@@ -277,7 +277,7 @@
       "char": "马",
       "pinyin": "mǎ",
       "level": 1,
-      "audio": "马，小马，马上",
+      "audio": "马，小马，马上，英语读作 horse",
       "words": [
         "小马",
         "马上",
@@ -290,7 +290,7 @@
       "char": "鸟",
       "pinyin": "niǎo",
       "level": 1,
-      "audio": "鸟，小鸟，鸟儿",
+      "audio": "鸟，小鸟，鸟儿，英语读作 bird",
       "words": [
         "小鸟",
         "鸟儿",
@@ -303,7 +303,7 @@
       "char": "鱼",
       "pinyin": "yú",
       "level": 1,
-      "audio": "鱼，鱼儿，金鱼",
+      "audio": "鱼，鱼儿，金鱼，英语读作 fish",
       "words": [
         "鱼儿",
         "金鱼",
@@ -316,7 +316,7 @@
       "char": "狗",
       "pinyin": "gǒu",
       "level": 1,
-      "audio": "狗，小狗，狗狗",
+      "audio": "狗，小狗，狗狗，英语读作 dog",
       "words": [
         "小狗",
         "狗狗",
@@ -329,7 +329,7 @@
       "char": "猫",
       "pinyin": "māo",
       "level": 1,
-      "audio": "猫，小猫，猫咪",
+      "audio": "猫，小猫，猫咪，英语读作 cat",
       "words": [
         "小猫",
         "猫咪",
@@ -342,7 +342,7 @@
       "char": "牛",
       "pinyin": "niú",
       "level": 1,
-      "audio": "牛，小牛，牛奶",
+      "audio": "牛，小牛，牛奶，英语读作 cow",
       "words": [
         "小牛",
         "牛奶",
@@ -355,7 +355,7 @@
       "char": "羊",
       "pinyin": "yáng",
       "level": 1,
-      "audio": "羊，小羊，山羊",
+      "audio": "羊，小羊，山羊，英语读作 sheep",
       "words": [
         "小羊",
         "山羊",
@@ -368,7 +368,7 @@
       "char": "爸",
       "pinyin": "bà",
       "level": 2,
-      "audio": "爸，爸爸，老爸",
+      "audio": "爸，爸爸，老爸，英语读作 father",
       "words": [
         "爸爸",
         "老爸",
@@ -381,7 +381,7 @@
       "char": "妈",
       "pinyin": "mā",
       "level": 2,
-      "audio": "妈，妈妈，老妈",
+      "audio": "妈，妈妈，老妈，英语读作 mother",
       "words": [
         "妈妈",
         "老妈",
@@ -394,7 +394,7 @@
       "char": "哥",
       "pinyin": "gē",
       "level": 2,
-      "audio": "哥，哥哥，大哥",
+      "audio": "哥，哥哥，大哥，英语读作 brother",
       "words": [
         "哥哥",
         "大哥",
@@ -407,7 +407,7 @@
       "char": "姐",
       "pinyin": "jiě",
       "level": 2,
-      "audio": "姐，姐姐，大姐",
+      "audio": "姐，姐姐，大姐，英语读作 sister",
       "words": [
         "姐姐",
         "大姐",
@@ -420,7 +420,7 @@
       "char": "弟",
       "pinyin": "dì",
       "level": 2,
-      "audio": "弟，弟弟，兄弟",
+      "audio": "弟，弟弟，兄弟，英语读作 brother",
       "words": [
         "弟弟",
         "兄弟",
@@ -433,7 +433,7 @@
       "char": "妹",
       "pinyin": "mèi",
       "level": 2,
-      "audio": "妹，妹妹，姐妹",
+      "audio": "妹，妹妹，姐妹，英语读作 sister",
       "words": [
         "妹妹",
         "姐妹",
@@ -446,7 +446,7 @@
       "char": "爷",
       "pinyin": "yé",
       "level": 2,
-      "audio": "爷，爷爷，老爷",
+      "audio": "爷，爷爷，老爷，英语读作 grandfather",
       "words": [
         "爷爷",
         "老爷",
@@ -459,7 +459,7 @@
       "char": "奶",
       "pinyin": "nǎi",
       "level": 2,
-      "audio": "奶，奶奶，牛奶",
+      "audio": "奶，奶奶，牛奶，英语读作 grandmother",
       "words": [
         "奶奶",
         "牛奶",
@@ -472,7 +472,7 @@
       "char": "家",
       "pinyin": "jiā",
       "level": 2,
-      "audio": "家，家庭，回家",
+      "audio": "家，家庭，回家，英语读作 home",
       "words": [
         "家庭",
         "回家",
@@ -485,7 +485,7 @@
       "char": "里",
       "pinyin": "lǐ",
       "level": 2,
-      "audio": "里，里面，家里",
+      "audio": "里，里面，家里，英语读作 inside",
       "words": [
         "里面",
         "家里",
@@ -498,7 +498,7 @@
       "char": "一",
       "pinyin": "yī",
       "level": 1,
-      "audio": "一，一个，第一",
+      "audio": "一，一个，第一，英语读作 one",
       "words": [
         "一个",
         "第一",
@@ -511,7 +511,7 @@
       "char": "二",
       "pinyin": "èr",
       "level": 1,
-      "audio": "二，二个，第二",
+      "audio": "二，二个，第二，英语读作 two",
       "words": [
         "二个",
         "第二",
@@ -524,7 +524,7 @@
       "char": "三",
       "pinyin": "sān",
       "level": 1,
-      "audio": "三，三个，第三",
+      "audio": "三，三个，第三，英语读作 three",
       "words": [
         "三个",
         "第三",
@@ -537,7 +537,7 @@
       "char": "四",
       "pinyin": "sì",
       "level": 1,
-      "audio": "四，四个，第四",
+      "audio": "四，四个，第四，英语读作 four",
       "words": [
         "四个",
         "第四",
@@ -550,7 +550,7 @@
       "char": "五",
       "pinyin": "wǔ",
       "level": 1,
-      "audio": "五，五个，第五",
+      "audio": "五，五个，第五，英语读作 five",
       "words": [
         "五个",
         "第五",
@@ -563,7 +563,7 @@
       "char": "六",
       "pinyin": "liù",
       "level": 1,
-      "audio": "六，六个，第六",
+      "audio": "六，六个，第六，英语读作 six",
       "words": [
         "六个",
         "第六",
@@ -576,7 +576,7 @@
       "char": "七",
       "pinyin": "qī",
       "level": 1,
-      "audio": "七，七个，第七",
+      "audio": "七，七个，第七，英语读作 seven",
       "words": [
         "七个",
         "第七",
@@ -589,7 +589,7 @@
       "char": "八",
       "pinyin": "bā",
       "level": 1,
-      "audio": "八，八个，第八",
+      "audio": "八，八个，第八，英语读作 eight",
       "words": [
         "八个",
         "第八",

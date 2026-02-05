@@ -1358,7 +1358,7 @@
       constructor() {
         this.synth = window.speechSynthesis;
         this.enabled = true;
-        this.voice = null;
+        this.voices = {};
         this.audioContext = null;
         this.initialized = false;
         this.init();
@@ -1369,7 +1369,7 @@
           this.enabled = false;
           return;
         }
-        this.loadVoice();
+        this.loadVoices();
         document.addEventListener('click', () => this.initAudioContext(), { once: true });
         document.addEventListener('touchstart', () => this.initAudioContext(), { once: true });
       }
@@ -1382,20 +1382,57 @@
         } catch (e) {}
       }
 
-      loadVoice() {
+      loadVoices() {
         const voices = this.synth.getVoices();
-        // 优先选择中文女声
-        this.voice = voices.find(v => v.lang.includes('zh') && v.name.includes('女')) ||
-                     voices.find(v => v.lang.includes('zh-CN')) ||
-                     voices.find(v => v.lang.includes('zh')) ||
-                     voices[0];
-        if (!this.voice && this.synth.addEventListener) {
+        console.log('=== 可用语音列表 ===');
+        voices.forEach((voice, index) => {
+          console.log(`${index}: ${voice.name} (${voice.lang}) - 默认: ${voice.default}`);
+        });
+        
+        // 更严格的语音选择逻辑
+        this.voices = {
+          zh: voices.find(v => v.lang === 'zh-CN') ||
+              voices.find(v => v.lang === 'zh') ||
+              voices.find(v => v.name.includes('Chinese') && !v.name.includes('Japanese')) ||
+              null,
+          en: voices.find(v => v.lang === 'en-US') ||
+              voices.find(v => v.lang === 'en-GB') ||
+              voices.find(v => v.lang === 'en') ||
+              voices.find(v => v.name.includes('English')) ||
+              null,
+          default: voices.find(v => v.default) || voices[0] || null
+        };
+        
+        console.log('=== 选择的语音 ===');
+        console.log('中文语音:', this.voices.zh ? `${this.voices.zh.name} (${this.voices.zh.lang})` : '未找到');
+        console.log('英文语音:', this.voices.en ? `${this.voices.en.name} (${this.voices.en.lang})` : '未找到');
+        console.log('默认语音:', this.voices.default ? `${this.voices.default.name} (${this.voices.default.lang})` : '未找到');
+        
+        if (!this.voices.zh && this.synth.addEventListener) {
           this.synth.addEventListener('voiceschanged', () => {
             const voices = this.synth.getVoices();
-            this.voice = voices.find(v => v.lang.includes('zh') && v.name.includes('女')) ||
-                         voices.find(v => v.lang.includes('zh-CN')) ||
-                         voices.find(v => v.lang.includes('zh')) ||
-                         voices[0];
+            console.log('=== voiceschanged 事件触发 ===');
+            voices.forEach((voice, index) => {
+              console.log(`${index}: ${voice.name} (${voice.lang}) - 默认: ${voice.default}`);
+            });
+            
+            this.voices = {
+              zh: voices.find(v => v.lang === 'zh-CN') ||
+                  voices.find(v => v.lang === 'zh') ||
+                  voices.find(v => v.name.includes('Chinese') && !v.name.includes('Japanese')) ||
+                  null,
+              en: voices.find(v => v.lang === 'en-US') ||
+                  voices.find(v => v.lang === 'en-GB') ||
+                  voices.find(v => v.lang === 'en') ||
+                  voices.find(v => v.name.includes('English')) ||
+                  null,
+              default: voices.find(v => v.default) || voices[0] || null
+            };
+            
+            console.log('=== 重新选择的语音 ===');
+            console.log('中文语音:', this.voices.zh ? `${this.voices.zh.name} (${this.voices.zh.lang})` : '未找到');
+            console.log('英文语音:', this.voices.en ? `${this.voices.en.name} (${this.voices.en.lang})` : '未找到');
+            console.log('默认语音:', this.voices.default ? `${this.voices.default.name} (${this.voices.default.lang})` : '未找到');
           });
         }
       }
@@ -1403,12 +1440,120 @@
       speak(text) {
         if (!this.enabled || !this.synth) return;
         this.synth.cancel();
+        
+        // 检测并分段朗读不同语言的内容
+        const segments = this.detectLanguageSegments(text);
+        
+        // 按顺序朗读每个片段
+        let delay = 0;
+        segments.forEach((segment, index) => {
+          setTimeout(() => {
+            this.speakSegment(segment.text, segment.lang);
+          }, delay);
+          
+          // 计算当前片段的朗读时间（粗略估算）
+          const charCount = segment.text.length;
+          const baseTime = charCount * 200; // 每个字符约200ms
+          delay += Math.max(500, baseTime);
+        });
+      }
+
+      speakSegment(text, lang) {
+        console.log(`=== 开始朗读片段 ===`);
+        console.log(`文本: "${text}"`);
+        console.log(`语言: ${lang}`);
+        
         const utterance = new SpeechSynthesisUtterance(text);
-        utterance.voice = this.voice;
-        utterance.lang = 'zh-CN';
-        utterance.rate = 0.9;
-        utterance.pitch = 1.3; // 提高音调，更像女声
-        this.synth.speak(utterance);
+        let selectedVoice = null;
+        let selectedLang = 'zh-CN';
+        
+        // 根据语言选择合适的语音
+        if (lang === 'en') {
+          if (this.voices.en) {
+            selectedVoice = this.voices.en;
+            selectedLang = 'en-US';
+            utterance.rate = 0.9;
+            utterance.pitch = 1.2;
+            console.log(`使用英文语音: ${selectedVoice.name} (${selectedVoice.lang})`);
+          } else {
+            // 如果没有英文语音，尝试使用默认语音但设置为英文
+            selectedVoice = this.voices.default;
+            selectedLang = 'en-US';
+            utterance.rate = 0.9;
+            utterance.pitch = 1.2;
+            console.log(`没有英文语音，使用默认语音: ${selectedVoice ? selectedVoice.name : '无'}`);
+          }
+        } else {
+          if (this.voices.zh) {
+            selectedVoice = this.voices.zh;
+            selectedLang = 'zh-CN';
+            utterance.rate = 0.9;
+            utterance.pitch = 1.3; // 提高音调，更像女声
+            console.log(`使用中文语音: ${selectedVoice.name} (${selectedVoice.lang})`);
+          } else {
+            // 如果没有中文语音，使用默认语音
+            selectedVoice = this.voices.default;
+            selectedLang = 'zh-CN';
+            utterance.rate = 0.9;
+            utterance.pitch = 1.3;
+            console.log(`没有中文语音，使用默认语音: ${selectedVoice ? selectedVoice.name : '无'}`);
+          }
+        }
+        
+        // 确保有语音可用
+        if (selectedVoice) {
+          utterance.voice = selectedVoice;
+        }
+        utterance.lang = selectedLang;
+        
+        console.log(`最终设置: 语言=${selectedLang}, 语音=${selectedVoice ? selectedVoice.name : '系统默认'}`);
+        
+        try {
+          this.synth.speak(utterance);
+          console.log(`朗读开始: "${text}"`);
+        } catch (error) {
+          console.error('朗读失败:', error);
+        }
+      }
+
+      detectLanguageSegments(text) {
+        const segments = [];
+        let currentSegment = {
+          text: '',
+          lang: 'zh'
+        };
+        
+        for (let i = 0; i < text.length; i++) {
+          const char = text[i];
+          const isChinese = /[\u4e00-\u9fa5]/.test(char);
+          const isEnglish = /[a-zA-Z]/.test(char);
+          
+          if (isChinese && currentSegment.lang !== 'zh') {
+            if (currentSegment.text.trim()) {
+              segments.push({...currentSegment});
+            }
+            currentSegment = {
+              text: char,
+              lang: 'zh'
+            };
+          } else if (isEnglish && currentSegment.lang !== 'en') {
+            if (currentSegment.text.trim()) {
+              segments.push({...currentSegment});
+            }
+            currentSegment = {
+              text: char,
+              lang: 'en'
+            };
+          } else {
+            currentSegment.text += char;
+          }
+        }
+        
+        if (currentSegment.text.trim()) {
+          segments.push(currentSegment);
+        }
+        
+        return segments;
       }
 
       correctSound() {
